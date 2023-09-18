@@ -10,8 +10,12 @@ export default NavBar;
 const NavBarContainer = styled.header`
   width: 100%;
   height: 66px;
-  top: 0;
   position: fixed;
-  left: 256px;
-  border-bottom: 1px solid black;
+  top: 0;
+  left: 304;
+  background-color: white;
+  /* top: 0;
+  position: fixed;
+  left: 256px; */
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
 `;

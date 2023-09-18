@@ -36,7 +36,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Source Sans Pro', sans-serif;
   }
   ol, ul {
-    list-style: none;
+    /* list-style:decimal; */
   }
   blockquote, q {
     quotes: none;

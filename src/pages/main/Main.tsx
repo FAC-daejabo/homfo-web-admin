@@ -9,12 +9,24 @@ const Main = () => {
       style={{
         display: "flex",
         position: "relative",
+        backgroundColor: "#F4F6F8",
+        width: "100%",
+        height: "2868px",
+        paddingTop: "66px",
+        paddingLeft: "304px",
       }}
     >
       <SideBar />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <NavBar />
-        <Outlet />
+        <div style={{ padding: "25px" }}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );
