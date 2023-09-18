@@ -1,12 +1,64 @@
 import React from "react";
 import "./App.css";
-import Router from "./Router";
 import { RecoilRoot } from "recoil";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Main from "./pages/main/Main";
+import AgencyInfo from "./pages/service/AgencyInfo";
+import Requests from "./pages/service/Requests";
+import Registration from "./pages/service/Registration";
+import Proposals from "./pages/service/Proposals";
+import UserManagement from "./pages/admin/UserManagement";
+import CommonSense from "./pages/common-sense/CommonSense";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+    children: [
+      {
+        path: "service",
+        children: [
+          { path: "agency-info", element: <AgencyInfo /> },
+          {
+            path: "requests",
+            element: <Requests />,
+          },
+          {
+            path: "registration",
+            element: <Registration />,
+          },
+          {
+            path: "proposals",
+            element: <Proposals />,
+          },
+        ],
+      },
+      {
+        path: "admin",
+        children: [
+          {
+            path: "user-management",
+            element: <UserManagement />,
+          },
+        ],
+      },
+      {
+        path: "common-sense",
+        children: [
+          {
+            index: true,
+            element: <CommonSense />,
+          },
+        ],
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
     <RecoilRoot>
-      <Router />
+      <RouterProvider router={router}></RouterProvider>
     </RecoilRoot>
   );
 }
