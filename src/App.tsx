@@ -9,6 +9,8 @@ import Registration from "./pages/service/Registration";
 import Proposals from "./pages/service/Proposals";
 import UserManagement from "./pages/admin/UserManagement";
 import CommonSense from "./pages/common-sense/CommonSense";
+import Signup from "./pages/auth/Signup";
+import AuthMain from "./pages/auth/main/AuthMain";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,16 @@ const router = createBrowserRouter([
             element: <CommonSense />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    element: <AuthMain />,
+    children: [
+      {
+        path: "signup",
+        element: <Signup />,
       },
     ],
   },
