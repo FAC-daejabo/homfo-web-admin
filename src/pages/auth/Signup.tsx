@@ -2,9 +2,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import instance from "../../api/util/instance";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const onValid = async (data: any) => {
     const response = await instance.post("/admins/users/sign-up", {
@@ -17,6 +19,9 @@ const Signup = () => {
       dateOfBirth: data.dateOfBirth,
     });
     console.log(response);
+    if (response.status === 201) {
+      navigate("/auth/login");
+    }
   };
 
   return (

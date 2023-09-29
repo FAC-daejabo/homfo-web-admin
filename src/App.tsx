@@ -11,6 +11,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import CommonSense from "./pages/common-sense/CommonSense";
 import Signup from "./pages/auth/Signup";
 import AuthMain from "./pages/auth/main/AuthMain";
+import Login from "./pages/auth/Login";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />,
+      },
+      {
+        path: "login",
+        element: <Login />,
       },
     ],
   },
