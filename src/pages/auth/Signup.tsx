@@ -3,33 +3,41 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import instance from "../../api/util/instance";
 import { useNavigate } from "react-router-dom";
+import {
+  InputSelect,
+  InputText,
+  InputTitle,
+  InputWrapper,
+  SubmitButton,
+} from "../../styles/pages/auth/Signup.style";
 
 const Signup = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   const onValid = async (data: any) => {
-    const response = await instance.post("/admins/users/sign-up", {
-      userAccount: data.userAccount,
-      userPassword: data.userPassword,
-      nickName: data.nickName,
-      userPhoneNum: data.userPhoneNum,
-      gender: data.gender,
-      job: data.job,
-      dateOfBirth: data.dateOfBirth,
-    });
-    console.log(response);
-    if (response.status === 201) {
-      navigate("/auth/login");
+    try {
+      const response = await instance.post("/admins/users/sign-up", {
+        userAccount: data.userAccount,
+        userPassword: data.userPassword,
+        nickName: data.nickName,
+        userPhoneNum: data.userPhoneNum,
+        gender: data.gender,
+        job: data.job,
+        dateOfBirth: data.dateOfBirth,
+      });
+      console.log(response);
+      if (response.status === 201) {
+        navigate("/auth/login");
+      }
+    } catch (e: any) {
+      alert(e.response.data.message);
     }
   };
 
   return (
     <div>
       <div>
-        <TopArea>
-          <TextLogoImage src="/text_logo.jpeg" />
-        </TopArea>
         <form onSubmit={handleSubmit(onValid)}>
           <InputWrapper>
             <InputTitle>ID</InputTitle>
@@ -91,53 +99,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-const TopArea = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const TextLogoImage = styled.img`
-  width: 116px;
-  height: 40px;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-`;
-
-const InputTitle = styled.span`
-  color: #1e293b;
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 7px;
-  padding-left: 2px;
-`;
-
-const InputText = styled.input`
-  width: 300px;
-  height: 42px;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  padding-left: 7px;
-`;
-
-const InputSelect = styled.select`
-  width: 300px;
-  height: 42px;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  padding-left: 7px;
-`;
-
-const SubmitButton = styled.button`
-  width: 300px;
-  height: 42px;
-  border-radius: 8px;
-  color: #ffffff;
-  background-color: #624bff;
-  margin-top: 15px;
-`;

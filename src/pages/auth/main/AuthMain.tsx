@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import styled from "styled-components";
 
 const AuthMain = () => {
   return (
@@ -21,6 +22,9 @@ const AuthMain = () => {
           padding: "32px",
         }}
       >
+        <TopArea>
+          <TextLogoImage src="/text_logo.jpeg" />
+        </TopArea>
         <Outlet />
       </div>
     </div>
@@ -28,3 +32,14 @@ const AuthMain = () => {
 };
 
 export default AuthMain;
+
+const TopArea = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TextLogoImage = styled.img`
+  width: 116px;
+  height: 40px;
+`;
