@@ -21,10 +21,11 @@ const Main = () => {
         style={{
           display: "flex",
           flexDirection: "column",
+          width: "100%",
         }}
       >
         <NavBar />
-        <div style={{ padding: "25px" }}>
+        <div style={{ padding: "25px", width: "100%" }}>
           <Outlet />
         </div>
       </div>
