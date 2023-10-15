@@ -24,10 +24,13 @@ const SideBar = () => {
       </NavArea>
 
       <NavArea>
-        <NavTitle>관리자 정보 관리</NavTitle>
+        <NavTitle>유저 관리</NavTitle>
         <NavList>
           <NavItem>
-            <Link to="/admin/user-management">- 관리자 승인 / 탈퇴</Link>
+            <Link to="/admin/admin-user-management">- 관리자 승인 / 탈퇴</Link>
+          </NavItem>
+          <NavItem>
+            <Link to="/admin/user-management">- 회원관리</Link>
           </NavItem>
         </NavList>
       </NavArea>

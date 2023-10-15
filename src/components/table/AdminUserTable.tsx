@@ -1,6 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { IUser } from "../../interfaces/UserInterface";
+import {
+  ApproveButton,
+  Data,
+  Heading,
+  RejectButton,
+  Row,
+  Table,
+  TableContainer,
+  TableTitle,
+} from "../../styles/components/AdminUserTable";
 
 const AdminUserTable = ({
   tableTitle,
@@ -38,54 +48,3 @@ const AdminUserTable = ({
 };
 
 export default AdminUserTable;
-
-const TableContainer = styled.div`
-  margin-bottom: 40px;
-`;
-
-const TableTitle = styled.h2`
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const Row = styled.tr``;
-
-const Heading = styled.th`
-  width: 30%;
-  height: 50px;
-  text-align: center;
-  border: 1px solid #000;
-
-  vertical-align: top; /* 위 */
-  vertical-align: bottom; /* 아래 */
-  vertical-align: middle; /* 가운데 */
-`;
-
-const Data = styled.td`
-  width: 30%;
-  height: 50px;
-  text-align: center;
-  border: 1px solid #000;
-
-  vertical-align: top; /* 위 */
-  vertical-align: bottom; /* 아래 */
-  vertical-align: middle; /* 가운데 */
-`;
-
-const ApproveButton = styled(Data)`
-  width: 5%;
-  color: #ffffff;
-  background-color: #624bff;
-`;
-
-const RejectButton = styled(Data)`
-  width: 5%;
-  color: #ffffff;
-  background-color: #dc3545;
-`;

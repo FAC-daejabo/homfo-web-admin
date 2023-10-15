@@ -7,11 +7,12 @@ import AgencyInfo from "./pages/service/AgencyInfo";
 import Requests from "./pages/service/Requests";
 import Registration from "./pages/service/Registration";
 import Proposals from "./pages/service/Proposals";
-import UserManagement from "./pages/admin/UserManagement";
 import CommonSense from "./pages/common-sense/CommonSense";
 import Signup from "./pages/auth/Signup";
 import AuthMain from "./pages/auth/main/AuthMain";
 import Login from "./pages/auth/Login";
+import AdminUserManagement from "./pages/admin/AdminUserManagement";
+import UserManagement from "./pages/admin/UserManagement";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "admin",
         children: [
+          {
+            path: "admin-user-management",
+            element: <AdminUserManagement />,
+          },
           {
             path: "user-management",
             element: <UserManagement />,
