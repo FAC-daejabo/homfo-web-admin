@@ -1,17 +1,17 @@
 import React from "react";
-import styled from "styled-components";
-import { IUser } from "../../interfaces/UserInterface";
 import {
+  ApproveButton,
   Data,
-  DeleteButton,
   Heading,
+  RejectButton,
   Row,
   Table,
   TableContainer,
   TableTitle,
-} from "../../styles/components/AdminUserTable.style";
+} from "../../styles/components/UserTable.style";
+import { IUser } from "../../interfaces/UserInterface";
 
-const AdminApprovedTable = ({
+const UserTable = ({
   tableTitle,
   datas,
 }: {
@@ -24,19 +24,22 @@ const AdminApprovedTable = ({
       <Table>
         <thead>
           <Row>
+            <Heading scope="col">닉네임</Heading>
             <Heading scope="col">ID</Heading>
-            <Heading scope="col">성명</Heading>
-            <Heading scope="col">소속</Heading>
+            <Heading scope="col">생년월일</Heading>
+            <Heading scope="col">연락처</Heading>
             <Heading scope="col" colSpan={2}></Heading>
           </Row>
         </thead>
         <tbody>
           {datas.map((data) => (
             <Row key={data.userId}>
-              <Data>{data.userAccount}</Data>
               <Data>{data.nickName}</Data>
-              <Data>{data.job}</Data>
-              <DeleteButton>삭제</DeleteButton>
+              <Data>{data.userAccount}</Data>
+              <Data>{data.dateOfBirth}</Data>
+              <Data>{data.userPhoneNum}</Data>
+              <ApproveButton>정지</ApproveButton>
+              <RejectButton>정지해제</RejectButton>
             </Row>
           ))}
         </tbody>
@@ -45,4 +48,4 @@ const AdminApprovedTable = ({
   );
 };
 
-export default AdminApprovedTable;
+export default UserTable;

@@ -10,7 +10,7 @@ import {
   Table,
   TableContainer,
   TableTitle,
-} from "../../styles/components/AdminUserTable";
+} from "../../styles/components/AdminUserTable.style";
 
 const AdminUserTable = ({
   tableTitle,
