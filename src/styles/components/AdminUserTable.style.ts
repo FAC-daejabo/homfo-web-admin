@@ -43,16 +43,19 @@ export const ApproveButton = styled(Data)`
   width: 5%;
   color: #ffffff;
   background-color: #624bff;
+  cursor: pointer;
 `;
 
 export const RejectButton = styled(Data)`
   width: 5%;
   color: #ffffff;
   background-color: #dc3545;
+  cursor: pointer;
 `;
 
 export const DeleteButton = styled(Data)`
   width: 10%;
   color: #ffffff;
   background-color: #dc3545;
+  cursor: pointer;
 `;

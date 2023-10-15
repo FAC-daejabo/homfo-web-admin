@@ -14,7 +14,6 @@ const AdminUserManagement = () => {
   const [userList, setUserList] = useState<IUser[]>([]);
   const getUserList = async () => {
     const response = await instance.get("admins/users/sign-up/approve");
-
     console.log(response.data.data);
     setUserList(response.data.data);
   };
