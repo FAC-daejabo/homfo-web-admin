@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IUser } from "../../interfaces/UserInterface";
 
-const AdminUserTable = ({
+const AdminApprovedTable = ({
   tableTitle,
   datas,
 }: {
@@ -27,8 +27,7 @@ const AdminUserTable = ({
               <Data>{data.userAccount}</Data>
               <Data>{data.nickName}</Data>
               <Data>{data.job}</Data>
-              <ApproveButton>승인</ApproveButton>
-              <RejectButton>거부</RejectButton>
+              <DeleteButton>삭제</DeleteButton>
             </Row>
           ))}
         </tbody>
@@ -37,10 +36,10 @@ const AdminUserTable = ({
   );
 };
 
-export default AdminUserTable;
+export default AdminApprovedTable;
 
 const TableContainer = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const TableTitle = styled.h2`
@@ -78,14 +77,8 @@ const Data = styled.td`
   vertical-align: middle; /* 가운데 */
 `;
 
-const ApproveButton = styled(Data)`
-  width: 5%;
-  color: #ffffff;
-  background-color: #624bff;
-`;
-
-const RejectButton = styled(Data)`
-  width: 5%;
+const DeleteButton = styled(Data)`
+  width: 10%;
   color: #ffffff;
   background-color: #dc3545;
 `;
