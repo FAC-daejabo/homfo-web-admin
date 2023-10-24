@@ -15,7 +15,7 @@ const Sense = ({
 }: ISense) => {
   return (
     <S.SenseContainer>
-      <S.SenseImage />
+      <S.SenseImage src="/example.jpeg" />
       <S.TitleContainer>
         <S.Title>{title}</S.Title>
         {isPublic === "N" ? <S.PrivateIcon /> : null}

@@ -1,5 +1,6 @@
 import React from "react";
 import Sense from "../../components/sense/Sense";
+import * as S from "../../styles/pages/common-sense/CommonSense.style";
 
 const dummyData = [
   {
@@ -32,11 +33,31 @@ const dummyData = [
     status: "Y",
     createdAt: "2023-09-07T02:22:04.000",
   },
+  {
+    senseId: 3,
+    writerName: "개발팀정윤미",
+    title: "부동산 상식 제목 2",
+    likeCount: 0,
+    favoriteCount: 2,
+    isPublic: "Y",
+    status: "Y",
+    createdAt: "2023-09-07T02:22:04.000",
+  },
+  {
+    senseId: 7,
+    writerName: "개발팀강동하",
+    title: "부동산 상식 제목 2",
+    likeCount: 0,
+    favoriteCount: 2,
+    isPublic: "Y",
+    status: "Y",
+    createdAt: "2023-09-07T02:22:04.000",
+  },
 ];
 
 const CommonSense = () => {
   return (
-    <div>
+    <S.CommonSenseContainer>
       {dummyData.map((data) => (
         <Sense
           key={data.senseId}
@@ -50,7 +71,7 @@ const CommonSense = () => {
           createdAt={data.createdAt}
         />
       ))}
-    </div>
+    </S.CommonSenseContainer>
   );
 };
 
