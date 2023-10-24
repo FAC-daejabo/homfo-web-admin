@@ -18,9 +18,9 @@ const AdminUserManagement = () => {
     setUserList(response.data.data);
   };
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
   return (
     <>
       <PageHeaderWrapper>
