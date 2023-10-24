@@ -18,7 +18,7 @@ export const InputArea = styled.div`
 
 export const InputTitle = styled.h1`
   color: black;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 12px;
 `;
@@ -69,13 +69,15 @@ export const ImageInput = styled.input``;
 
 export const TitleInput = styled.input`
   border-bottom: 1px solid black;
-  height: 30px;
+  height: 35px;
   padding-left: 7px;
+  font-size: 20px;
 `;
 
 export const ContentInput = styled.textarea`
-  height: 200px;
+  height: 170px;
   padding: 10px;
+  font-size: 18px;
 `;
 
 export const PreviewImage = styled.img`
@@ -97,3 +99,34 @@ export const DeleteIcon = styled(AiFillCloseCircle)`
   top: 4px;
   cursor: pointer;
 `;
+
+export const ButtonArea = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const RegisterButton = styled.button`
+  width: 155px;
+  height: 48px;
+  background-color: #624bff;
+  border-radius: 8px;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  margin-left: 7px;
+  font-size: 16px;
+`;
+
+export const ModifyButton = styled(RegisterButton)`
+  background-color: #ffc107;
+`;
+
+export const DeleteButton = styled(RegisterButton)`
+  background-color: #dc3545;
+`;
+
+export const CheckboxArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const PublicCheckbox = styled.input``;

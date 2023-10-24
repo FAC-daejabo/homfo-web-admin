@@ -34,6 +34,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     line-height: 1;
     font-family: 'Source Sans Pro', sans-serif;
+    background-color: #f4f6f8;
   }
   ol, ul {
     /* list-style:decimal; */

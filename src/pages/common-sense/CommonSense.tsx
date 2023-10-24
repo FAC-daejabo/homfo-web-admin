@@ -2,6 +2,10 @@ import React from "react";
 import Sense from "../../components/sense/Sense";
 import * as S from "../../styles/pages/common-sense/CommonSense.style";
 import { Link } from "react-router-dom";
+import {
+  PageHeaderWrapper,
+  PageTitle,
+} from "../../styles/pages/admin/UserManagement.style";
 
 const dummyData = [
   {
@@ -59,6 +63,9 @@ const dummyData = [
 const CommonSense = () => {
   return (
     <>
+      <PageHeaderWrapper>
+        <PageTitle>부동산 상식 업로드</PageTitle>
+      </PageHeaderWrapper>
       <S.CommonSenseContainer>
         {dummyData.map((data) => (
           <Sense

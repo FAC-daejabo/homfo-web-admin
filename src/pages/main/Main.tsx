@@ -25,7 +25,7 @@ const MainLayout = styled.div`
   position: relative;
   background-color: #f4f6f8;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding-top: 66px;
   padding-left: 304px;
 `;

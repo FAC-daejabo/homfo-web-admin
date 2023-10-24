@@ -4,14 +4,14 @@ import { useForm } from "react-hook-form";
 import { ISenseDetail } from "../../../interfaces/SenseInterface";
 import { useRecoilState } from "recoil";
 import { sensePosterList } from "../../../stores/senseAtom";
+import Checkbox from "../../../components/checkbox/Checkbox";
 
 const SenseRegister = () => {
-  const { register, handleSubmit, watch } = useForm<ISenseDetail>();
-
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [posterList, setPosterList] = useRecoilState(sensePosterList);
   const [posterTitle, setPosterTitle] = useState("");
   const [posterContent, setPosterContent] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
     if (posterList && posterList.length > 0) {
@@ -31,13 +31,20 @@ const SenseRegister = () => {
     setPosterList(posterList.filter((_, index) => index !== id));
   };
 
-  console.log(posterList);
-  console.log(previewImages);
+  console.log(isPublic);
 
   return (
     <S.RegisterContainer>
       <S.InputArea>
-        <S.InputTitle>부동산 상식 이미지</S.InputTitle>
+        <S.CheckboxArea>
+          <S.InputTitle>부동산 상식 이미지</S.InputTitle>
+          <Checkbox
+            content="공개 여부"
+            checked={isPublic}
+            setChange={setIsPublic}
+          />
+        </S.CheckboxArea>
+
         <S.ImageInputArea>
           <S.ImageInputLabel htmlFor="image">
             <S.CameraIcon />
@@ -67,12 +74,28 @@ const SenseRegister = () => {
       </S.InputArea>
       <S.InputArea>
         <S.InputTitle>제목</S.InputTitle>
-        <S.TitleInput />
+        <S.TitleInput
+          value={posterTitle}
+          onChange={(e) => {
+            setPosterTitle(e.currentTarget.value);
+          }}
+        />
       </S.InputArea>
       <S.InputArea>
         <S.InputTitle>내용</S.InputTitle>
-        <S.ContentInput />
+        <S.ContentInput
+          value={posterContent}
+          onChange={(e) => {
+            setPosterContent(e.currentTarget.value);
+          }}
+        />
       </S.InputArea>
+
+      <S.ButtonArea>
+        <S.DeleteButton>삭제</S.DeleteButton>
+        <S.ModifyButton>수정</S.ModifyButton>
+        <S.RegisterButton>등록</S.RegisterButton>
+      </S.ButtonArea>
     </S.RegisterContainer>
   );
 };

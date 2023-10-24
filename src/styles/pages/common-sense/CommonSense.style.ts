@@ -19,10 +19,10 @@ export const CommonSenseContainer = styled.div`
 export const SenseRegiserButton = styled.button`
   position: fixed;
   right: 40px;
-  bottom: 30px;
+  bottom: 40px;
   z-index: 1;
-  width: 120px;
-  height: 50px;
+  width: 130px;
+  height: 55px;
   border-radius: 5px;
   background-color: #624bff;
   font-size: 16px;
