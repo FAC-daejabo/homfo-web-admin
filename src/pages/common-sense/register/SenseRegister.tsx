@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../../../styles/pages/common-sense/register/SenseRegister.style";
-import { useForm } from "react-hook-form";
-import { ISenseDetail } from "../../../interfaces/SenseInterface";
 import { useRecoilState } from "recoil";
 import { sensePosterList } from "../../../stores/senseAtom";
 import Checkbox from "../../../components/checkbox/Checkbox";
