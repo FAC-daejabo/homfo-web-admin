@@ -20,7 +20,7 @@ const AdminUserTable = ({
   tableTitle: string;
   datas: IUser[];
 }) => {
-  const onClickApprove = async (userID: string, nickName: string) => {
+  const onClickApprove = async (userID: number, nickName: string) => {
     if (window.confirm(`${nickName}님을 승인하시겠습니까?`)) {
       const response = await instance.patch("admins/users/sign-up/approve", {
         userId: userID,

@@ -2,35 +2,41 @@ import React from "react";
 import SideBar from "../../components/bar/SideBar";
 import { Outlet } from "react-router-dom";
 import NavBar from "../../components/bar/NavBar";
+import styled from "styled-components";
 
 const Main = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        position: "relative",
-        backgroundColor: "#F4F6F8",
-        width: "100%",
-        height: "2868px",
-        paddingTop: "66px",
-        paddingLeft: "304px",
-      }}
-    >
+    <MainLayout>
       <SideBar />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
+      <ContentContainer>
         <NavBar />
-        <div style={{ padding: "25px", width: "100%" }}>
+        <MainContent>
           <Outlet />
-        </div>
-      </div>
-    </div>
+        </MainContent>
+      </ContentContainer>
+    </MainLayout>
   );
 };
 
 export default Main;
+
+const MainLayout = styled.div`
+  display: flex;
+  position: relative;
+  background-color: #f4f6f8;
+  width: 100%;
+  height: 100%;
+  padding-top: 66px;
+  padding-left: 304px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const MainContent = styled.div`
+  padding: 20px;
+  width: 100%;
+`;
