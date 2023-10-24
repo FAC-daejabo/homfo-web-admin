@@ -8,3 +8,9 @@ export interface ISense {
   status: string;
   createdAt: string;
 }
+
+export interface ISenseDetail {
+  imageList: FileList;
+  title: string;
+  content: string;
+}

@@ -24,33 +24,48 @@ export const InputTitle = styled.h1`
 `;
 
 export const ImageInputArea = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-rows: auto;
+  grid-gap: 10px;
+  @media only screen and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media only screen and (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media only screen and (min-width: 1440px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 `;
 
 export const ImageInputLabel = styled.label`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: normal;
-  vertical-align: middle;
   width: 300px;
   height: 300px;
   border: 1px solid #ededed;
   margin-right: 10px;
   position: relative;
-  cursor: pointer;
 `;
 
-export const ImageInput = styled.input`
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-`;
+export const ImageInput = styled.input``;
 
 export const TitleInput = styled.input`
   border-bottom: 1px solid black;
@@ -74,10 +89,11 @@ export const CameraIcon = styled(AiFillCamera)`
 `;
 
 export const DeleteIcon = styled(AiFillCloseCircle)`
-  height: 14px;
-  width: 14px;
+  height: 20px;
+  width: 20px;
   color: gba(34, 36, 40, 0.5);
   position: absolute;
   right: 4px;
   top: 4px;
+  cursor: pointer;
 `;
