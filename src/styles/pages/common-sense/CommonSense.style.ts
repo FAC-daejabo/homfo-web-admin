@@ -15,3 +15,18 @@ export const CommonSenseContainer = styled.div`
     grid-template-columns: repeat(4, 1fr);
   }
 `;
+
+export const SenseRegiserButton = styled.button`
+  position: fixed;
+  right: 40px;
+  bottom: 30px;
+  z-index: 1;
+  width: 120px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #624bff;
+  font-size: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+`;

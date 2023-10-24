@@ -13,6 +13,8 @@ import AuthMain from "./pages/auth/main/AuthMain";
 import Login from "./pages/auth/Login";
 import AdminUserManagement from "./pages/admin/AdminUserManagement";
 import UserManagement from "./pages/admin/UserManagement";
+import SenseDetail from "./pages/common-sense/sense-detail/SenseDetail";
+import SenseRegister from "./pages/common-sense/register/SenseRegister";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,8 @@ const router = createBrowserRouter([
             index: true,
             element: <CommonSense />,
           },
+          { path: ":senseId", element: <SenseDetail></SenseDetail> },
+          { path: "register", element: <SenseRegister></SenseRegister> },
         ],
       },
     ],

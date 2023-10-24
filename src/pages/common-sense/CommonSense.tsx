@@ -1,6 +1,7 @@
 import React from "react";
 import Sense from "../../components/sense/Sense";
 import * as S from "../../styles/pages/common-sense/CommonSense.style";
+import { Link } from "react-router-dom";
 
 const dummyData = [
   {
@@ -57,21 +58,26 @@ const dummyData = [
 
 const CommonSense = () => {
   return (
-    <S.CommonSenseContainer>
-      {dummyData.map((data) => (
-        <Sense
-          key={data.senseId}
-          senseId={data.senseId}
-          writerName={data.writerName}
-          title={data.writerName}
-          likeCount={data.likeCount}
-          favoriteCount={data.favoriteCount}
-          isPublic={data.isPublic}
-          status={data.status}
-          createdAt={data.createdAt}
-        />
-      ))}
-    </S.CommonSenseContainer>
+    <>
+      <S.CommonSenseContainer>
+        {dummyData.map((data) => (
+          <Sense
+            key={data.senseId}
+            senseId={data.senseId}
+            writerName={data.writerName}
+            title={data.writerName}
+            likeCount={data.likeCount}
+            favoriteCount={data.favoriteCount}
+            isPublic={data.isPublic}
+            status={data.status}
+            createdAt={data.createdAt}
+          />
+        ))}
+      </S.CommonSenseContainer>
+      <Link to="/common-sense/register">
+        <S.SenseRegiserButton>등록하기</S.SenseRegiserButton>
+      </Link>
+    </>
   );
 };
 
