@@ -7,7 +7,6 @@ import {
 } from "../../styles/pages/admin/UserManagement.style";
 
 const AgencyInfo = () => {
-  const { register } = useForm();
   return (
     <>
       <PageHeaderWrapper>
