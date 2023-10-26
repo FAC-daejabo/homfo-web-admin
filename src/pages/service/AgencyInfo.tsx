@@ -122,7 +122,7 @@ const TextArea = styled.textarea`
   border: 1px solid #212121;
   font-size: 16px;
   border-radius: 2px;
-  padding: 0 6px;
+  padding: 6px;
   height: 200px;
 `;
 
