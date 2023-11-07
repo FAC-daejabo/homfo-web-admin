@@ -4,6 +4,7 @@ import {
   PageHeaderWrapper,
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
+import SelectBox from "../../components/selectbox/SelectBox";
 
 const AgencyInfo = () => {
   return (
@@ -71,7 +72,15 @@ const AgencyInfo = () => {
         <PageTitle>중개업소 목록</PageTitle>
       </PageHeaderWrapper>
       <SearchContainer>
-        <SearchTopArea></SearchTopArea>
+        <SearchTopArea>
+          <SearchArea>
+            <SearchInput type="text" />
+            <SearchButton>검색</SearchButton>
+          </SearchArea>
+          <FilterArea>
+            <SelectBox options={["최신순", "조회순"]} />
+          </FilterArea>
+        </SearchTopArea>
         <SearchBottomArea></SearchBottomArea>
       </SearchContainer>
     </>
@@ -141,7 +150,11 @@ const RegisterArea = styled.div`
 
 const SearchContainer = styled.div``;
 
-const SearchTopArea = styled.div``;
+const SearchTopArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`;
 
 const SearchBottomArea = styled.div`
   background-color: #ffffff;
@@ -171,4 +184,30 @@ const RegisterButton = styled.button`
 
 const LoadButton = styled(RegisterButton)`
   background-color: #637381;
+`;
+
+const FilterArea = styled.div`
+  width: 12%;
+`;
+
+const SearchArea = styled.div`
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SearchInput = styled.input`
+  width: 79%;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #e9ebed;
+  padding-left: 7px;
+`;
+
+const SearchButton = styled.button`
+  width: 19%;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #e9ebed;
+  cursor: pointer;
 `;

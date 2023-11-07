@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ContentContainer,
   PageHeaderWrapper,
@@ -6,6 +6,7 @@ import {
 } from "../../styles/pages/admin/UserManagement.style";
 import UserTable from "../../components/table/UserTable";
 import { IUser } from "../../interfaces/UserInterface";
+import instance from "../../api/util/instance";
 
 const dummyData: IUser[] = [
   {
@@ -50,6 +51,16 @@ const dummyData: IUser[] = [
 ];
 
 const UserManagement = () => {
+  const [userList, setUserList] = useState<IUser[]>([]);
+  const getUserList = async () => {
+    const response = await instance.get("admins/users/sign-up/approve");
+    console.log(response.data.data);
+    setUserList(response.data.data);
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
   return (
     <>
       <PageHeaderWrapper>
