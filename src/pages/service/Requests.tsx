@@ -10,7 +10,7 @@ const Requests = () => {
   return (
     <>
       <PageHeaderWrapper>
-        <PageTitle>매물 파악 중</PageTitle>
+        <PageTitle>매물 신청 목록</PageTitle>
       </PageHeaderWrapper>
       <RequestArea>
         <RequestCard
@@ -47,7 +47,7 @@ const Requests = () => {
         ></RequestCard>
       </RequestArea>
       <PageHeaderWrapper>
-        <PageTitle>매물 파악 완료</PageTitle>
+        <PageTitle>매물 처리중</PageTitle>
       </PageHeaderWrapper>
       <RequestArea>
         <RequestCard
@@ -84,7 +84,7 @@ const Requests = () => {
         ></RequestCard>
       </RequestArea>
       <PageHeaderWrapper>
-        <PageTitle>신청완료</PageTitle>
+        <PageTitle>처리 완료</PageTitle>
       </PageHeaderWrapper>
       <RequestArea>
         <RequestCard
@@ -129,7 +129,6 @@ export default Requests;
 const RequestArea = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-
   margin-bottom: 10px;
   width: 100%;
 `;
