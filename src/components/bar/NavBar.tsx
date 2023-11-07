@@ -32,7 +32,7 @@ const NavBarContainer = styled.header`
   /* top: 0;
   position: fixed;
   left: 256px; */
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 `;
 
 const NavText = styled.span`
