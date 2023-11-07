@@ -5,8 +5,12 @@ import {
 } from "../../styles/pages/admin/UserManagement.style";
 import styled from "styled-components";
 import RequestCard from "../../components/card/RequestCard";
+import { useRecoilState } from "recoil";
+import { modalAtom } from "../../stores/modalAtom";
+import ProposalModal from "../../components/modal/ProposalModal";
 
 const Requests = () => {
+  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   return (
     <>
       <PageHeaderWrapper>
@@ -20,6 +24,7 @@ const Requests = () => {
           area="능동초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="정윤미"
@@ -28,6 +33,7 @@ const Requests = () => {
           area="화서초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="장성호"
@@ -36,6 +42,7 @@ const Requests = () => {
           area="기산초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="강동하"
@@ -44,6 +51,7 @@ const Requests = () => {
           area="대일초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
       </RequestArea>
       <PageHeaderWrapper>
@@ -57,6 +65,7 @@ const Requests = () => {
           area="능동초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="정윤미"
@@ -65,6 +74,7 @@ const Requests = () => {
           area="화서초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="장성호"
@@ -73,6 +83,7 @@ const Requests = () => {
           area="기산초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="강동하"
@@ -81,6 +92,7 @@ const Requests = () => {
           area="대일초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
       </RequestArea>
       <PageHeaderWrapper>
@@ -94,6 +106,7 @@ const Requests = () => {
           area="능동초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="정윤미"
@@ -102,6 +115,7 @@ const Requests = () => {
           area="화서초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="장성호"
@@ -110,6 +124,7 @@ const Requests = () => {
           area="기산초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
         <RequestCard
           nickname="강동하"
@@ -118,8 +133,14 @@ const Requests = () => {
           area="대일초등학교"
           status="매물 파악 중"
           date="2023-12-19 11:45:12"
+          setModalOpen={setModalOpen}
         ></RequestCard>
       </RequestArea>
+      <ProposalModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        message=""
+      />
     </>
   );
 };

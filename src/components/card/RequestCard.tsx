@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { FlexRowSpaceBetween } from "../../styles/util";
 import { getDday } from "../../utils/util";
 
-const RequestCard = ({
+const RequestCard: any = ({
   nickname,
   age,
   sex,
   area,
   date,
   status,
+  setModalOpen,
 }: {
   nickname: string;
   age: number;
@@ -17,9 +18,10 @@ const RequestCard = ({
   area: string;
   date: string;
   status: string;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <RequestCardContainer>
+    <RequestCardContainer onClick={() => setModalOpen((current) => !current)}>
       <FlexRowSpaceBetween style={{ marginBottom: "15px" }}>
         <Status>{status}</Status>
         <Date>{getDday(date)}</Date>
