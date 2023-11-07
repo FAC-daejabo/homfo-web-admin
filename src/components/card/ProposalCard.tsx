@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexRowSpaceBetween } from "../../styles/util";
 
 const ProposalCard = ({
   nickname,
