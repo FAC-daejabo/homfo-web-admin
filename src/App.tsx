@@ -15,6 +15,7 @@ import AdminUserManagement from "./pages/admin/AdminUserManagement";
 import UserManagement from "./pages/admin/UserManagement";
 import SenseDetail from "./pages/common-sense/sense-detail/SenseDetail";
 import SenseRegister from "./pages/common-sense/register/SenseRegister";
+import RegisterProposal from "./pages/service/RegisterProposals";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
           {
             path: "requests",
             element: <Requests />,
+          },
+          {
+            path: "register-proposal",
+            element: <RegisterProposal />,
           },
           {
             path: "registration",
