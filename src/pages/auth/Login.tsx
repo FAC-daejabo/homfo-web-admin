@@ -8,6 +8,7 @@ import {
 import { useForm } from "react-hook-form";
 import instance from "../../api/util/instance";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -23,7 +24,12 @@ const Login = () => {
         navigate("/");
       }
     } catch (e: any) {
-      alert(e.response.data.message);
+      Swal.fire({
+        icon: "error",
+        text: e.response.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
   return (

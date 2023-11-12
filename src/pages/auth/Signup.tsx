@@ -9,6 +9,7 @@ import {
   InputWrapper,
   SubmitButton,
 } from "../../styles/pages/auth/Signup.style";
+import Swal from "sweetalert2";
 
 const Signup = () => {
   const { register, handleSubmit } = useForm();
@@ -30,7 +31,13 @@ const Signup = () => {
         navigate("/auth/login");
       }
     } catch (e: any) {
-      alert(e.response.data.message);
+      console.log(e.response.data.message);
+      Swal.fire({
+        icon: "error",
+        text: e.response.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
