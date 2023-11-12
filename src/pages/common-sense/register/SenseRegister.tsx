@@ -9,6 +9,11 @@ import {
   senseTitleAtom,
 } from "../../../stores/senseAtom";
 import Checkbox from "../../../components/checkbox/Checkbox";
+import { postSense } from "../../../api/auth/api";
+import instance from "../../../api/util/instance";
+import { createSenseFormdata } from "../../../utils/util";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const SenseRegister = () => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -18,6 +23,8 @@ const SenseRegister = () => {
   const [posterTitle, setPosterTitle] = useRecoilState(senseTitleAtom);
   const [posterContent, setPosterContent] = useRecoilState(senseContentAtom);
   const [isPublic, setIsPublic] = useRecoilState(senseIsPublicAtom);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (posterList && posterList.length > 0) {
@@ -43,10 +50,47 @@ const SenseRegister = () => {
     setPosterList(posterList.filter((_, index) => index !== id));
   };
 
+  const postSense = async (
+    bannerImage: File,
+    images: File[],
+    commonSense: {
+      writerId: number;
+      title: string;
+      content: string;
+      isPublic: string;
+    }
+  ) => {
+    try {
+      const response = await instance.post(
+        "admins/senses",
+        createSenseFormdata(bannerImage, images, commonSense),
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        Swal.fire({
+          text: "부동산 상식 등록이 완료되었습니다.",
+        }).then(() => navigate("/common-sense"));
+      }
+    } catch (e: any) {
+      Swal.fire({
+        text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
   console.log(posterList);
   console.log(previewImages);
   console.log(banner);
   console.log(bannerPreviewImage);
+  console.log(posterTitle);
+  console.log(posterContent);
 
   return (
     <S.RegisterContainer>
@@ -143,7 +187,20 @@ const SenseRegister = () => {
       <S.ButtonArea>
         <S.DeleteButton>삭제</S.DeleteButton>
         <S.ModifyButton>수정</S.ModifyButton>
-        <S.RegisterButton>등록</S.RegisterButton>
+        <S.RegisterButton
+          onClick={() => {
+            if (banner && posterList && posterTitle && posterContent) {
+              postSense(banner, posterList, {
+                writerId: parseInt(localStorage.getItem("userId") as string),
+                title: posterTitle,
+                content: posterContent,
+                isPublic: isPublic ? "Y" : "N",
+              });
+            }
+          }}
+        >
+          등록
+        </S.RegisterButton>
       </S.ButtonArea>
     </S.RegisterContainer>
   );

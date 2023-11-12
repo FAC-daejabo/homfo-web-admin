@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
 import { ISense } from "../../interfaces/SenseInterface";
+import { createSenseFormdata } from "../../utils/util";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -113,6 +114,39 @@ export const getSenses = async (
     Swal.fire({
       icon: "error",
       text: e.response.data.message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
+
+export const postSense = async (
+  bannerImage: File,
+  images: File[],
+  commonSense: {
+    writerId: number;
+    title: string;
+    content: string;
+    isPublic: string;
+  }
+) => {
+  console.log(bannerImage);
+  console.log(images);
+  console.log(commonSense);
+  try {
+    const response = await instance.post(
+      "admins/senses",
+      createSenseFormdata(bannerImage, images, commonSense),
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
       showConfirmButton: false,
       timer: 1500,
     });

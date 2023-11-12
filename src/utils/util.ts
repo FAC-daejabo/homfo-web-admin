@@ -14,3 +14,30 @@ export const getDday = (date: string) => {
     (targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
   )}`;
 };
+
+export const createSenseFormdata = (
+  bannerImage: File,
+  images: File[],
+  commonSense: {
+    writerId: number;
+    title: string;
+    content: string;
+    isPublic: string;
+  }
+) => {
+  const formData = new FormData();
+
+  formData.append("bannerImage", bannerImage);
+
+  for (let i = 0; i < images.length; i++) {
+    formData.append("images", images[i]);
+  }
+
+  const blob = new Blob([JSON.stringify(commonSense)], {
+    type: "application/json",
+  });
+
+  formData.append("commonSense", blob);
+
+  return formData;
+};

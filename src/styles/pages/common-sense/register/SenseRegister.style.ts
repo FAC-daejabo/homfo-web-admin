@@ -114,6 +114,7 @@ export const RegisterButton = styled.button`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-left: 7px;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 export const ModifyButton = styled(RegisterButton)`
