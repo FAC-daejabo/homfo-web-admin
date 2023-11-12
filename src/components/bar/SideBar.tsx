@@ -26,9 +26,12 @@ const SideBar = () => {
       <NavArea>
         <NavTitle>유저 관리</NavTitle>
         <NavList>
-          <NavItem>
-            <Link to="/admin/admin-user-management">- 관리자 관리</Link>
-          </NavItem>
+          {localStorage.getItem("role") === "절대관리자" ? (
+            <NavItem>
+              <Link to="/admin/admin-user-management">- 관리자 관리</Link>
+            </NavItem>
+          ) : null}
+
           <NavItem>
             <Link to="/admin/user-management">- 회원 관리</Link>
           </NavItem>
