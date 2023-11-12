@@ -42,7 +42,7 @@ const AdminUserTable = ({
               >
                 승인
               </ApproveButton>
-              <RejectButton>거부</RejectButton>
+              {/* <RejectButton>거부</RejectButton> */}
             </Row>
           ))}
         </tbody>

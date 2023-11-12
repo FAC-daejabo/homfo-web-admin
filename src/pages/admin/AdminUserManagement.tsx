@@ -7,7 +7,7 @@ import {
   PageHeaderWrapper,
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
-import { getApprovedList, getUserList } from "../../api/auth/api";
+import { getApplyList, getApprovedList } from "../../api/auth/api";
 
 const AdminUserManagement = () => {
   const [userList, setUserList] = useState<IUser[]>([]);
@@ -15,7 +15,7 @@ const AdminUserManagement = () => {
   // const [firstView,setFirstView] = useState(true);
 
   useEffect(() => {
-    getUserList(setUserList);
+    getApplyList(setUserList);
     if (typeof window !== "undefined") {
       getApprovedList(window.localStorage.getItem("userId"), setApprovedList);
     }

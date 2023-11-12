@@ -40,7 +40,7 @@ export const Data = styled.td`
 `;
 
 export const ApproveButton = styled(Data)`
-  width: 5%;
+  width: 10%;
   color: #ffffff;
   background-color: #624bff;
   cursor: pointer;

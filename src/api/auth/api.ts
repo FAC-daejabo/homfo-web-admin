@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
 
-export const getUserList = async (
+export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
 ) => {
   try {
@@ -66,6 +66,31 @@ export const getApprovedList = async (
     });
     console.log(response);
     setApprovedList(response.data.data);
+  } catch (e: any) {
+    Swal.fire({
+      icon: "error",
+      text: e.response.data.message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
+
+export const getUserList = async (
+  adminId: string | null,
+  setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
+) => {
+  try {
+    const response = await instance.get(`admins/users/${adminId}/search`, {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+        role: "회원",
+      },
+    });
+    console.log(response);
+    setUserList(response.data.data);
   } catch (e: any) {
     Swal.fire({
       icon: "error",
