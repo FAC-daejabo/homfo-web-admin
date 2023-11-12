@@ -8,16 +8,19 @@ const Sense = ({
   senseId,
   writerName,
   title,
+  content,
   likeCount,
   favoriteCount,
-  isPublic,
+  images,
+  bannerImage,
   status,
+  isPublic,
   createdAt,
 }: ISense) => {
   return (
     <Link to={`/common-sense/${senseId}`}>
       <S.SenseContainer>
-        <S.SenseImage src="/example.jpeg" />
+        <S.SenseImage src={bannerImage} />
         <S.TitleContainer>
           <S.Title>{title}</S.Title>
           {isPublic === "N" ? <S.PrivateIcon /> : null}

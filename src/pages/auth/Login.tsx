@@ -29,7 +29,7 @@ const Login = () => {
         localStorage.setItem("userId", response.data.userId);
         localStorage.setItem("role", response.data.role);
 
-        navigate("/");
+        navigate("/service/agency-info");
       }
     } catch (e: any) {
       Swal.fire({

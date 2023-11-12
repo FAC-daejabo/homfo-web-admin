@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
+import { ISense } from "../../interfaces/SenseInterface";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -91,6 +92,23 @@ export const getUserList = async (
     });
     console.log(response);
     setUserList(response.data.data);
+  } catch (e: any) {
+    Swal.fire({
+      icon: "error",
+      text: e.response.data.message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
+
+export const getSenses = async (
+  setSenses: React.Dispatch<React.SetStateAction<ISense[]>>
+) => {
+  try {
+    const response = await instance.get("admins/senses");
+    console.log(response.data.data);
+    setSenses(response.data.data);
   } catch (e: any) {
     Swal.fire({
       icon: "error",

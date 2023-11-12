@@ -31,6 +31,7 @@ export const Title = styled.h1`
 
 export const PrivateIcon = styled(RiLockFill)`
   margin-bottom: 8px;
+  color: #dc3545;
 `;
 
 export const UploadDate = styled.span``;
