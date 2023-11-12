@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableTitle,
 } from "../../styles/components/AdminUserTable.style";
-import instance from "../../api/util/instance";
 import { approveSignup } from "../../api/auth/api";
 
 const AdminUserTable = ({

@@ -61,6 +61,7 @@ export const getApprovedList = async (
         page: 0,
         size: 10,
         firstView: true,
+        role: "관리자",
       },
     });
     console.log(response);

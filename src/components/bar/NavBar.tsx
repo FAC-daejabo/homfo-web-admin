@@ -13,6 +13,7 @@ const NavBar = () => {
               onClick={() => {
                 localStorage.removeItem("userId");
                 localStorage.removeItem("nickName");
+                localStorage.removeItem("role");
               }}
             >
               (로그아웃)

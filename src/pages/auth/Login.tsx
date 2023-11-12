@@ -27,6 +27,7 @@ const Login = () => {
 
         localStorage.setItem("nickName", response2.data.nickName);
         localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("role", response.data.role);
 
         navigate("/");
       }
