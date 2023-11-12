@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
 import * as S from "../../../styles/pages/common-sense/register/SenseRegister.style";
 import { useRecoilState } from "recoil";
-import { sensePosterList } from "../../../stores/senseAtom";
+import {
+  senseBannerAtom,
+  senseContentAtom,
+  senseIsPublicAtom,
+  sensePosterListAtom,
+  senseTitleAtom,
+} from "../../../stores/senseAtom";
 import Checkbox from "../../../components/checkbox/Checkbox";
 
 const SenseRegister = () => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  const [posterList, setPosterList] = useRecoilState(sensePosterList);
-  const [posterTitle, setPosterTitle] = useState("");
-  const [posterContent, setPosterContent] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [bannerPreviewImage, setBannerPreviewImage] = useState<string>("");
+  const [banner, setBanner] = useRecoilState(senseBannerAtom);
+  const [posterList, setPosterList] = useRecoilState(sensePosterListAtom);
+  const [posterTitle, setPosterTitle] = useRecoilState(senseTitleAtom);
+  const [posterContent, setPosterContent] = useRecoilState(senseContentAtom);
+  const [isPublic, setIsPublic] = useRecoilState(senseIsPublicAtom);
 
   useEffect(() => {
     if (posterList && posterList.length > 0) {
@@ -24,18 +32,27 @@ const SenseRegister = () => {
     }
   }, [posterList]);
 
+  useEffect(() => {
+    if (banner) {
+      setBannerPreviewImage(URL.createObjectURL(banner));
+    }
+  }, [banner]);
+
   const handleDeleteImage = (id: number) => {
     setPreviewImages(previewImages.filter((_, index) => index !== id));
     setPosterList(posterList.filter((_, index) => index !== id));
   };
 
-  console.log(isPublic);
+  console.log(posterList);
+  console.log(previewImages);
+  console.log(banner);
+  console.log(bannerPreviewImage);
 
   return (
     <S.RegisterContainer>
       <S.InputArea>
         <S.CheckboxArea>
-          <S.InputTitle>부동산 상식 이미지</S.InputTitle>
+          <S.InputTitle>부동산 상식 이미지 업로드</S.InputTitle>
           <Checkbox
             content="공개 여부"
             checked={isPublic}
@@ -68,6 +85,40 @@ const SenseRegister = () => {
               <S.DeleteIcon onClick={() => handleDeleteImage(id)} />
             </S.ImageInputLabel>
           ))}
+        </S.ImageInputArea>
+      </S.InputArea>
+      <S.InputArea>
+        <S.InputTitle>배너 이미지 업로드 (최대 1개)</S.InputTitle>
+
+        <S.ImageInputArea>
+          <S.ImageInputLabel htmlFor="banner">
+            <S.CameraIcon />
+          </S.ImageInputLabel>
+          <S.ImageInput
+            id="banner"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              if (e.currentTarget.files) {
+                setBanner(e.currentTarget.files[0]);
+              }
+            }}
+          />
+          {bannerPreviewImage ? (
+            <S.ImageInputLabel as="div">
+              <S.PreviewImage
+                src={bannerPreviewImage}
+                alt="bannerPreviewImage"
+              />
+              <S.DeleteIcon
+                onClick={() => {
+                  setBanner(undefined);
+                  setBannerPreviewImage("");
+                }}
+              />
+            </S.ImageInputLabel>
+          ) : null}
         </S.ImageInputArea>
       </S.InputArea>
       <S.InputArea>

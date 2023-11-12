@@ -6,10 +6,10 @@ const SideBar = () => {
   return (
     <SideBarContainer>
       <NavArea>
-        <NavTitle>매물 관련 서비스</NavTitle>
+        <NavTitle>요청하기 관련 서비스</NavTitle>
         <NavList>
           <NavItem>
-            <Link to="/service/agency-info">- 중개업소 정보</Link>
+            <Link to="/service/agency-info">- 협력 공인중개사 정보</Link>
           </NavItem>
           <NavItem>
             <Link to="/service/requests">- 요청서 확인 / 제안서 작성</Link>
