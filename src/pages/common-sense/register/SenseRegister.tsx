@@ -4,12 +4,13 @@ import { useRecoilState } from "recoil";
 import {
   senseBannerAtom,
   senseContentAtom,
+  senseIdAtom,
   senseIsPublicAtom,
   sensePosterListAtom,
   senseTitleAtom,
 } from "../../../stores/senseAtom";
 import Checkbox from "../../../components/checkbox/Checkbox";
-import { postSense } from "../../../api/auth/api";
+import { modifySense } from "../../../api/auth/api";
 import instance from "../../../api/util/instance";
 import { createSenseFormdata } from "../../../utils/util";
 import Swal from "sweetalert2";
@@ -23,6 +24,7 @@ const SenseRegister = () => {
   const [posterTitle, setPosterTitle] = useRecoilState(senseTitleAtom);
   const [posterContent, setPosterContent] = useRecoilState(senseContentAtom);
   const [isPublic, setIsPublic] = useRecoilState(senseIsPublicAtom);
+  const [senseId, setSenseId] = useRecoilState(senseIdAtom);
 
   const navigate = useNavigate();
 
@@ -77,6 +79,7 @@ const SenseRegister = () => {
         setPosterTitle("");
         setPosterContent("");
         setIsPublic(false);
+        setSenseId(undefined);
         Swal.fire({
           text: "부동산 상식 등록이 완료되었습니다.",
         }).then(() => navigate("/common-sense"));
@@ -90,12 +93,54 @@ const SenseRegister = () => {
     }
   };
 
-  console.log(posterList);
-  console.log(previewImages);
-  console.log(banner);
-  console.log(bannerPreviewImage);
-  console.log(posterTitle);
-  console.log(posterContent);
+  const modifySense = async (
+    senseId: number,
+    bannerImage: File,
+    images: File[],
+    commonSense: {
+      writerId: number;
+      title: string;
+      content: string;
+      isPublic: string;
+    }
+  ) => {
+    try {
+      const response = await instance.patch(
+        `admins/senses/${senseId}`,
+        createSenseFormdata(bannerImage, images, commonSense),
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setBanner(undefined);
+        setPosterList([]);
+        setPosterTitle("");
+        setPosterContent("");
+        setIsPublic(false);
+        setSenseId(undefined);
+        Swal.fire({
+          text: "부동산 상식 수정이 완료되었습니다.",
+        }).then(() => navigate("/common-sense"));
+      }
+    } catch (e: any) {
+      Swal.fire({
+        text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  // console.log(posterList);
+  // console.log(previewImages);
+  // console.log(banner);
+  // console.log(bannerPreviewImage);
+  // console.log(posterTitle);
+  // console.log(posterContent);
 
   return (
     <S.RegisterContainer>
@@ -191,7 +236,26 @@ const SenseRegister = () => {
 
       <S.ButtonArea>
         <S.DeleteButton>삭제</S.DeleteButton>
-        <S.ModifyButton>수정</S.ModifyButton>
+        <S.ModifyButton
+          onClick={() => {
+            if (
+              banner &&
+              posterList &&
+              posterTitle &&
+              posterContent &&
+              senseId
+            ) {
+              modifySense(senseId, banner, posterList, {
+                writerId: parseInt(localStorage.getItem("userId") as string),
+                title: posterTitle,
+                content: posterContent,
+                isPublic: isPublic ? "Y" : "N",
+              });
+            }
+          }}
+        >
+          수정
+        </S.ModifyButton>
         <S.RegisterButton
           onClick={() => {
             if (banner && posterList && posterTitle && posterContent) {

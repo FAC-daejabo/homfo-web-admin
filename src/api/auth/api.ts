@@ -130,9 +130,6 @@ export const postSense = async (
     isPublic: string;
   }
 ) => {
-  console.log(bannerImage);
-  console.log(images);
-  console.log(commonSense);
   try {
     const response = await instance.post(
       "admins/senses",
@@ -193,4 +190,35 @@ export const converBannerUrlToFile = async (
   });
 
   setBanner(imageFile);
+};
+
+export const modifySense = async (
+  senseId: number,
+  bannerImage: File,
+  images: File[],
+  commonSense: {
+    writerId: number;
+    title: string;
+    content: string;
+    isPublic: string;
+  }
+) => {
+  try {
+    const response = await instance.patch(
+      `admins/senses/${senseId}`,
+      createSenseFormdata(bannerImage, images, commonSense),
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 };

@@ -26,7 +26,7 @@ const CommonSense = () => {
             key={sense.senseId}
             senseId={sense.senseId}
             writerName={sense.writerName}
-            title={sense.writerName}
+            title={sense.title}
             content={sense.content}
             likeCount={sense.likeCount}
             favoriteCount={sense.favoriteCount}

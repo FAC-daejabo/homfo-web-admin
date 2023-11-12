@@ -21,6 +21,11 @@ export const senseContentAtom = atom<string>({
 });
 
 export const senseIsPublicAtom = atom<boolean>({
-  key: "senseIsPublicAtom",
+  key: "senseIsPublic",
   default: false,
+});
+
+export const senseIdAtom = atom<number | undefined>({
+  key: "senseId",
+  default: undefined,
 });
