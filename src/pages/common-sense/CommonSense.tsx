@@ -8,12 +8,33 @@ import {
 } from "../../styles/pages/admin/UserManagement.style";
 import { ISense } from "../../interfaces/SenseInterface";
 import { getSenses } from "../../api/auth/api";
+import { useSetRecoilState } from "recoil";
+import {
+  senseBannerAtom,
+  senseContentAtom,
+  senseIdAtom,
+  senseIsPublicAtom,
+  sensePosterListAtom,
+  senseTitleAtom,
+} from "../../stores/senseAtom";
 
 const CommonSense = () => {
   const [senses, setSenses] = useState<ISense[]>([]);
+  const setBanner = useSetRecoilState(senseBannerAtom);
+  const setPosterList = useSetRecoilState(sensePosterListAtom);
+  const setPosterTitle = useSetRecoilState(senseTitleAtom);
+  const setPosterContent = useSetRecoilState(senseContentAtom);
+  const setIsPublic = useSetRecoilState(senseIsPublicAtom);
+  const setSenseId = useSetRecoilState(senseIdAtom);
 
   useEffect(() => {
     getSenses(setSenses);
+    setBanner(undefined);
+    setPosterList([]);
+    setPosterTitle("");
+    setPosterContent("");
+    setIsPublic(false);
+    setSenseId(undefined);
   }, []);
   return (
     <>
