@@ -10,6 +10,7 @@ import {
   TableTitle,
 } from "../../styles/components/UserTable.style";
 import { IUser } from "../../interfaces/UserInterface";
+import { suspendUser } from "../../api/auth/api";
 
 const UserTable = ({
   tableTitle,
@@ -38,7 +39,16 @@ const UserTable = ({
               <Data>{data.userAccount}</Data>
               <Data>{data.dateOfBirth}</Data>
               <Data>{data.userPhoneNum}</Data>
-              <ApproveButton>정지</ApproveButton>
+              <ApproveButton
+                onClick={() =>
+                  suspendUser(
+                    data.userId,
+                    parseInt(localStorage.getItem("userId") as string)
+                  )
+                }
+              >
+                정지
+              </ApproveButton>
               <RejectButton>정지해제</RejectButton>
             </Row>
           ))}

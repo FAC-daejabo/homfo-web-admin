@@ -10,7 +10,7 @@ import {
   TableContainer,
   TableTitle,
 } from "../../styles/components/AdminUserTable.style";
-import instance from "../../api/util/instance";
+import { approveSignup } from "../../api/auth/api";
 
 const AdminUserTable = ({
   tableTitle,
@@ -19,15 +19,6 @@ const AdminUserTable = ({
   tableTitle: string;
   datas: IUser[];
 }) => {
-  const onClickApprove = async (userID: number, nickName: string) => {
-    if (window.confirm(`${nickName}님을 승인하시겠습니까?`)) {
-      const response = await instance.patch("admins/users/sign-up/approve", {
-        userId: userID,
-      });
-      console.log(response);
-      window.location.reload();
-    }
-  };
   return (
     <TableContainer>
       <TableTitle>{tableTitle}</TableTitle>
@@ -47,11 +38,11 @@ const AdminUserTable = ({
               <Data>{data.nickName}</Data>
               <Data>{data.job}</Data>
               <ApproveButton
-                onClick={() => onClickApprove(data.userId, data.nickName)}
+                onClick={() => approveSignup(data.userId, data.nickName)}
               >
                 승인
               </ApproveButton>
-              <RejectButton>거부</RejectButton>
+              {/* <RejectButton>거부</RejectButton> */}
             </Row>
           ))}
         </tbody>

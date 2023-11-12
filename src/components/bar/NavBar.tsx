@@ -5,12 +5,31 @@ import styled from "styled-components";
 const NavBar = () => {
   return (
     <NavBarContainer>
-      <Link to="/auth/login">
-        <NavText>로그인</NavText>
-      </Link>
-      <Link to="/auth/signup">
-        <NavText>회원가입</NavText>
-      </Link>
+      {typeof window !== "undefined" ? (
+        <>
+          <span>{localStorage.getItem("nickName")}님 반갑습니다 :)</span>
+          <Link to="/auth/login">
+            <NavText
+              onClick={() => {
+                localStorage.removeItem("userId");
+                localStorage.removeItem("nickName");
+                localStorage.removeItem("role");
+              }}
+            >
+              (로그아웃)
+            </NavText>
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link to="/auth/login">
+            <NavText>로그인</NavText>
+          </Link>
+          <Link to="/auth/signup">
+            <NavText>회원가입</NavText>
+          </Link>
+        </>
+      )}
     </NavBarContainer>
   );
 };

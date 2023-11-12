@@ -2,18 +2,19 @@ import styled from "styled-components";
 import { RiLockFill } from "react-icons/ri";
 
 export const SenseContainer = styled.div`
-  width: 320px;
-  height: 380px;
+  width: 350px;
+  height: 410px;
   border-radius: 10px;
   background-color: #ffffff;
   padding: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 export const SenseImage = styled.img`
-  width: 300px;
-  height: 300px;
+  width: 330px;
+  height: 330px;
   margin-bottom: 7px;
 `;
 
@@ -31,6 +32,7 @@ export const Title = styled.h1`
 
 export const PrivateIcon = styled(RiLockFill)`
   margin-bottom: 8px;
+  color: #dc3545;
 `;
 
 export const UploadDate = styled.span``;

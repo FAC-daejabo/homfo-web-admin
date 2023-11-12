@@ -6,10 +6,10 @@ const SideBar = () => {
   return (
     <SideBarContainer>
       <NavArea>
-        <NavTitle>매물 관련 서비스</NavTitle>
+        <NavTitle>요청하기 관련 서비스</NavTitle>
         <NavList>
           <NavItem>
-            <Link to="/service/agency-info">- 중개업소 정보</Link>
+            <Link to="/service/agency-info">- 협력 공인중개사 정보</Link>
           </NavItem>
           <NavItem>
             <Link to="/service/requests">- 요청서 확인 / 제안서 작성</Link>
@@ -26,9 +26,12 @@ const SideBar = () => {
       <NavArea>
         <NavTitle>유저 관리</NavTitle>
         <NavList>
-          <NavItem>
-            <Link to="/admin/admin-user-management">- 관리자 관리</Link>
-          </NavItem>
+          {localStorage.getItem("role") === "절대관리자" ? (
+            <NavItem>
+              <Link to="/admin/admin-user-management">- 관리자 관리</Link>
+            </NavItem>
+          ) : null}
+
           <NavItem>
             <Link to="/admin/user-management">- 회원 관리</Link>
           </NavItem>

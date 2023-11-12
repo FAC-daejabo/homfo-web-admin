@@ -8,6 +8,7 @@ import {
 import { useForm } from "react-hook-form";
 import instance from "../../api/util/instance";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -20,10 +21,22 @@ const Login = () => {
       });
       console.log(response);
       if (response.status === 200) {
-        navigate("/");
+        const response2 = await instance.get(
+          `/admins/users/${response.data.userId}/info`
+        );
+
+        localStorage.setItem("nickName", response2.data.nickName);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("role", response.data.role);
+
+        navigate("/service/agency-info");
       }
     } catch (e: any) {
-      alert(e.response.data.message);
+      Swal.fire({
+        text: e.response.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
   return (

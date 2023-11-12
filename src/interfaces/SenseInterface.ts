@@ -2,10 +2,13 @@ export interface ISense {
   senseId: number;
   writerName: string;
   title: string;
+  content: string;
   likeCount: number;
   favoriteCount: number;
-  isPublic: string;
+  images: string[];
+  bannerImage: string;
   status: string;
+  isPublic: string;
   createdAt: string;
 }
 
