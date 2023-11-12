@@ -152,3 +152,45 @@ export const postSense = async (
     });
   }
 };
+
+export const convertImagesUrlToFile = async (
+  images: string[],
+  setPosterList: React.Dispatch<React.SetStateAction<File[]>>
+) => {
+  const tempList = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const response = await fetch(images[i]);
+    const imageBlob = await response.blob();
+    const imageFile = new File([imageBlob], "posterImage", {
+      type:
+        imageBlob.type === "image/png"
+          ? "image/png"
+          : imageBlob.type === "image/jpeg"
+          ? "image/jpeg"
+          : "image",
+    });
+    tempList.push(imageFile);
+  }
+
+  console.log(tempList);
+  setPosterList(tempList);
+};
+
+export const converBannerUrlToFile = async (
+  bannerImage: string,
+  setBanner: React.Dispatch<React.SetStateAction<File>>
+) => {
+  const response = await fetch(bannerImage);
+  const imageBlob = await response.blob();
+  const imageFile = new File([imageBlob], "bannerImage", {
+    type:
+      imageBlob.type === "image/png"
+        ? "image/png"
+        : imageBlob.type === "image/jpeg"
+        ? "image/jpeg"
+        : "image",
+  });
+
+  setBanner(imageFile);
+};
