@@ -74,12 +74,12 @@ const SenseRegister = () => {
       );
       console.log(response);
       if (response.status === 201) {
-        setBanner(undefined);
-        setPosterList([]);
-        setPosterTitle("");
-        setPosterContent("");
-        setIsPublic(false);
-        setSenseId(undefined);
+        // setBanner(undefined);
+        // setPosterList([]);
+        // setPosterTitle("");
+        // setPosterContent("");
+        // setIsPublic(false);
+        // setSenseId(undefined);
         Swal.fire({
           text: "부동산 상식 등록이 완료되었습니다.",
         }).then(() => navigate("/common-sense"));
@@ -116,14 +116,32 @@ const SenseRegister = () => {
       );
       console.log(response);
       if (response.status === 200) {
-        setBanner(undefined);
-        setPosterList([]);
-        setPosterTitle("");
-        setPosterContent("");
-        setIsPublic(false);
-        setSenseId(undefined);
+        // setBanner(undefined);
+        // setPosterList([]);
+        // setPosterTitle("");
+        // setPosterContent("");
+        // setIsPublic(false);
+        // setSenseId(undefined);
         Swal.fire({
           text: "부동산 상식 수정이 완료되었습니다.",
+        }).then(() => navigate("/common-sense"));
+      }
+    } catch (e: any) {
+      Swal.fire({
+        text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const deleteSense = async (senseId: number) => {
+    try {
+      const response = await instance.patch(`admins/senses/${senseId}/delete`);
+      console.log(response);
+      if (response.status === 200) {
+        Swal.fire({
+          text: "부동산 상식 삭제가 완료되었습니다.",
         }).then(() => navigate("/common-sense"));
       }
     } catch (e: any) {
@@ -233,29 +251,41 @@ const SenseRegister = () => {
           }}
         />
       </S.InputArea>
-
       <S.ButtonArea>
-        <S.DeleteButton>삭제</S.DeleteButton>
-        <S.ModifyButton
-          onClick={() => {
-            if (
-              banner &&
-              posterList &&
-              posterTitle &&
-              posterContent &&
-              senseId
-            ) {
-              modifySense(senseId, banner, posterList, {
-                writerId: parseInt(localStorage.getItem("userId") as string),
-                title: posterTitle,
-                content: posterContent,
-                isPublic: isPublic ? "Y" : "N",
-              });
-            }
-          }}
-        >
-          수정
-        </S.ModifyButton>
+        {senseId ? (
+          <>
+            <S.DeleteButton
+              onClick={() => {
+                deleteSense(senseId);
+              }}
+            >
+              삭제
+            </S.DeleteButton>
+            <S.ModifyButton
+              onClick={() => {
+                if (
+                  banner &&
+                  posterList &&
+                  posterTitle &&
+                  posterContent &&
+                  senseId
+                ) {
+                  modifySense(senseId, banner, posterList, {
+                    writerId: parseInt(
+                      localStorage.getItem("userId") as string
+                    ),
+                    title: posterTitle,
+                    content: posterContent,
+                    isPublic: isPublic ? "Y" : "N",
+                  });
+                }
+              }}
+            >
+              수정
+            </S.ModifyButton>
+          </>
+        ) : null}
+
         <S.RegisterButton
           onClick={() => {
             if (banner && posterList && posterTitle && posterContent) {
