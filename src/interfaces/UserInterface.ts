@@ -8,6 +8,6 @@ export interface IUser {
   dateOfBirth: string;
   createdAt?: string;
   updatedAt?: string;
-  role: "관리자" | "일반회원";
+  role: "관리자" | "일반회원" | "회원";
   status: "N" | "Y" | "P" | "F";
 }

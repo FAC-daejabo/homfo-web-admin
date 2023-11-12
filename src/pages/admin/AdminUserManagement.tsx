@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AdminUserTable from "../../components/table/AdminUserTable";
-import instance from "../../api/util/instance";
 import { IUser } from "../../interfaces/UserInterface";
 import AdminApprovedTable from "../../components/table/AdminApprovedTable";
 import {
@@ -8,13 +7,18 @@ import {
   PageHeaderWrapper,
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
-import { getUserList } from "../../api/auth/api";
+import { getApprovedList, getUserList } from "../../api/auth/api";
 
 const AdminUserManagement = () => {
   const [userList, setUserList] = useState<IUser[]>([]);
+  const [approvedList, setApprovedList] = useState<IUser[]>([]);
+  // const [firstView,setFirstView] = useState(true);
 
   useEffect(() => {
     getUserList(setUserList);
+    if (typeof window !== "undefined") {
+      getApprovedList(window.localStorage.getItem("userId"), setApprovedList);
+    }
   }, []);
   return (
     <>
@@ -23,7 +27,10 @@ const AdminUserManagement = () => {
       </PageHeaderWrapper>
       <ContentContainer>
         <AdminUserTable tableTitle="관리자 신청 내역" datas={userList} />
-        <AdminApprovedTable tableTitle="관리자 승인 내역" datas={userList} />
+        <AdminApprovedTable
+          tableTitle="관리자 승인 내역"
+          datas={approvedList}
+        />
       </ContentContainer>
     </>
   );

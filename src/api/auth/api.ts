@@ -50,3 +50,27 @@ export const approveSignup = async (userId: number, nickName: string) => {
     });
   }
 };
+
+export const getApprovedList = async (
+  adminId: string | null,
+  setApprovedList: React.Dispatch<React.SetStateAction<IUser[]>>
+) => {
+  try {
+    const response = await instance.get(`admins/users/${adminId}/search`, {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+      },
+    });
+    console.log(response);
+    setApprovedList(response.data.data);
+  } catch (e: any) {
+    Swal.fire({
+      icon: "error",
+      text: e.response.data.message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
