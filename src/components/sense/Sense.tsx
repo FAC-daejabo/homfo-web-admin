@@ -20,7 +20,7 @@ const Sense = ({
   return (
     <Link to={`/common-sense/${senseId}`}>
       <S.SenseContainer>
-        <S.SenseImage src={bannerImage} />
+        <S.SenseImage src={images[0]} />
         <S.TitleContainer>
           <S.Title>{title}</S.Title>
           {isPublic === "N" ? <S.PrivateIcon /> : null}

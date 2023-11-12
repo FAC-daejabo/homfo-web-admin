@@ -72,6 +72,11 @@ const SenseRegister = () => {
       );
       console.log(response);
       if (response.status === 201) {
+        setBanner(undefined);
+        setPosterList([]);
+        setPosterTitle("");
+        setPosterContent("");
+        setIsPublic(false);
         Swal.fire({
           text: "부동산 상식 등록이 완료되었습니다.",
         }).then(() => navigate("/common-sense"));
@@ -135,9 +140,9 @@ const SenseRegister = () => {
         <S.InputTitle>배너 이미지 업로드 (최대 1개)</S.InputTitle>
 
         <S.ImageInputArea>
-          <S.ImageInputLabel htmlFor="banner">
+          <S.BannerImageInputLabel htmlFor="banner">
             <S.CameraIcon />
-          </S.ImageInputLabel>
+          </S.BannerImageInputLabel>
           <S.ImageInput
             id="banner"
             type="file"
@@ -150,8 +155,8 @@ const SenseRegister = () => {
             }}
           />
           {bannerPreviewImage ? (
-            <S.ImageInputLabel as="div">
-              <S.PreviewImage
+            <S.BannerImageInputLabel as="div">
+              <S.BannerPreviewImage
                 src={bannerPreviewImage}
                 alt="bannerPreviewImage"
               />
@@ -161,7 +166,7 @@ const SenseRegister = () => {
                   setBannerPreviewImage("");
                 }}
               />
-            </S.ImageInputLabel>
+            </S.BannerImageInputLabel>
           ) : null}
         </S.ImageInputArea>
       </S.InputArea>

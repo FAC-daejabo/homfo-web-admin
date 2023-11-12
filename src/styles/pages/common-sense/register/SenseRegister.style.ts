@@ -65,6 +65,11 @@ export const ImageInputLabel = styled.label`
   position: relative;
 `;
 
+export const BannerImageInputLabel = styled(ImageInputLabel)`
+  width: 430px;
+  height: 250px;
+`;
+
 export const ImageInput = styled.input``;
 
 export const TitleInput = styled.input`
@@ -83,6 +88,11 @@ export const ContentInput = styled.textarea`
 export const PreviewImage = styled.img`
   width: 300px;
   height: 300px;
+`;
+
+export const BannerPreviewImage = styled(PreviewImage)`
+  width: 430px;
+  height: 250px;
 `;
 
 export const CameraIcon = styled(AiFillCamera)`
