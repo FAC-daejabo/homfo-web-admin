@@ -10,7 +10,6 @@ import {
   senseTitleAtom,
 } from "../../../stores/senseAtom";
 import Checkbox from "../../../components/checkbox/Checkbox";
-import { modifySense } from "../../../api/auth/api";
 import instance from "../../../api/util/instance";
 import { createSenseFormdata } from "../../../utils/util";
 import Swal from "sweetalert2";
@@ -288,6 +287,10 @@ const SenseRegister = () => {
 
         <S.RegisterButton
           onClick={() => {
+            console.log(banner);
+            console.log(posterList);
+            console.log(posterTitle);
+            console.log(posterContent);
             if (banner && posterList && posterTitle && posterContent) {
               postSense(banner, posterList, {
                 writerId: parseInt(localStorage.getItem("userId") as string),

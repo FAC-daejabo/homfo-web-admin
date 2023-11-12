@@ -222,3 +222,23 @@ export const modifySense = async (
     });
   }
 };
+
+export const suspendUser = async (userId: number, adminId: number) => {
+  try {
+    const response = await instance.patch(`admins/users/${adminId}/stop`, {
+      userId: userId,
+    });
+    console.log(response);
+    if (response.status === 200) {
+      Swal.fire({
+        text: "정지 처리가 완료되었습니다.",
+      });
+    }
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
