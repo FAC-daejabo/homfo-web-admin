@@ -21,11 +21,17 @@ const Login = () => {
       });
       console.log(response);
       if (response.status === 200) {
+        const response2 = await instance.get(
+          `/admins/users/${response.data.userId}/info`
+        );
+
+        localStorage.setItem("nickName", response2.data.nickName);
+        localStorage.setItem("userId", response.data.userId);
+
         navigate("/");
       }
     } catch (e: any) {
       Swal.fire({
-        icon: "error",
         text: e.response.data.message,
         showConfirmButton: false,
         timer: 1500,
