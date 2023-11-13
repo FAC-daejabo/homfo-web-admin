@@ -24,7 +24,7 @@ const AuthMain = () => {
         }}
       >
         <TopArea>
-          <TextLogoImage src="/text_logo.jpeg" />
+          <TextLogoImage src="/text_logo.png" />
         </TopArea>
         <Outlet />
       </div>
@@ -42,5 +42,5 @@ const TopArea = styled.div`
 
 const TextLogoImage = styled.img`
   width: 116px;
-  height: 40px;
+  height: 50px;
 `;

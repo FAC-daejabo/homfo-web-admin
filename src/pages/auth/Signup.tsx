@@ -16,6 +16,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const onValid = async (data: any) => {
+    console.log(data);
     try {
       const response = await instance.post("/admins/users/sign-up", {
         userAccount: data.userAccount,
@@ -28,7 +29,9 @@ const Signup = () => {
       });
       console.log(response);
       if (response.status === 201) {
-        navigate("/auth/login");
+        Swal.fire({
+          text: "회원가입이 완료되었습니다.",
+        }).then(() => navigate("/auth/login"));
       }
     } catch (e: any) {
       console.log(e.response.data.message);
@@ -85,12 +88,13 @@ const Signup = () => {
             </InputSelect>
           </InputWrapper>
           <InputWrapper>
-            <InputTitle>Job</InputTitle>
-            <InputText
-              {...register("job")}
-              type="text"
-              placeholder="직업을 입력해주세요."
-            />
+            <InputTitle>Team</InputTitle>
+            <InputSelect {...register("job")}>
+              <option value="마케팅 팀">마케팅 팀</option>
+              <option value="중개업소 영업 팀">중개업소 영업 팀</option>
+              <option value="리서치 팀">리서치 팀</option>
+              <option value="부동산 상식 팀">부동산 상식 팀</option>
+            </InputSelect>
           </InputWrapper>
           <InputWrapper>
             <InputTitle>Birth</InputTitle>

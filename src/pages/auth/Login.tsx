@@ -50,8 +50,11 @@ const Login = () => {
           <InputTitle>Password</InputTitle>
           <InputText {...register("userPassWord")} type="password" />
         </InputWrapper>
-        <SubmitButton>Signin</SubmitButton>
+        <SubmitButton>로그인</SubmitButton>
       </form>
+      <SubmitButton onClick={() => navigate("/auth/signup")}>
+        회원가입
+      </SubmitButton>
     </div>
   );
 };
