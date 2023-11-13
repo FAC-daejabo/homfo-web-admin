@@ -5,8 +5,11 @@ import {
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
 import SelectBox from "../../components/selectbox/SelectBox";
+import { useForm } from "react-hook-form";
 
 const AgencyInfo = () => {
+  const { register, handleSubmit } = useForm();
+
   return (
     <>
       <PageHeaderWrapper>
@@ -16,45 +19,69 @@ const AgencyInfo = () => {
         <InputArea>
           <InputContainer>
             <InputTitle>1. 사무실 이름</InputTitle>
-            <Input />
+            <Input {...register("name")} type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>2. 공인중개사 이름</InputTitle>
-            <Input />
+            <Input {...register("name")} type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>3. 해당 구역</InputTitle>
-            <Input />
+            <Select>
+              <option value="계룡리슈빌">계룡리슈빌</option>
+              <option value="보정동카페거리, 죽현마을">
+                보정동카페거리, 죽현마을
+              </option>
+              <option value="보정우체국">보정우체국</option>
+              <option value="한신 길훈아파트">한신 길훈아파트</option>
+              <option value="대일초등학교">대일초등학교</option>
+              <option value="단국대학교, 죽전야외음악당, 성현마을2단지">
+                단국대학교, 죽전야외음악당, 성현마을2단지
+              </option>
+              <option value="동부아파트">동부아파트</option>
+              <option value="내대지마을5단지 정문">내대지마을5단지 정문</option>
+              <option value="건영캐스빌후문">건영캐스빌후문</option>
+              <option value="죽전교차로">죽전교차로</option>
+              <option value="동보아파트, 수지파크푸르지오">
+                동보아파트, 수지파크푸르지오
+              </option>
+            </Select>
           </InputContainer>
           <InputContainer>
             <InputTitle>4. 연락처</InputTitle>
-            <Input placeholder="ex) 010-1234-5678" />
+            <Input placeholder="ex) 010-1234-5678" type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>5. 개업/소속 구분</InputTitle>
-            <Input />
+            <Select>
+              <option value="개업">개업</option>
+              <option value="소속">소속</option>
+            </Select>
           </InputContainer>
         </InputArea>
         <InputArea>
           <InputContainer>
             <InputTitle>6. 도로명 주소</InputTitle>
-            <Input />
+            <Input type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>7. 지번주소</InputTitle>
-            <Input />
+            <Input type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>8. 등록 번호</InputTitle>
-            <Input />
+            <Input type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>9. 대표자명</InputTitle>
-            <Input />
+            <Input type="text" />
           </InputContainer>
           <InputContainer>
             <InputTitle>10. 공제 가입 유무</InputTitle>
-            <Input />
+            <Select>
+              <option value="예">예</option>
+              <option value="아니오">아니오</option>
+            </Select>
           </InputContainer>
         </InputArea>
         <RegisterArea>
@@ -135,9 +162,10 @@ const TextArea = styled.textarea`
 
 const Input = styled.input`
   border: 1px solid #212121;
-  font-size: 16px;
-  border-radius: 2px;
-  padding: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 5px;
+  height: 30px;
 `;
 
 const RegisterArea = styled.div`
@@ -210,4 +238,13 @@ const SearchButton = styled.button`
   border-radius: 4px;
   border: 1px solid #e9ebed;
   cursor: pointer;
+`;
+
+const Select = styled.select`
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #212121;
+  padding: 2px;
+  color: #212121;
+  font-size: 14px;
 `;

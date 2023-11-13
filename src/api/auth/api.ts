@@ -3,6 +3,7 @@ import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
 import { ISense } from "../../interfaces/SenseInterface";
 import { createSenseFormdata } from "../../utils/util";
+import { IRequest } from "../../interfaces/RequestInterface";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -239,6 +240,32 @@ export const suspendUser = async (userId: number, adminId: number) => {
       text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
       showConfirmButton: false,
       timer: 1500,
+    });
+  }
+};
+
+export const getRequests = async (
+  setRequests: React.Dispatch<React.SetStateAction<IRequest[]>>
+) => {
+  try {
+    const response = await instance.get("/admin/requests/search", {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+      },
+    });
+    console.log(response.data.data);
+    setRequests(response.data.data);
+    // if (response.status === 200) {
+    //   Swal.fire({
+    //     text: "정지 처리가 완료되었습니다.",
+    //   });
+    // }
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
     });
   }
 };

@@ -1,46 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexRowSpaceBetween } from "../../styles/util";
-import { getDday } from "../../utils/util";
+import { calculateAge, getDday } from "../../utils/util";
+import { IRequest } from "../../interfaces/RequestInterface";
 
 const RequestCard: any = ({
-  nickname,
-  age,
-  sex,
-  area,
-  date,
-  status,
+  request,
   setModalOpen,
 }: {
-  nickname: string;
-  age: number;
-  sex: string;
-  area: string;
-  date: string;
-  status: string;
+  request: IRequest;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
     <RequestCardContainer onClick={() => setModalOpen((current) => !current)}>
       <FlexRowSpaceBetween style={{ marginBottom: "15px" }}>
-        <Status>{status}</Status>
-        <Date>{getDday(date)}</Date>
+        <Status>{request.matchStatus}</Status>
+        <Date>{getDday(request.createdAt)}</Date>
       </FlexRowSpaceBetween>
       <InfoArea>
         <InfoTitle>닉네임</InfoTitle>
-        <Info>{nickname}</Info>
+        <Info>{request.writer.nickName}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>성별</InfoTitle>
-        <Info>{sex}</Info>
+        <Info>{request.writer.gender === "M" ? "남성" : "여성"}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>나이</InfoTitle>
-        <Info>{age}</Info>
+        <Info>{calculateAge(request.writer.dateOfBirth)}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>구역</InfoTitle>
-        <Info>{area}</Info>
+        <Info>{request.area.name}</Info>
       </InfoArea>
     </RequestCardContainer>
   );
