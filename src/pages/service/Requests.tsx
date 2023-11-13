@@ -14,14 +14,37 @@ import { getRequests } from "../../api/auth/api";
 const Requests = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const [requests, setRequests] = useRecoilState(requestAtom);
+  const [matchStatus, setMatchStatus] = useState<
+    "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
+  >("매물 파악 완료");
 
   useEffect(() => {
-    getRequests(setRequests);
-  }, []);
+    getRequests(matchStatus, setRequests);
+  }, [matchStatus]);
   return (
     <>
       <PageHeaderWrapper>
-        <PageTitle>매물 신청 목록</PageTitle>
+        <PageTitle
+          active={matchStatus === "매물 파악 완료" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("매물 파악 완료")}
+        >
+          매물 파악 완료
+        </PageTitle>
+        <PageTitle
+          active={matchStatus === "매물 파악 중" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("매물 파악 중")}
+        >
+          매물 파악 중
+        </PageTitle>
+        <PageTitle
+          active={matchStatus === "신청 완료" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("신청 완료")}
+        >
+          신청 완료
+        </PageTitle>
       </PageHeaderWrapper>
       <RequestArea>
         {requests.map((request) => (
@@ -32,14 +55,14 @@ const Requests = () => {
           />
         ))}
       </RequestArea>
-      <PageHeaderWrapper>
+      {/* <PageHeaderWrapper>
         <PageTitle>매물 처리중</PageTitle>
       </PageHeaderWrapper>
       <RequestArea></RequestArea>
       <PageHeaderWrapper>
         <PageTitle>처리 완료</PageTitle>
       </PageHeaderWrapper>
-      <RequestArea></RequestArea>
+      <RequestArea></RequestArea> */}
       <ProposalModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}

@@ -47,6 +47,7 @@ const RequestCardContainer = styled.div`
   padding: 12px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  margin-bottom: 15px;
 `;
 
 const Status = styled.span`

@@ -245,6 +245,7 @@ export const suspendUser = async (userId: number, adminId: number) => {
 };
 
 export const getRequests = async (
+  matchStatus: "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined,
   setRequests: React.Dispatch<React.SetStateAction<IRequest[]>>
 ) => {
   try {
@@ -253,6 +254,7 @@ export const getRequests = async (
         page: 0,
         size: 10,
         firstView: true,
+        matchStatus: matchStatus,
       },
     });
     console.log(response.data.data);

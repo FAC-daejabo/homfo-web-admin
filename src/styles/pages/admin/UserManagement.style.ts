@@ -8,9 +8,14 @@ export const PageHeaderWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-export const PageTitle = styled.h1`
+export const PageTitle = styled.h1<{ active?: string }>`
   font-size: 24px;
   font-weight: bold;
+  margin-right: 30px;
+  color: ${(props) =>
+    props.active === "true" || props.active === undefined
+      ? "#212121"
+      : "#919EAB"};
 `;
 
 export const ContentContainer = styled.main`
