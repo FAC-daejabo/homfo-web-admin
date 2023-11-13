@@ -44,7 +44,10 @@ const Sense = ({
     <Link to={`/common-sense/register`}>
       <S.SenseContainer
         onClick={() => {
-          if (localStorage.getItem("nickName") === writerName) {
+          if (
+            localStorage.getItem("nickName") === writerName ||
+            localStorage.getItem("role") === "절대관리자"
+          ) {
             converBannerUrlToFile(
               bannerImage,
               setBanner as React.Dispatch<React.SetStateAction<File>>
