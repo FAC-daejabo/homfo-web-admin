@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { requestIdAtom } from "../../stores/requestAtom";
-import { getRequestDetail } from "../../api/auth/api";
+import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
+import { getAreaDetail, getRequestDetail } from "../../api/auth/api";
+import { IArea, IRequestDetail } from "../../interfaces/RequestInterface";
 
 const customModalStyles: ReactModal.Styles = {
   overlay: {
@@ -17,7 +18,7 @@ const customModalStyles: ReactModal.Styles = {
   },
   content: {
     width: "80%",
-    height: "90%",
+    height: "70%",
     zIndex: "150",
     position: "absolute",
     top: "50%",
@@ -39,23 +40,129 @@ const ProposalModal = ({
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const requestId = useRecoilValue(requestIdAtom);
+  const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+  const [requestDetail, setRequestDetail] = useState<IRequestDetail>();
+  const [areaId, setAreaId] = useRecoilState(areaIdAtom);
+  const [areaDetail, setAreaDetail] = useState<IArea>();
+  // const [contractType, setContractType] = useRecoilState(
+  //   requestContractTypeAtom
+  // );
+  // const [residencePeriod, setResidencePeriod] = useRecoilState(
+  //   requestResidencePeriodAtom
+  // );
+  // const [loanAvailability, setLoanAvailability] = useRecoilState(
+  //   requestLoanAvailabilityAtom
+  // );
+  // const [loanType, setLoanType] = useRecoilState(requestLoanTypeAtom);
+  // const [moveInPeriod, setMoveInPeriod] = useRecoilState(
+  //   requestMoveInPeriodAtom
+  // );
+  // const [option, setOption] = useRecoilState(requestOptionAtom);
+  // const [otherOption, setOtherOption] = useRecoilState(requestOtherOptionAtom);
+
+  console.log(requestDetail);
+  console.log(areaDetail);
 
   useEffect(() => {
     if (requestId) {
-      getRequestDetail(requestId);
+      getRequestDetail(
+        requestId,
+        setRequestDetail as React.Dispatch<
+          React.SetStateAction<IRequestDetail>
+        >,
+        setAreaId as React.Dispatch<React.SetStateAction<number>>
+      );
     }
   }, [requestId]);
+
+  useEffect(() => {
+    if (areaId) {
+      getAreaDetail(
+        areaId,
+        setAreaDetail as React.Dispatch<React.SetStateAction<IArea>>
+      );
+    }
+  }, [areaId]);
+
   return (
     <ReactModal
       isOpen={modalOpen}
-      onRequestClose={() => setModalOpen(false)}
+      onRequestClose={() => {
+        setModalOpen(false);
+        setRequestId(undefined);
+        setRequestDetail(undefined);
+      }}
       style={customModalStyles}
       ariaHideApp={false}
       contentLabel="Pop up Message"
       shouldCloseOnOverlayClick={true}
     >
-      <RequestArea></RequestArea>
+      <RequestArea>
+        <Title>요청서</Title>
+
+        <ProposalInfoRow>
+          <span>1. 구역 위치 : </span>
+          <span>{areaDetail?.name}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>2. 매물 유형 : </span>
+          {requestDetail?.realEstateType.map((type) => (
+            <span>{type}</span>
+          ))}
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>3. 계약 유형 : </span>
+          <span>{requestDetail?.contractType}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>4. 희망 거주기간 : </span>
+          <span>{requestDetail?.residencePeriod}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>5. 금액대 : </span>
+          {requestDetail?.deposit.deposit.length === 2 ? (
+            <DepositRow>
+              월세 보증금 : {requestDetail?.deposit.deposit[0]} ~{" "}
+              {requestDetail?.deposit.deposit[1]}
+            </DepositRow>
+          ) : null}
+          {requestDetail?.deposit.monthlyRent.length === 2 ? (
+            <DepositRow>
+              월 임대료 : {requestDetail?.deposit.monthlyRent[0]} ~{" "}
+              {requestDetail?.deposit.monthlyRent[1]}
+            </DepositRow>
+          ) : null}
+          {requestDetail?.deposit.jeonseDeposit.length === 2 ? (
+            <DepositRow>
+              전세 보증금 : {requestDetail?.deposit.jeonseDeposit[0]} ~{" "}
+              {requestDetail?.deposit.jeonseDeposit[1]}
+            </DepositRow>
+          ) : null}
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>6. 대출 가능 유무 : </span>
+          <span>{requestDetail?.loanAvailability}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>7. 대출 유형 : </span>
+          <span>{requestDetail?.loanType}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>8. 예상 입주시기 : </span>
+          <span>{requestDetail?.moveInPeriod}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>9. 옵션 : </span>
+          {requestDetail?.roomOption.map((option) => (
+            <span>{option} </span>
+          ))}
+          <span>{requestDetail?.otherRoomOption}</span>
+        </ProposalInfoRow>
+        <ProposalInfoRow>
+          <span>10. 추가 요청사항 : </span>
+          <span>{requestDetail?.additionalRequests}</span>
+        </ProposalInfoRow>
+      </RequestArea>
       <ProposalArea></ProposalArea>
     </ReactModal>
   );
@@ -68,6 +175,7 @@ const RequestArea = styled.div`
   width: 40%;
   border: 1px solid #aeaeae;
   border-radius: 12px;
+  padding: 20px 15px;
 `;
 
 const ProposalArea = styled.div`
@@ -75,4 +183,19 @@ const ProposalArea = styled.div`
   width: 55%;
   border: 1px solid #aeaeae;
   border-radius: 12px;
+`;
+
+const Title = styled.span`
+  font-size: 22px;
+  font-weight: bold;
+`;
+
+const ProposalInfoRow = styled.div`
+  margin: 20px 0;
+  font-size: 18px;
+`;
+
+const DepositRow = styled.div`
+  margin: 15px 0;
+  font-size: 18px;
 `;

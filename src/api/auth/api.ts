@@ -3,7 +3,12 @@ import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
 import { ISense } from "../../interfaces/SenseInterface";
 import { createSenseFormdata } from "../../utils/util";
-import { IRequest } from "../../interfaces/RequestInterface";
+import {
+  IArea,
+  IRequest,
+  IRequestDetail,
+} from "../../interfaces/RequestInterface";
+import React from "react";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -267,10 +272,32 @@ export const getRequests = async (
   }
 };
 
-export const getRequestDetail = async (requestId: number) => {
+export const getRequestDetail = async (
+  requestId: number,
+  setRequestDetail: React.Dispatch<React.SetStateAction<IRequestDetail>>,
+  setAreaId: React.Dispatch<React.SetStateAction<number>>
+) => {
   try {
     const response = await instance.get(`/admin/requests/${requestId}/info`);
     console.log(response);
+    setRequestDetail(response.data);
+    setAreaId(response.data.areaId);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getAreaDetail = async (
+  areaId: number,
+  setAreaDetail: React.Dispatch<React.SetStateAction<IArea>>
+) => {
+  try {
+    const response = await instance.get(`/transports/${areaId}/area/detail`);
+    console.log(response);
+    setAreaDetail(response.data.area);
   } catch (e: any) {
     Swal.fire({
       text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
