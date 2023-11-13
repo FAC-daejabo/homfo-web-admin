@@ -3,6 +3,13 @@ import { IUser } from "../../interfaces/UserInterface";
 import instance from "../util/instance";
 import { ISense } from "../../interfaces/SenseInterface";
 import { createSenseFormdata } from "../../utils/util";
+import {
+  IArea,
+  IRequest,
+  IRequestDetail,
+} from "../../interfaces/RequestInterface";
+import React from "react";
+import { IOffer } from "../../interfaces/OfferInterface";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -239,6 +246,84 @@ export const suspendUser = async (userId: number, adminId: number) => {
       text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
       showConfirmButton: false,
       timer: 1500,
+    });
+  }
+};
+
+export const getRequests = async (
+  matchStatus: "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined,
+  setRequests: React.Dispatch<React.SetStateAction<IRequest[]>>
+) => {
+  try {
+    const response = await instance.get("/admin/requests/search", {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+        matchStatus: matchStatus,
+      },
+    });
+    console.log(response.data.data);
+    setRequests(response.data.data);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getRequestDetail = async (
+  requestId: number,
+  setRequestDetail: React.Dispatch<React.SetStateAction<IRequestDetail>>,
+  setAreaId: React.Dispatch<React.SetStateAction<number>>
+) => {
+  try {
+    const response = await instance.get(`/admin/requests/${requestId}/info`);
+    console.log(response);
+    setRequestDetail(response.data);
+    setAreaId(response.data.areaId);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getAreaDetail = async (
+  areaId: number,
+  setAreaDetail: React.Dispatch<React.SetStateAction<IArea>>
+) => {
+  try {
+    const response = await instance.get(`/transports/${areaId}/area/detail`);
+    console.log(response);
+    setAreaDetail(response.data.area);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getOffers = async (
+  setOffers: React.Dispatch<React.SetStateAction<IOffer[]>>
+) => {
+  try {
+    const response = await instance.get("/admins/offers/search", {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+      },
+    });
+    console.log(response);
+    setOffers(response.data.data);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
     });
   }
 };

@@ -1,43 +1,50 @@
 import React from "react";
 import styled from "styled-components";
+import { IOffer } from "../../interfaces/OfferInterface";
+import { calculateAge } from "../../utils/util";
+import { useRecoilState } from "recoil";
+import { requestIdAtom } from "../../stores/requestAtom";
 
 const ProposalCard = ({
-  nickname,
-  age,
-  sex,
-  area,
-  status,
-  officeName,
+  offer,
+  setModalOpen,
 }: {
-  status: string;
-  nickname: string;
-  age: number;
-  sex: string;
-  area: string;
-  officeName: string;
+  offer: IOffer;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+  console.log(requestId);
   return (
-    <ProposalCardContainer>
-      <Status>{status}</Status>
+    <ProposalCardContainer
+      onClick={() => {
+        setModalOpen((current) => !current);
+        setRequestId(offer.homfoRequestThumbnail.id);
+      }}
+    >
+      <Status>{offer.homfoRequestThumbnail.matchStatus}</Status>
       <InfoArea>
         <InfoTitle>닉네임</InfoTitle>
-        <Info>{nickname}</Info>
+        <Info>{offer.homfoRequestThumbnail.writer.nickName}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>성별</InfoTitle>
-        <Info>{sex}</Info>
+        <Info>
+          {offer.homfoRequestThumbnail.writer.gender === "M" ? "남성" : "여성"}
+        </Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>나이</InfoTitle>
-        <Info>{age}</Info>
+        <Info>
+          {calculateAge(offer.homfoRequestThumbnail.writer.dateOfBirth)}
+        </Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>구역</InfoTitle>
-        <Info>{area}</Info>
+        <Info>{offer.homfoRequestThumbnail.area.name}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>중개사무소명</InfoTitle>
-        <Info>{officeName}</Info>
+        <Info>{offer.agencyThumbnail.name}</Info>
       </InfoArea>
     </ProposalCardContainer>
   );
@@ -46,8 +53,7 @@ const ProposalCard = ({
 export default ProposalCard;
 
 const ProposalCardContainer = styled.div`
-  width: 250px;
-  height: 150px;
+  width: 300px;
   border-radius: 10px;
   background-color: #ffffff;
   padding: 12px;

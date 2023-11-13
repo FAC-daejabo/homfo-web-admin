@@ -1,46 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexRowSpaceBetween } from "../../styles/util";
-import { getDday } from "../../utils/util";
+import { calculateAge, getDday } from "../../utils/util";
+import { IRequest } from "../../interfaces/RequestInterface";
 
 const RequestCard: any = ({
-  nickname,
-  age,
-  sex,
-  area,
-  date,
-  status,
+  request,
   setModalOpen,
+  setRequestId,
 }: {
-  nickname: string;
-  age: number;
-  sex: string;
-  area: string;
-  date: string;
-  status: string;
+  request: IRequest;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setRequestId: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   return (
-    <RequestCardContainer onClick={() => setModalOpen((current) => !current)}>
+    <RequestCardContainer
+      onClick={() => {
+        setModalOpen((current) => !current);
+        setRequestId(request.id);
+      }}
+    >
       <FlexRowSpaceBetween style={{ marginBottom: "15px" }}>
-        <Status>{status}</Status>
-        <Date>{getDday(date)}</Date>
+        <Status>{request.matchStatus}</Status>
+        <Date>{getDday(request.createdAt)}</Date>
       </FlexRowSpaceBetween>
       <InfoArea>
         <InfoTitle>닉네임</InfoTitle>
-        <Info>{nickname}</Info>
+        <Info>{request.writer.nickName}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>성별</InfoTitle>
-        <Info>{sex}</Info>
+        <Info>{request.writer.gender === "M" ? "남성" : "여성"}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>나이</InfoTitle>
-        <Info>{age}</Info>
+        <Info>{calculateAge(request.writer.dateOfBirth)}</Info>
       </InfoArea>
       <InfoArea>
         <InfoTitle>구역</InfoTitle>
-        <Info>{area}</Info>
+        <Info>{request.area.name}</Info>
       </InfoArea>
     </RequestCardContainer>
   );
@@ -56,6 +54,7 @@ const RequestCardContainer = styled.div`
   padding: 12px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  margin-bottom: 15px;
 `;
 
 const Status = styled.span`

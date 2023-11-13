@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   PageHeaderWrapper,
   PageTitle,
@@ -8,139 +8,58 @@ import RequestCard from "../../components/card/RequestCard";
 import { useRecoilState } from "recoil";
 import { modalAtom } from "../../stores/modalAtom";
 import ProposalModal from "../../components/modal/ProposalModal";
+import { requestAtom, requestIdAtom } from "../../stores/requestAtom";
+import { getRequests } from "../../api/auth/api";
 
 const Requests = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
+  const [requests, setRequests] = useRecoilState(requestAtom);
+  const [matchStatus, setMatchStatus] = useState<
+    "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
+  >("매물 파악 완료");
+  const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+
+  console.log(requestId);
+
+  useEffect(() => {
+    getRequests(matchStatus, setRequests);
+  }, [matchStatus, setRequests]);
   return (
     <>
       <PageHeaderWrapper>
-        <PageTitle>매물 신청 목록</PageTitle>
+        <PageTitle
+          active={matchStatus === "매물 파악 완료" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("매물 파악 완료")}
+        >
+          매물 파악 완료
+        </PageTitle>
+        <PageTitle
+          active={matchStatus === "매물 파악 중" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("매물 파악 중")}
+        >
+          매물 파악 중
+        </PageTitle>
+        <PageTitle
+          active={matchStatus === "신청 완료" ? "true" : "false"}
+          style={{ cursor: "pointer" }}
+          onClick={() => setMatchStatus("신청 완료")}
+        >
+          신청 완료
+        </PageTitle>
       </PageHeaderWrapper>
       <RequestArea>
-        <RequestCard
-          nickname="신우현"
-          sex="남성"
-          age={25}
-          area="능동초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="정윤미"
-          sex="여성"
-          age={25}
-          area="화서초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="장성호"
-          sex="남성"
-          age={25}
-          area="기산초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="강동하"
-          sex="남성"
-          age={25}
-          area="대일초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
+        {requests.map((request) => (
+          <RequestCard
+            key={request.id}
+            request={request}
+            setModalOpen={setModalOpen}
+            setRequestId={setRequestId}
+          />
+        ))}
       </RequestArea>
-      <PageHeaderWrapper>
-        <PageTitle>매물 처리중</PageTitle>
-      </PageHeaderWrapper>
-      <RequestArea>
-        <RequestCard
-          nickname="신우현"
-          sex="남성"
-          age={25}
-          area="능동초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="정윤미"
-          sex="여성"
-          age={25}
-          area="화서초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="장성호"
-          sex="남성"
-          age={25}
-          area="기산초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="강동하"
-          sex="남성"
-          age={25}
-          area="대일초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-      </RequestArea>
-      <PageHeaderWrapper>
-        <PageTitle>처리 완료</PageTitle>
-      </PageHeaderWrapper>
-      <RequestArea>
-        <RequestCard
-          nickname="신우현"
-          sex="남성"
-          age={25}
-          area="능동초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="정윤미"
-          sex="여성"
-          age={25}
-          area="화서초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="장성호"
-          sex="남성"
-          age={25}
-          area="기산초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-        <RequestCard
-          nickname="강동하"
-          sex="남성"
-          age={25}
-          area="대일초등학교"
-          status="매물 파악 중"
-          date="2023-12-19 11:45:12"
-          setModalOpen={setModalOpen}
-        ></RequestCard>
-      </RequestArea>
-      <ProposalModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        message=""
-      />
+      <ProposalModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 };

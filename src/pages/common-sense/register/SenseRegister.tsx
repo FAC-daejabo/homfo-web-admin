@@ -27,6 +27,8 @@ const SenseRegister = () => {
 
   const navigate = useNavigate();
 
+  console.log(setSenseId);
+
   useEffect(() => {
     if (posterList && posterList.length > 0) {
       let imageUrlList = [];
@@ -115,12 +117,6 @@ const SenseRegister = () => {
       );
       console.log(response);
       if (response.status === 200) {
-        // setBanner(undefined);
-        // setPosterList([]);
-        // setPosterTitle("");
-        // setPosterContent("");
-        // setIsPublic(false);
-        // setSenseId(undefined);
         Swal.fire({
           text: "부동산 상식 수정이 완료되었습니다.",
         }).then(() => navigate("/common-sense"));
@@ -151,13 +147,6 @@ const SenseRegister = () => {
       });
     }
   };
-
-  // console.log(posterList);
-  // console.log(previewImages);
-  // console.log(banner);
-  // console.log(bannerPreviewImage);
-  // console.log(posterTitle);
-  // console.log(posterContent);
 
   return (
     <S.RegisterContainer>
