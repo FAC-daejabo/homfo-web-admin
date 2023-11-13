@@ -259,11 +259,18 @@ export const getRequests = async (
     });
     console.log(response.data.data);
     setRequests(response.data.data);
-    // if (response.status === 200) {
-    //   Swal.fire({
-    //     text: "정지 처리가 완료되었습니다.",
-    //   });
-    // }
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getRequestDetail = async (requestId: number) => {
+  try {
+    const response = await instance.get(`/admin/requests/${requestId}/info`);
+    console.log(response);
   } catch (e: any) {
     Swal.fire({
       text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",

@@ -7,12 +7,19 @@ import { IRequest } from "../../interfaces/RequestInterface";
 const RequestCard: any = ({
   request,
   setModalOpen,
+  setRequestId,
 }: {
   request: IRequest;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setRequestId: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   return (
-    <RequestCardContainer onClick={() => setModalOpen((current) => !current)}>
+    <RequestCardContainer
+      onClick={() => {
+        setModalOpen((current) => !current);
+        setRequestId(request.id);
+      }}
+    >
       <FlexRowSpaceBetween style={{ marginBottom: "15px" }}>
         <Status>{request.matchStatus}</Status>
         <Date>{getDday(request.createdAt)}</Date>

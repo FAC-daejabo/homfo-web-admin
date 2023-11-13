@@ -5,3 +5,8 @@ export const requestAtom = atom<IRequest[]>({
   key: "requestAtom",
   default: [],
 });
+
+export const requestIdAtom = atom<number | undefined>({
+  key: "requestIdAtom",
+  default: undefined,
+});

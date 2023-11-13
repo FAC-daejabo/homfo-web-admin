@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactModal from "react-modal";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { requestIdAtom } from "../../stores/requestAtom";
+import { getRequestDetail } from "../../api/auth/api";
 
 const customModalStyles: ReactModal.Styles = {
   overlay: {
@@ -32,12 +35,17 @@ const customModalStyles: ReactModal.Styles = {
 const ProposalModal = ({
   modalOpen,
   setModalOpen,
-  message,
 }: {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
 }) => {
+  const requestId = useRecoilValue(requestIdAtom);
+
+  useEffect(() => {
+    if (requestId) {
+      getRequestDetail(requestId);
+    }
+  }, [requestId]);
   return (
     <ReactModal
       isOpen={modalOpen}

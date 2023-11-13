@@ -8,7 +8,7 @@ import RequestCard from "../../components/card/RequestCard";
 import { useRecoilState } from "recoil";
 import { modalAtom } from "../../stores/modalAtom";
 import ProposalModal from "../../components/modal/ProposalModal";
-import { requestAtom } from "../../stores/requestAtom";
+import { requestAtom, requestIdAtom } from "../../stores/requestAtom";
 import { getRequests } from "../../api/auth/api";
 
 const Requests = () => {
@@ -17,6 +17,7 @@ const Requests = () => {
   const [matchStatus, setMatchStatus] = useState<
     "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
   >("매물 파악 완료");
+  const [requestId, setRequestId] = useRecoilState(requestIdAtom);
 
   useEffect(() => {
     getRequests(matchStatus, setRequests);
@@ -52,6 +53,7 @@ const Requests = () => {
             key={request.id}
             request={request}
             setModalOpen={setModalOpen}
+            setRequestId={setRequestId}
           />
         ))}
       </RequestArea>
@@ -63,11 +65,7 @@ const Requests = () => {
         <PageTitle>처리 완료</PageTitle>
       </PageHeaderWrapper>
       <RequestArea></RequestArea> */}
-      <ProposalModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        message=""
-      />
+      <ProposalModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 };
