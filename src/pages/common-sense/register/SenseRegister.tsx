@@ -27,6 +27,8 @@ const SenseRegister = () => {
 
   const navigate = useNavigate();
 
+  console.log(setSenseId);
+
   useEffect(() => {
     if (posterList && posterList.length > 0) {
       let imageUrlList = [];

@@ -35,7 +35,14 @@ const CommonSense = () => {
     setPosterContent("");
     setIsPublic(false);
     setSenseId(undefined);
-  }, []);
+  }, [
+    setBanner,
+    setPosterList,
+    setPosterTitle,
+    setPosterContent,
+    setIsPublic,
+    setSenseId,
+  ]);
   return (
     <>
       <PageHeaderWrapper>

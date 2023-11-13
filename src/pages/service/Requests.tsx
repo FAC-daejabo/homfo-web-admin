@@ -19,9 +19,11 @@ const Requests = () => {
   >("매물 파악 완료");
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
 
+  console.log(requestId);
+
   useEffect(() => {
     getRequests(matchStatus, setRequests);
-  }, [matchStatus]);
+  }, [matchStatus, setRequests]);
   return (
     <>
       <PageHeaderWrapper>

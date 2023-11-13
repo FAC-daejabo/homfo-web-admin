@@ -17,7 +17,7 @@ const Proposals = () => {
 
   useEffect(() => {
     getOffers(setOffers);
-  }, []);
+  }, [setOffers]);
   return (
     <>
       <PageHeaderWrapper>

@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 const AgencyInfo = () => {
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
 
   return (
     <>

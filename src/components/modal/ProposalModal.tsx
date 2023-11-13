@@ -65,7 +65,7 @@ const ProposalModal = ({
         setAreaId as React.Dispatch<React.SetStateAction<number>>
       );
     }
-  }, [requestId]);
+  }, [requestId, setAreaId]);
 
   useEffect(() => {
     if (areaId) {

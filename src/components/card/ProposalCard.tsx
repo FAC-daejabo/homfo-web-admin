@@ -13,6 +13,7 @@ const ProposalCard = ({
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+  console.log(requestId);
   return (
     <ProposalCardContainer
       onClick={() => {
