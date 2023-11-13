@@ -6,6 +6,7 @@ import {
 } from "../../styles/pages/admin/UserManagement.style";
 import SelectBox from "../../components/selectbox/SelectBox";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const AgencyInfo = () => {
   const { register, handleSubmit } = useForm();
@@ -87,7 +88,15 @@ const AgencyInfo = () => {
         <RegisterArea>
           <ButtonArea>
             <LoadButton>불러오기</LoadButton>
-            <RegisterButton>등록</RegisterButton>
+            <RegisterButton
+              onClick={() => {
+                Swal.fire({
+                  text: "중개업소 정보가 등록되었습니다.",
+                }).then(() => {});
+              }}
+            >
+              등록
+            </RegisterButton>
           </ButtonArea>
           <InputContainerTwo>
             <InputTitle>7. 비고</InputTitle>

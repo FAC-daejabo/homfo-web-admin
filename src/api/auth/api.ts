@@ -9,6 +9,7 @@ import {
   IRequestDetail,
 } from "../../interfaces/RequestInterface";
 import React from "react";
+import { IOffer } from "../../interfaces/OfferInterface";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -298,6 +299,27 @@ export const getAreaDetail = async (
     const response = await instance.get(`/transports/${areaId}/area/detail`);
     console.log(response);
     setAreaDetail(response.data.area);
+  } catch (e: any) {
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: true,
+    });
+  }
+};
+
+export const getOffers = async (
+  setOffers: React.Dispatch<React.SetStateAction<IOffer[]>>
+) => {
+  try {
+    const response = await instance.get("/admins/offers/search", {
+      params: {
+        page: 0,
+        size: 10,
+        firstView: true,
+      },
+    });
+    console.log(response);
+    setOffers(response.data.data);
   } catch (e: any) {
     Swal.fire({
       text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",

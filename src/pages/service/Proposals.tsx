@@ -1,59 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   PageHeaderWrapper,
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
 import styled from "styled-components";
 import ProposalCard from "../../components/card/ProposalCard";
+import { useRecoilState } from "recoil";
+import { modalAtom } from "../../stores/modalAtom";
+import ProposalModal from "../../components/modal/ProposalModal";
+import { offersAtom } from "../../stores/offerAtom";
+import { getOffers } from "../../api/auth/api";
 
 const Proposals = () => {
+  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
+  const [offers, setOffers] = useRecoilState(offersAtom);
+
+  useEffect(() => {
+    getOffers(setOffers);
+  }, []);
   return (
     <>
       <PageHeaderWrapper>
         <PageTitle>작성된 제안서</PageTitle>
       </PageHeaderWrapper>
       <ProposalArea>
-        <ProposalCard
-          status="답변완료"
-          nickname="신우현"
-          age={25}
-          sex="남성"
-          area="대일초등학교"
-          officeName="스타 공인중개소"
-        />
-        <ProposalCard
-          status="답변완료"
-          nickname="신우현"
-          age={25}
-          sex="남성"
-          area="대일초등학교"
-          officeName="스타 공인중개소"
-        />
-        <ProposalCard
-          status="답변완료"
-          nickname="신우현"
-          age={25}
-          sex="남성"
-          area="대일초등학교"
-          officeName="스타 공인중개소"
-        />
-        <ProposalCard
-          status="답변완료"
-          nickname="신우현"
-          age={25}
-          sex="남성"
-          area="대일초등학교"
-          officeName="스타 공인중개소"
-        />
-        <ProposalCard
-          status="답변완료"
-          nickname="신우현"
-          age={25}
-          sex="남성"
-          area="대일초등학교"
-          officeName="스타 공인중개소"
-        />
+        {offers.map((offer) => (
+          <ProposalCard
+            key={offer.id}
+            offer={offer}
+            setModalOpen={setModalOpen}
+          />
+        ))}
       </ProposalArea>
+      <ProposalModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 };
@@ -64,5 +43,6 @@ const ProposalArea = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 10px;
+  grid-gap: 20px;
   width: 100%;
 `;

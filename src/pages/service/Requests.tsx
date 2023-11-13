@@ -57,14 +57,6 @@ const Requests = () => {
           />
         ))}
       </RequestArea>
-      {/* <PageHeaderWrapper>
-        <PageTitle>매물 처리중</PageTitle>
-      </PageHeaderWrapper>
-      <RequestArea></RequestArea>
-      <PageHeaderWrapper>
-        <PageTitle>처리 완료</PageTitle>
-      </PageHeaderWrapper>
-      <RequestArea></RequestArea> */}
       <ProposalModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );

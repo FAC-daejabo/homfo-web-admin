@@ -255,7 +255,6 @@ const ProposalModal = ({
           <InputTitle>형태</InputTitle>
           <Input />
         </InputContainer>
-
         <InputContainer>
           <InputTitle>입주 가능 시기</InputTitle>
           <Input />
