@@ -15,7 +15,6 @@ instance.interceptors.request.use(
 
     config.headers["Content-Type"] = "application/json";
     config.headers["Authorization"] = accessToken;
-    console.log(accessToken);
 
     return config;
   },

@@ -108,7 +108,7 @@ const AgencyInfo = () => {
             </RegisterButton>
           </ButtonArea>
           <InputContainerTwo>
-            <InputTitle>7. 비고</InputTitle>
+            <InputTitle>11. 비고</InputTitle>
             <TextArea></TextArea>
           </InputContainerTwo>
         </RegisterArea>
@@ -248,7 +248,7 @@ const LoadButton = styled(RegisterButton)`
 `;
 
 const FilterArea = styled.div`
-  width: 12%;
+  width: 16%;
 `;
 
 const SearchArea = styled.div`
