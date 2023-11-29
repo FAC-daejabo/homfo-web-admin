@@ -15,21 +15,24 @@ const Login = () => {
   const navigate = useNavigate();
   const onValidLogin = async (data: any) => {
     try {
-      const response = await instance.post("/admins/users/sign-in", {
+      const response = await instance.post("/users/sign-in", {
         userAccount: data.userAccount,
         userPassword: data.userPassWord,
       });
       console.log(response);
       if (response.status === 200) {
-        const response2 = await instance.get(
-          `/admins/users/${response.data.userId}/info`
-        );
+        window.localStorage.setItem("token", response.headers.authorization);
 
-        localStorage.setItem("nickName", response2.data.nickName);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("role", response.data.role);
+        // const response2 = await instance.get(
+        //   `/admins/users/${response.data.userId}/info`
+        // );
 
-        navigate("/service/agency-info");
+        // localStorage.setItem("nickName", response2.data.nickName);
+        // localStorage.setItem("userId", response.data.userId);
+        // localStorage.setItem("role", response.data.role);
+        console.log(window.localStorage.getItem("token"));
+
+        // navigate("/service/agency-info");
       }
     } catch (e: any) {
       Swal.fire({

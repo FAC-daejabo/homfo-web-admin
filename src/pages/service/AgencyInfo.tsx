@@ -7,6 +7,7 @@ import {
 import SelectBox from "../../components/selectbox/SelectBox";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AgencyTable from "../../components/table/AgencyTable";
 
 const AgencyInfo = () => {
   const { register } = useForm();
@@ -66,11 +67,11 @@ const AgencyInfo = () => {
             <Input type="text" />
           </InputContainer>
           <InputContainer>
-            <InputTitle>7. 지번주소</InputTitle>
+            <InputTitle>7. 지번 주소</InputTitle>
             <Input type="text" />
           </InputContainer>
           <InputContainer>
-            <InputTitle>8. 등록 번호</InputTitle>
+            <InputTitle>8. 등록번호</InputTitle>
             <Input type="text" />
           </InputContainer>
           <InputContainer>
@@ -109,15 +110,30 @@ const AgencyInfo = () => {
       </PageHeaderWrapper>
       <SearchContainer>
         <SearchTopArea>
+          <FilterArea>
+            <SelectBox
+              options={[
+                "사무실 이름",
+                "공인중개사 이름",
+                "해당 구역",
+                "연락처",
+                "개업/소속 구분",
+                "도로명 주소",
+                "지번 주소",
+                "등록번호",
+                "대표자명",
+                "공제 가입 유무",
+              ]}
+            />
+          </FilterArea>
           <SearchArea>
             <SearchInput type="text" />
             <SearchButton>검색</SearchButton>
           </SearchArea>
-          <FilterArea>
-            <SelectBox options={["최신순", "조회순"]} />
-          </FilterArea>
         </SearchTopArea>
-        <SearchBottomArea></SearchBottomArea>
+        <SearchBottomArea>
+          <AgencyTable />
+        </SearchBottomArea>
       </SearchContainer>
     </>
   );
