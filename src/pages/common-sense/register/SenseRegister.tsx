@@ -27,7 +27,6 @@ const SenseRegister = () => {
 
   const navigate = useNavigate();
 
-  console.log(setSenseId);
   console.log(posterContent);
 
   useEffect(() => {
@@ -76,12 +75,12 @@ const SenseRegister = () => {
       );
       console.log(response);
       if (response.status === 201) {
-        // setBanner(undefined);
-        // setPosterList([]);
-        // setPosterTitle("");
-        // setPosterContent("");
-        // setIsPublic(false);
-        // setSenseId(undefined);
+        setBanner(undefined);
+        setPosterList([]);
+        setPosterTitle("");
+        setPosterContent("");
+        setIsPublic(false);
+        setSenseId(undefined);
         Swal.fire({
           text: "부동산 상식 등록이 완료되었습니다.",
         }).then(() => navigate("/common-sense"));

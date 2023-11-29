@@ -8,7 +8,7 @@ import {
   TableContainer,
 } from "../../styles/components/RealtorTable.style";
 import { IRealtor } from "../../interfaces/RealtorInterface";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { realtorModalAtom } from "../../stores/modalAtom";
 import {
   agencyIdAtom,
@@ -19,7 +19,6 @@ import {
   deductionAtom,
   isOpenAtom,
   lotAddressAtom,
-  noteAtom,
   phoneNumberAtom,
   realtorNameAtom,
   realtorNumberAtom,
@@ -41,7 +40,6 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   const [lotAddress, setLotAddress] = useRecoilState(lotAddressAtom);
   const [chairmanName, setChairmanName] = useRecoilState(chairmanNameAtom);
   const [deduction, setDeduction] = useRecoilState(deductionAtom);
-  const [note, setNote] = useRecoilState(noteAtom);
 
   console.log(realtors);
 
@@ -57,7 +55,6 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   console.log(lotAddress);
   console.log(chairmanName);
   console.log(deduction);
-  console.log(note);
   return (
     <TableContainer>
       <Table>
@@ -88,6 +85,7 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
                 setRealtorNumber(dummy.agency.phoneNumber);
                 setPhoneNumber(dummy.phoneNumber);
                 setArea(dummy.agency.areas.data[0]?.name);
+                setIsOpen(true);
                 setRoadAddress(dummy.agency.roadAddress);
                 setLotAddress(dummy.agency.lotAddress);
                 setChairmanName(dummy.agency.chairmanName);

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageHeaderWrapper,
@@ -178,7 +177,21 @@ const AgencyInfo = () => {
               onClick={() => {
                 Swal.fire({
                   text: "중개업소 정보가 등록되었습니다.",
-                }).then(() => {});
+                }).then(() => {
+                  setAgencyName("");
+                  setAgencyId("");
+                  setAgencyNumber("");
+                  setRealtorName("");
+                  setRealtorNumber("");
+                  setPhoneNumber("");
+                  setArea("");
+                  setIsOpen(true);
+                  setRoadAddress("");
+                  setLotAddress("");
+                  setChairmanName("");
+                  setDeduction(false);
+                  setNote("");
+                });
               }}
             >
               등록
