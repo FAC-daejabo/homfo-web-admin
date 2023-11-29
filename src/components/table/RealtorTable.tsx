@@ -8,8 +8,53 @@ import {
   TableContainer,
 } from "../../styles/components/RealtorTable.style";
 import { IRealtor } from "../../interfaces/RealtorInterface";
+import { useRecoilState } from "recoil";
+import { realtorModalAtom } from "../../stores/modalAtom";
+import {
+  agencyIdAtom,
+  agencyNameAtom,
+  agencyNumberAtom,
+  areaAtom,
+  chairmanNameAtom,
+  deductionAtom,
+  isOpenAtom,
+  lotAddressAtom,
+  phoneNumberAtom,
+  realtorNameAtom,
+  realtorNumberAtom,
+  roadAddressAtom,
+} from "../../stores/realtorAtom";
 
 const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
+  const [realtorModalOpen, setRealtorModalOpen] =
+    useRecoilState(realtorModalAtom);
+  const [agencyName, setAgencyName] = useRecoilState(agencyNameAtom);
+  const [agencyId, setAgencyId] = useRecoilState(agencyIdAtom);
+  const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
+  const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
+  const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberAtom);
+  const [area, setArea] = useRecoilState(areaAtom);
+  const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
+  const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
+  const [lotAddress, setLotAddress] = useRecoilState(lotAddressAtom);
+  const [chairmanName, setChairmanName] = useRecoilState(chairmanNameAtom);
+  const [deduction, setDeduction] = useRecoilState(deductionAtom);
+
+  console.log(realtors);
+
+  console.log(agencyName);
+  console.log(agencyId);
+  console.log(agencyNumber);
+  console.log(realtorName);
+  console.log(realtorNumber);
+  console.log(phoneNumber);
+  console.log(area);
+  console.log(isOpen);
+  console.log(roadAddress);
+  console.log(lotAddress);
+  console.log(chairmanName);
+  console.log(deduction);
   return (
     <TableContainer>
       <Table>
@@ -29,9 +74,27 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
         </thead>
         <TBody>
           {realtors.map((dummy) => (
-            <Row key={dummy.id}>
-              <Data>{dummy?.name}</Data>
+            <Row
+              key={dummy.id}
+              select={realtorModalOpen}
+              onClick={() => {
+                setAgencyName(dummy.agency.name);
+                setAgencyId(dummy.agency.id);
+                setAgencyNumber(dummy.agency.officePhoneNumber);
+                setRealtorName(dummy.name);
+                setRealtorNumber(dummy.agency.phoneNumber);
+                setPhoneNumber(dummy.phoneNumber);
+                setArea(dummy.agency.areas.data[0]?.name);
+                setIsOpen(true);
+                setRoadAddress(dummy.agency.roadAddress);
+                setLotAddress(dummy.agency.lotAddress);
+                setChairmanName(dummy.agency.chairmanName);
+                setDeduction(dummy.agency.deduction ? true : false);
+                setRealtorModalOpen(false);
+              }}
+            >
               <Data>{dummy.agency?.name}</Data>
+              <Data>{dummy?.name}</Data>
               <Data>{dummy.agency.areas.data[0]?.name}</Data>
               <Data>{dummy.phoneNumber}</Data>
               <Data>소속</Data>

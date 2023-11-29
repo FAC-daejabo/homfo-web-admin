@@ -1,24 +1,59 @@
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageHeaderWrapper,
   PageTitle,
 } from "../../styles/pages/admin/UserManagement.style";
-import SelectBox from "../../components/selectbox/SelectBox";
-import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import RealtorTable from "../../components/table/RealtorTable";
-import { getRealtors } from "../../api/realtor/api";
-import { IRealtor } from "../../interfaces/RealtorInterface";
+import { useRecoilState } from "recoil";
+import { realtorModalAtom } from "../../stores/modalAtom";
+import GetRealtorModal from "../../components/modal/GetRealtorModal";
+import RealtorSearchArea from "../../components/area/RealtorSearchArea";
+import {
+  agencyIdAtom,
+  agencyNameAtom,
+  agencyNumberAtom,
+  areaAtom,
+  chairmanNameAtom,
+  deductionAtom,
+  isOpenAtom,
+  lotAddressAtom,
+  noteAtom,
+  phoneNumberAtom,
+  realtorNameAtom,
+  realtorNumberAtom,
+  roadAddressAtom,
+} from "../../stores/realtorAtom";
 
 const AgencyInfo = () => {
-  const { register } = useForm();
-  const [realtors, setRealtors] = useState<IRealtor[]>([]);
+  const [realtorModalOpen, setRealtorModalOpen] =
+    useRecoilState(realtorModalAtom);
+  const [agencyName, setAgencyName] = useRecoilState(agencyNameAtom);
+  const [agencyId, setAgencyId] = useRecoilState(agencyIdAtom);
+  const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
+  const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
+  const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberAtom);
+  const [area, setArea] = useRecoilState(areaAtom);
+  const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
+  const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
+  const [lotAddress, setLotAddress] = useRecoilState(lotAddressAtom);
+  const [chairmanName, setChairmanName] = useRecoilState(chairmanNameAtom);
+  const [deduction, setDeduction] = useRecoilState(deductionAtom);
+  const [note, setNote] = useRecoilState(noteAtom);
 
-  useEffect(() => {
-    const res = getRealtors(setRealtors);
-    console.log(res);
-  }, []);
+  console.log(agencyName);
+  console.log(agencyId);
+  console.log(agencyNumber);
+  console.log(realtorName);
+  console.log(realtorNumber);
+  console.log(phoneNumber);
+  console.log(area);
+  console.log(isOpen);
+  console.log(roadAddress);
+  console.log(lotAddress);
+  console.log(chairmanName);
+  console.log(deduction);
+  console.log(note);
 
   return (
     <>
@@ -29,15 +64,58 @@ const AgencyInfo = () => {
         <InputArea>
           <InputContainer>
             <InputTitle>1. 사무실 이름</InputTitle>
-            <Input {...register("name")} type="text" />
+            <Input
+              type="text"
+              value={agencyName}
+              onChange={(e) => setAgencyName(e.target.value)}
+            />
           </InputContainer>
           <InputContainer>
-            <InputTitle>2. 공인중개사 이름</InputTitle>
-            <Input {...register("name")} type="text" />
+            <InputTitle>2. 사무실 등록번호</InputTitle>
+            <Input
+              type="text"
+              value={agencyId}
+              onChange={(e) => setAgencyId(e.target.value)}
+            />
           </InputContainer>
           <InputContainer>
-            <InputTitle>3. 해당 구역</InputTitle>
-            <Select>
+            <InputTitle>3. 사무실 연락처</InputTitle>
+            <Input
+              type="text"
+              value={agencyNumber}
+              onChange={(e) => setAgencyNumber(e.target.value)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <InputTitle>4. 공인중개사 이름</InputTitle>
+            <Input
+              type="text"
+              value={realtorName}
+              onChange={(e) => setRealtorName(e.target.value)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <InputTitle>5. 공인중개사 연락처</InputTitle>
+            <Input
+              placeholder="ex) 010-1234-5678"
+              type="text"
+              value={realtorNumber}
+              onChange={(e) => setRealtorNumber(e.target.value)}
+            />
+          </InputContainer>
+        </InputArea>
+        <InputArea>
+          <InputContainer>
+            <InputTitle>6. 연락처</InputTitle>
+            <Input
+              type="text"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <InputTitle>7. 해당 구역</InputTitle>
+            <Select value={area} onChange={(e) => setArea(e.target.value)}>
               <option value="계룡리슈빌">계룡리슈빌</option>
               <option value="보정동카페거리, 죽현마을">
                 보정동카페거리, 죽현마을
@@ -58,91 +136,106 @@ const AgencyInfo = () => {
             </Select>
           </InputContainer>
           <InputContainer>
-            <InputTitle>4. 연락처</InputTitle>
-            <Input placeholder="ex) 010-1234-5678" type="text" />
-          </InputContainer>
-          <InputContainer>
-            <InputTitle>5. 개업/소속 구분</InputTitle>
-            <Select>
+            <InputTitle>8. 개업/소속 구분</InputTitle>
+            <Select
+              value={isOpen ? "개업" : "소속"}
+              onChange={(e) =>
+                setIsOpen(e.target.value === "개업" ? true : false)
+              }
+            >
               <option value="개업">개업</option>
               <option value="소속">소속</option>
             </Select>
           </InputContainer>
-        </InputArea>
-        <InputArea>
           <InputContainer>
-            <InputTitle>6. 도로명 주소</InputTitle>
-            <Input type="text" />
+            <InputTitle>9. 도로명 주소</InputTitle>
+            <Input
+              type="text"
+              value={roadAddress}
+              onChange={(e) => setRoadAddress(e.target.value)}
+            />
           </InputContainer>
           <InputContainer>
-            <InputTitle>7. 지번 주소</InputTitle>
-            <Input type="text" />
-          </InputContainer>
-          <InputContainer>
-            <InputTitle>8. 등록번호</InputTitle>
-            <Input type="text" />
-          </InputContainer>
-          <InputContainer>
-            <InputTitle>9. 대표자명</InputTitle>
-            <Input type="text" />
-          </InputContainer>
-          <InputContainer>
-            <InputTitle>10. 공제 가입 유무</InputTitle>
-            <Select>
-              <option value="예">예</option>
-              <option value="아니오">아니오</option>
-            </Select>
+            <InputTitle>10. 지번 주소</InputTitle>
+            <Input
+              type="text"
+              value={lotAddress}
+              onChange={(e) => setLotAddress(e.target.value)}
+            />
           </InputContainer>
         </InputArea>
         <RegisterArea>
           <ButtonArea>
-            <LoadButton>불러오기</LoadButton>
+            <LoadButton
+              onClick={() => {
+                setRealtorModalOpen(true);
+              }}
+            >
+              불러오기
+            </LoadButton>
             <RegisterButton
               onClick={() => {
                 Swal.fire({
                   text: "중개업소 정보가 등록되었습니다.",
-                }).then(() => {});
+                }).then(() => {
+                  setAgencyName("");
+                  setAgencyId("");
+                  setAgencyNumber("");
+                  setRealtorName("");
+                  setRealtorNumber("");
+                  setPhoneNumber("");
+                  setArea("");
+                  setIsOpen(true);
+                  setRoadAddress("");
+                  setLotAddress("");
+                  setChairmanName("");
+                  setDeduction(false);
+                  setNote("");
+                });
               }}
             >
               등록
             </RegisterButton>
           </ButtonArea>
-          <InputContainerTwo>
-            <InputTitle>11. 비고</InputTitle>
-            <TextArea></TextArea>
-          </InputContainerTwo>
+          <div>
+            <InputContainer>
+              <InputTitle>11. 대표자명</InputTitle>
+              <Input
+                type="text"
+                value={chairmanName}
+                onChange={(e) => setChairmanName(e.target.value)}
+              />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>12. 공제 가입 유무</InputTitle>
+              <Select
+                value={deduction ? "예" : "아니오"}
+                onChange={(e) =>
+                  setDeduction(e.target.value === "예" ? true : false)
+                }
+              >
+                <option value="아니오">아니오</option>
+                <option value="예">예</option>
+              </Select>
+            </InputContainer>
+            <InputContainerTwo>
+              <InputTitle>13. 비고</InputTitle>
+              <TextArea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              ></TextArea>
+            </InputContainerTwo>
+          </div>
         </RegisterArea>
       </InfoContainer>
       <PageHeaderWrapper>
         <PageTitle>협력 중개업소 목록</PageTitle>
       </PageHeaderWrapper>
-      <SearchContainer>
-        <SearchTopArea>
-          <FilterArea>
-            <SelectBox
-              options={[
-                "사무실 이름",
-                "공인중개사 이름",
-                "해당 구역",
-                "연락처",
-                "개업/소속 구분",
-                "도로명 주소",
-                "지번 주소",
-                "등록번호",
-                "대표자명",
-                "공제 가입 유무",
-              ]}
-            />
-          </FilterArea>
-          <SearchArea>
-            <SearchInput type="text" />
-            <SearchButton>검색</SearchButton>
-          </SearchArea>
-        </SearchTopArea>
-        <SearchBottomArea>
-          <RealtorTable realtors={realtors} />
-        </SearchBottomArea>
-      </SearchContainer>
+      <RealtorSearchArea />
+      <GetRealtorModal
+        realtorModalOpen={realtorModalOpen}
+        setRealtorModalOpen={setRealtorModalOpen}
+      />
     </>
   );
 };
@@ -155,7 +248,7 @@ const InfoContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
   border-radius: 5px;
-  height: 380px;
+  height: 360px;
   padding: 20px 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
@@ -190,7 +283,7 @@ const TextArea = styled.textarea`
   font-size: 16px;
   border-radius: 2px;
   padding: 6px;
-  height: 200px;
+  height: 100px;
 `;
 
 const Input = styled.input`
@@ -207,23 +300,6 @@ const RegisterArea = styled.div`
   width: 40%;
   padding: 0 20px;
   justify-content: space-between;
-`;
-
-const SearchContainer = styled.div``;
-
-const SearchTopArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`;
-
-const SearchBottomArea = styled.div`
-  background-color: #ffffff;
-  width: 100%;
-  border-radius: 5px;
-  height: 490px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
 const ButtonArea = styled.div`
@@ -245,32 +321,6 @@ const RegisterButton = styled.button`
 
 const LoadButton = styled(RegisterButton)`
   background-color: #637381;
-`;
-
-const FilterArea = styled.div`
-  width: 16%;
-`;
-
-const SearchArea = styled.div`
-  width: 35%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const SearchInput = styled.input`
-  width: 79%;
-  height: 30px;
-  border-radius: 4px;
-  border: 1px solid #e9ebed;
-  padding-left: 7px;
-`;
-
-const SearchButton = styled.button`
-  width: 19%;
-  height: 30px;
-  border-radius: 4px;
-  border: 1px solid #e9ebed;
-  cursor: pointer;
 `;
 
 const Select = styled.select`
