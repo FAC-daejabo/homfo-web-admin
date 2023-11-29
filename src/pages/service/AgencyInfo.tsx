@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageHeaderWrapper,
@@ -7,9 +7,18 @@ import {
 import SelectBox from "../../components/selectbox/SelectBox";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import RealtorTable from "../../components/table/RealtorTable";
+import { getRealtors } from "../../api/realtor/api";
+import { IRealtor } from "../../interfaces/RealtorInterface";
 
 const AgencyInfo = () => {
   const { register } = useForm();
+  const [realtors, setRealtors] = useState<IRealtor[]>([]);
+
+  useEffect(() => {
+    const res = getRealtors(setRealtors);
+    console.log(res);
+  }, []);
 
   return (
     <>
@@ -66,11 +75,11 @@ const AgencyInfo = () => {
             <Input type="text" />
           </InputContainer>
           <InputContainer>
-            <InputTitle>7. 지번주소</InputTitle>
+            <InputTitle>7. 지번 주소</InputTitle>
             <Input type="text" />
           </InputContainer>
           <InputContainer>
-            <InputTitle>8. 등록 번호</InputTitle>
+            <InputTitle>8. 등록번호</InputTitle>
             <Input type="text" />
           </InputContainer>
           <InputContainer>
@@ -99,25 +108,40 @@ const AgencyInfo = () => {
             </RegisterButton>
           </ButtonArea>
           <InputContainerTwo>
-            <InputTitle>7. 비고</InputTitle>
+            <InputTitle>11. 비고</InputTitle>
             <TextArea></TextArea>
           </InputContainerTwo>
         </RegisterArea>
       </InfoContainer>
       <PageHeaderWrapper>
-        <PageTitle>중개업소 목록</PageTitle>
+        <PageTitle>협력 중개업소 목록</PageTitle>
       </PageHeaderWrapper>
       <SearchContainer>
         <SearchTopArea>
+          <FilterArea>
+            <SelectBox
+              options={[
+                "사무실 이름",
+                "공인중개사 이름",
+                "해당 구역",
+                "연락처",
+                "개업/소속 구분",
+                "도로명 주소",
+                "지번 주소",
+                "등록번호",
+                "대표자명",
+                "공제 가입 유무",
+              ]}
+            />
+          </FilterArea>
           <SearchArea>
             <SearchInput type="text" />
             <SearchButton>검색</SearchButton>
           </SearchArea>
-          <FilterArea>
-            <SelectBox options={["최신순", "조회순"]} />
-          </FilterArea>
         </SearchTopArea>
-        <SearchBottomArea></SearchBottomArea>
+        <SearchBottomArea>
+          <RealtorTable realtors={realtors} />
+        </SearchBottomArea>
       </SearchContainer>
     </>
   );
@@ -197,7 +221,7 @@ const SearchBottomArea = styled.div`
   background-color: #ffffff;
   width: 100%;
   border-radius: 5px;
-  height: 450px;
+  height: 490px;
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
@@ -224,7 +248,7 @@ const LoadButton = styled(RegisterButton)`
 `;
 
 const FilterArea = styled.div`
-  width: 12%;
+  width: 16%;
 `;
 
 const SearchArea = styled.div`

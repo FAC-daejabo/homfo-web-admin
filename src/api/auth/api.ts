@@ -327,3 +327,9 @@ export const getOffers = async (
     });
   }
 };
+
+export const getToken = () => {
+  if (window.localStorage.getItem("token")) {
+    return window.localStorage.getItem("token");
+  }
+};

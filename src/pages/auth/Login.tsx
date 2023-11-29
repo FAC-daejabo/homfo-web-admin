@@ -15,19 +15,21 @@ const Login = () => {
   const navigate = useNavigate();
   const onValidLogin = async (data: any) => {
     try {
-      const response = await instance.post("/admins/users/sign-in", {
+      const response = await instance.post("/users/sign-in", {
         userAccount: data.userAccount,
         userPassword: data.userPassWord,
       });
       console.log(response);
       if (response.status === 200) {
-        const response2 = await instance.get(
-          `/admins/users/${response.data.userId}/info`
-        );
+        window.localStorage.setItem("token", response.headers.authorization);
+
+        const response2 = await instance.get(`/users/info`);
+
+        console.log(response2);
 
         localStorage.setItem("nickName", response2.data.nickName);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userId", response2.data.userId);
+        localStorage.setItem("role", response2.data.role);
 
         navigate("/service/agency-info");
       }
