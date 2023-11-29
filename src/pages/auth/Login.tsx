@@ -28,8 +28,8 @@ const Login = () => {
         console.log(response2);
 
         localStorage.setItem("nickName", response2.data.nickName);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userId", response2.data.userId);
+        localStorage.setItem("role", response2.data.role);
 
         navigate("/service/agency-info");
       }

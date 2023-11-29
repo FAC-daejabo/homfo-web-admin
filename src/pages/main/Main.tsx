@@ -11,16 +11,14 @@ const Main = () => {
 
   console.log(location);
 
-  // if (!location.pathname.startsWith("/auth") && typeof window !== "undefined") {
-  //   const StoredNickName = window.localStorage.getItem("nickName");
-
-  //   if (!StoredNickName) {
-  //     Swal.fire({
-  //       text: "로그인 후 이용 가능합니다.",
-  //       showConfirmButton: true,
-  //     }).then(() => navigate("/auth/login"));
-  //   }
-  // }
+  if (!location.pathname.startsWith("/auth") && typeof window !== "undefined") {
+    if (!window.localStorage.getItem("token")) {
+      Swal.fire({
+        text: "로그인 후 이용 가능합니다.",
+        showConfirmButton: true,
+      }).then(() => navigate("/auth/login"));
+    }
+  }
 
   return (
     <MainLayout>

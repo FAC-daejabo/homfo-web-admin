@@ -106,7 +106,7 @@ const AgencyInfo = () => {
         </RegisterArea>
       </InfoContainer>
       <PageHeaderWrapper>
-        <PageTitle>중개업소 목록</PageTitle>
+        <PageTitle>협력 중개업소 목록</PageTitle>
       </PageHeaderWrapper>
       <SearchContainer>
         <SearchTopArea>

@@ -6,37 +6,50 @@ import {
   Table,
   TableContainer,
 } from "../../styles/components/AgencyTable.style";
-import { IAgency } from "../../interfaces/AgencyInterface";
+import { IRealtor } from "../../interfaces/RealtorInterface";
 
-const dummys: IAgency[] = [
+const dummys: IRealtor[] = [
   {
-    id: "123-123",
-    areas: {
-      data: [
-        {
-          areaId: 1,
-          lat: 34.216519842,
-          lng: 123.123123213,
-          name: "대일초등학교",
-          radius: 300,
-        },
-      ],
-      length: 1,
-    },
-    name: "김철수공인중개소",
-    type: "법인",
-    chairmanName: "대표이름",
-    chairmanCertificateId: "대표 자격증 번호",
-    roadAddress: "도로명 주소",
-    lotAddress: "지명 주소",
-    deduction: true,
-    officePhoneNumber: "02-123-1234",
-    phoneNumber: "010-1234-12340",
-    openedAt: "2023-11-11",
-    partner: true,
-    lat: 37.123123,
-    lng: 123.123123,
+    id: 2,
+    name: "테스트",
+    certificateId: null,
+    position: null,
+    phoneNumber: "010-0000-0000",
     status: "N",
+    agency: {
+      id: "41135-2021-00047",
+      name: "테스트용 중개소",
+      type: "테스트용 중개소",
+      chairmanName: "테스트용 중개소",
+      chairmanCertificateId: "99999-9999-99999",
+      roadAddress: "테스트용 중개소",
+      lotAddress: "테스트용 중개소",
+      officePhoneNumber: "031-123-1231",
+      phoneNumber: "010-1231-1231",
+      deduction: true,
+      openedAt: "2022-02-02",
+      partner: true,
+      status: "N",
+      areas: {
+        data: [
+          {
+            areaId: 1,
+            name: "동보아파트.수지파크푸르지오",
+            radius: 370,
+            lat: 37.3252,
+            lng: 127.0994833,
+          },
+          {
+            areaId: 2,
+            name: "단국대학교.죽전야외음악당.성현마을2단지",
+            radius: 278,
+            lat: 37.3251333,
+            lng: 127.1246333,
+          },
+        ],
+        length: 2,
+      },
+    },
   },
 ];
 
@@ -59,22 +72,20 @@ const AgencyTable = () => {
           </Row>
         </thead>
         <tbody>
-          <Row>
-            {dummys.map((dummy) => (
-              <Row key={dummy.id}>
-                <Data>{dummy.name}</Data>
-                <Data>{dummy.name}</Data>
-                {/* <Data>{dummy.}</Data> */}
-                <Data>{dummy.officePhoneNumber}</Data>
-                {/* <Data>{dummy.}</Data>
-                <Data>{dummy.}</Data>
-                <Data>{dummy.}</Data>
-                <Data>{dummy.}</Data>
-                <Data>{dummy.}</Data>
-                <Data>{dummy.}</Data> */}
-              </Row>
-            ))}
-          </Row>
+          {dummys.map((dummy) => (
+            <Row key={dummy.id}>
+              <Data>{dummy.name}</Data>
+              <Data>{dummy.agency.name}</Data>
+              <Data>{dummy.agency.areas.data[0].name}</Data>
+              <Data>{dummy.phoneNumber}</Data>
+              <Data>소속</Data>
+              <Data>{dummy.agency.roadAddress}</Data>
+              <Data>{dummy.agency.lotAddress}</Data>
+              <Data>{dummy.agency.id}</Data>
+              <Data>{dummy.agency.chairmanName}</Data>
+              <Data>{dummy.agency.deduction ? "Y" : "N"}</Data>
+            </Row>
+          ))}
         </tbody>
       </Table>
     </TableContainer>

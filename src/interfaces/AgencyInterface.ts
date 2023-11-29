@@ -17,7 +17,7 @@ export interface IAgency {
   phoneNumber: string;
   openedAt: string;
   partner: boolean;
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
   status: "N" | "Y" | "P" | "F";
 }

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { getToken } from "../auth/api";
+import Swal from "sweetalert2";
 
 const axiosConfig: AxiosRequestConfig = {
   baseURL: "https://prod-server.homfo.co.kr/api",
@@ -30,8 +31,11 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 403) {
-    }
+    Swal.fire({
+      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
     console.log(error);
     return Promise.reject(error);
   }

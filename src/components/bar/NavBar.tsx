@@ -14,6 +14,7 @@ const NavBar = () => {
                 localStorage.removeItem("userId");
                 localStorage.removeItem("nickName");
                 localStorage.removeItem("role");
+                localStorage.removeItem("token");
               }}
             >
               (로그아웃)
