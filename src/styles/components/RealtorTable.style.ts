@@ -15,9 +15,13 @@ export const Table = styled.table`
   border-collapse: collapse;
 `;
 
-export const Row = styled.tr`
+export const Row = styled.tr<{ select?: boolean }>`
   display: table;
   width: 100%;
+  &:hover {
+    background-color: ${(props) => (props.select ? "#d3d6d8" : null)};
+    cursor: ${(props) => (props.select ? "pointer" : null)};
+  }
 `;
 
 export const Heading = styled.th`

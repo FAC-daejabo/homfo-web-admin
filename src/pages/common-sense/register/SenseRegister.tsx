@@ -28,6 +28,7 @@ const SenseRegister = () => {
   const navigate = useNavigate();
 
   console.log(setSenseId);
+  console.log(posterContent);
 
   useEffect(() => {
     if (posterList && posterList.length > 0) {
