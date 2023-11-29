@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   PageHeaderWrapper,
@@ -7,10 +7,18 @@ import {
 import SelectBox from "../../components/selectbox/SelectBox";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import AgencyTable from "../../components/table/AgencyTable";
+import RealtorTable from "../../components/table/RealtorTable";
+import { getRealtors } from "../../api/realtor/api";
+import { IRealtor } from "../../interfaces/RealtorInterface";
 
 const AgencyInfo = () => {
   const { register } = useForm();
+  const [realtors, setRealtors] = useState<IRealtor[]>([]);
+
+  useEffect(() => {
+    const res = getRealtors(setRealtors);
+    console.log(res);
+  }, []);
 
   return (
     <>
@@ -132,7 +140,7 @@ const AgencyInfo = () => {
           </SearchArea>
         </SearchTopArea>
         <SearchBottomArea>
-          <AgencyTable />
+          <RealtorTable realtors={realtors} />
         </SearchBottomArea>
       </SearchContainer>
     </>
@@ -213,7 +221,7 @@ const SearchBottomArea = styled.div`
   background-color: #ffffff;
   width: 100%;
   border-radius: 5px;
-  height: 450px;
+  height: 490px;
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;

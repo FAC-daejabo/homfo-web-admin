@@ -15,7 +15,10 @@ export const Table = styled.table`
   border-collapse: collapse;
 `;
 
-export const Row = styled.tr``;
+export const Row = styled.tr`
+  display: table;
+  width: 100%;
+`;
 
 export const Heading = styled.th`
   width: 10%;
@@ -58,4 +61,10 @@ export const DeleteButton = styled(Data)`
   color: #ffffff;
   background-color: #dc3545;
   cursor: pointer;
+`;
+
+export const TBody = styled.tbody`
+  display: block;
+  max-height: 393px;
+  overflow-y: scroll;
 `;
