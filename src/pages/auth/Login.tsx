@@ -23,16 +23,15 @@ const Login = () => {
       if (response.status === 200) {
         window.localStorage.setItem("token", response.headers.authorization);
 
-        // const response2 = await instance.get(
-        //   `/admins/users/${response.data.userId}/info`
-        // );
+        const response2 = await instance.get(`/users/info`);
 
-        // localStorage.setItem("nickName", response2.data.nickName);
-        // localStorage.setItem("userId", response.data.userId);
-        // localStorage.setItem("role", response.data.role);
-        console.log(window.localStorage.getItem("token"));
+        console.log(response2);
 
-        // navigate("/service/agency-info");
+        localStorage.setItem("nickName", response2.data.nickName);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("role", response.data.role);
+
+        navigate("/service/agency-info");
       }
     } catch (e: any) {
       Swal.fire({

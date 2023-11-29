@@ -64,7 +64,7 @@ const AgencyTable = () => {
               <Row key={dummy.id}>
                 <Data>{dummy.name}</Data>
                 <Data>{dummy.name}</Data>
-                <Data></Data>
+                {/* <Data>{dummy.}</Data> */}
                 <Data>{dummy.officePhoneNumber}</Data>
                 {/* <Data>{dummy.}</Data>
                 <Data>{dummy.}</Data>
