@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const SelectBox = ({ options }: { options: string[] }) => {
+const SelectBox = ({
+  options,
+
+  setSearchCategory,
+}: {
+  options: string[];
+  setSearchCategory: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const [currentValue, setCurrentValue] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
@@ -10,7 +17,13 @@ const SelectBox = ({ options }: { options: string[] }) => {
       <Label>{currentValue}</Label>
       <SelectOptions show={showOptions}>
         {options.map((option, index) => (
-          <Option key={index} onClick={() => setCurrentValue(option)}>
+          <Option
+            key={index}
+            onClick={() => {
+              setSearchCategory(option);
+              setCurrentValue(option);
+            }}
+          >
             {option}
           </Option>
         ))}

@@ -30,13 +30,21 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    Swal.fire({
-      text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
-      showConfirmButton: false,
-      timer: 1500,
+    return new Promise((resolve, reject) => {
+      Swal.fire({
+        text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        showConfirmButton: true,
+      }).then(() => {
+        console.log(error);
+      });
     });
-    console.log(error);
-    return Promise.reject(error);
+    // Swal.fire({
+    //   text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
+    // console.log(error);
+    // return Promise.reject(error);
   }
 );
 

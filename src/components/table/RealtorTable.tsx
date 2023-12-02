@@ -19,7 +19,6 @@ import {
   deductionAtom,
   isOpenAtom,
   lotAddressAtom,
-  phoneNumberAtom,
   realtorNameAtom,
   realtorNumberAtom,
   roadAddressAtom,
@@ -33,7 +32,6 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
   const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
   const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
-  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberAtom);
   const [area, setArea] = useRecoilState(areaAtom);
   const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
   const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
@@ -48,7 +46,6 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   console.log(agencyNumber);
   console.log(realtorName);
   console.log(realtorNumber);
-  console.log(phoneNumber);
   console.log(area);
   console.log(isOpen);
   console.log(roadAddress);
@@ -82,9 +79,8 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
                 setAgencyId(dummy.agency.id);
                 setAgencyNumber(dummy.agency.officePhoneNumber);
                 setRealtorName(dummy.name);
-                setRealtorNumber(dummy.agency.phoneNumber);
-                setPhoneNumber(dummy.phoneNumber);
-                setArea(dummy.agency.areas.data[0]?.name);
+                setRealtorNumber(dummy.phoneNumber);
+                setArea(dummy.agency.areas.data[0]);
                 setIsOpen(true);
                 setRoadAddress(dummy.agency.roadAddress);
                 setLotAddress(dummy.agency.lotAddress);

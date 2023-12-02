@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { IArea } from "../interfaces/RequestInterface";
 
 // 사무실 이름
 export const agencyNameAtom = atom<string>({
@@ -27,9 +28,14 @@ export const realtorNumberAtom = atom<string>({
 });
 
 // 해당 구역
-export const areaAtom = atom<string>({
+export const areaAtom = atom<IArea | null>({
   key: "areaAtom",
-  default: "계룡리슈빌",
+  default: null,
+});
+
+export const areaIdInputAtom = atom<number | null>({
+  key: "areaIdInputAtom",
+  default: null,
 });
 
 // 개업/소속

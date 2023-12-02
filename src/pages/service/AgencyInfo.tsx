@@ -12,17 +12,20 @@ import {
   agencyIdAtom,
   agencyNameAtom,
   agencyNumberAtom,
-  areaAtom,
+  areaIdInputAtom,
   chairmanNameAtom,
   deductionAtom,
   isOpenAtom,
   lotAddressAtom,
   noteAtom,
-  phoneNumberAtom,
   realtorNameAtom,
   realtorNumberAtom,
   roadAddressAtom,
 } from "../../stores/realtorAtom";
+import { useEffect, useState } from "react";
+import { getAreas } from "../../api/area/api";
+import { IArea } from "../../interfaces/RequestInterface";
+import { putRealtor } from "../../api/realtor/api";
 
 const AgencyInfo = () => {
   const [realtorModalOpen, setRealtorModalOpen] =
@@ -32,28 +35,34 @@ const AgencyInfo = () => {
   const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
   const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
   const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
-  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberAtom);
-  const [area, setArea] = useRecoilState(areaAtom);
+  const [areaId, setAreaId] = useRecoilState(areaIdInputAtom);
   const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
   const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
   const [lotAddress, setLotAddress] = useRecoilState(lotAddressAtom);
   const [chairmanName, setChairmanName] = useRecoilState(chairmanNameAtom);
   const [deduction, setDeduction] = useRecoilState(deductionAtom);
   const [note, setNote] = useRecoilState(noteAtom);
+  const [areas, setAreas] = useState<IArea[]>([]);
 
-  console.log(agencyName);
-  console.log(agencyId);
-  console.log(agencyNumber);
-  console.log(realtorName);
-  console.log(realtorNumber);
-  console.log(phoneNumber);
-  console.log(area);
-  console.log(isOpen);
-  console.log(roadAddress);
-  console.log(lotAddress);
-  console.log(chairmanName);
-  console.log(deduction);
-  console.log(note);
+  // console.log(agencyName);
+  // console.log(agencyId);
+  // console.log(agencyNumber);
+  // console.log(realtorName);
+  // console.log(realtorNumber);
+  // // console.log(phoneNumber);
+  // console.log(areaId);
+  // console.log(isOpen);
+  // console.log(roadAddress);
+  // console.log(lotAddress);
+  // console.log(chairmanName);
+  // console.log(deduction);
+  // console.log(note);
+
+  // console.log(areas);
+
+  useEffect(() => {
+    getAreas(setAreas);
+  }, []);
 
   return (
     <>
@@ -105,38 +114,29 @@ const AgencyInfo = () => {
           </InputContainer>
         </InputArea>
         <InputArea>
-          <InputContainer>
+          {/* <InputContainer>
             <InputTitle>6. 연락처</InputTitle>
             <Input
               type="text"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
-          </InputContainer>
+          </InputContainer> */}
           <InputContainer>
-            <InputTitle>7. 해당 구역</InputTitle>
-            <Select value={area} onChange={(e) => setArea(e.target.value)}>
-              <option value="계룡리슈빌">계룡리슈빌</option>
-              <option value="보정동카페거리, 죽현마을">
-                보정동카페거리, 죽현마을
-              </option>
-              <option value="보정우체국">보정우체국</option>
-              <option value="한신 길훈아파트">한신 길훈아파트</option>
-              <option value="대일초등학교">대일초등학교</option>
-              <option value="단국대학교, 죽전야외음악당, 성현마을2단지">
-                단국대학교, 죽전야외음악당, 성현마을2단지
-              </option>
-              <option value="동부아파트">동부아파트</option>
-              <option value="내대지마을5단지 정문">내대지마을5단지 정문</option>
-              <option value="건영캐스빌후문">건영캐스빌후문</option>
-              <option value="죽전교차로">죽전교차로</option>
-              <option value="동보아파트, 수지파크푸르지오">
-                동보아파트, 수지파크푸르지오
-              </option>
+            <InputTitle>6. 해당 구역</InputTitle>
+            <Select
+              value={areaId as number}
+              onChange={(e) => setAreaId(e.target.value as any)}
+            >
+              {areas.map((area) => (
+                <option key={area.areaId} value={area.areaId}>
+                  {area.name}
+                </option>
+              ))}
             </Select>
           </InputContainer>
           <InputContainer>
-            <InputTitle>8. 개업/소속 구분</InputTitle>
+            <InputTitle>7. 개업/소속 구분</InputTitle>
             <Select
               value={isOpen ? "개업" : "소속"}
               onChange={(e) =>
@@ -148,7 +148,7 @@ const AgencyInfo = () => {
             </Select>
           </InputContainer>
           <InputContainer>
-            <InputTitle>9. 도로명 주소</InputTitle>
+            <InputTitle>8. 도로명 주소</InputTitle>
             <Input
               type="text"
               value={roadAddress}
@@ -156,11 +156,19 @@ const AgencyInfo = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputTitle>10. 지번 주소</InputTitle>
+            <InputTitle>9. 지번 주소</InputTitle>
             <Input
               type="text"
               value={lotAddress}
               onChange={(e) => setLotAddress(e.target.value)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <InputTitle>10. 대표자명</InputTitle>
+            <Input
+              type="text"
+              value={chairmanName}
+              onChange={(e) => setChairmanName(e.target.value)}
             />
           </InputContainer>
         </InputArea>
@@ -175,22 +183,37 @@ const AgencyInfo = () => {
             </LoadButton>
             <RegisterButton
               onClick={() => {
-                Swal.fire({
-                  text: "중개업소 정보가 등록되었습니다.",
-                }).then(() => {
-                  setAgencyName("");
-                  setAgencyId("");
-                  setAgencyNumber("");
-                  setRealtorName("");
-                  setRealtorNumber("");
-                  setPhoneNumber("");
-                  setArea("");
-                  setIsOpen(true);
-                  setRoadAddress("");
-                  setLotAddress("");
-                  setChairmanName("");
-                  setDeduction(false);
-                  setNote("");
+                putRealtor(
+                  agencyName,
+                  agencyId,
+                  agencyNumber,
+                  realtorName,
+                  realtorNumber,
+                  areaId,
+                  isOpen,
+                  roadAddress,
+                  lotAddress,
+                  chairmanName,
+                  deduction,
+                  note
+                ).then(() => {
+                  Swal.fire({
+                    text: "중개업소 정보가 등록되었습니다.",
+                  }).then(() => {
+                    setAgencyName("");
+                    setAgencyId("");
+                    setAgencyNumber("");
+                    setRealtorName("");
+                    setRealtorNumber("");
+                    // setPhoneNumber("");
+                    setAreaId(null);
+                    setIsOpen(true);
+                    setRoadAddress("");
+                    setLotAddress("");
+                    setChairmanName("");
+                    setDeduction(false);
+                    setNote("");
+                  });
                 });
               }}
             >
@@ -199,15 +222,7 @@ const AgencyInfo = () => {
           </ButtonArea>
           <div>
             <InputContainer>
-              <InputTitle>11. 대표자명</InputTitle>
-              <Input
-                type="text"
-                value={chairmanName}
-                onChange={(e) => setChairmanName(e.target.value)}
-              />
-            </InputContainer>
-            <InputContainer>
-              <InputTitle>12. 공제 가입 유무</InputTitle>
+              <InputTitle>11. 공제 가입 유무</InputTitle>
               <Select
                 value={deduction ? "예" : "아니오"}
                 onChange={(e) =>
@@ -219,7 +234,7 @@ const AgencyInfo = () => {
               </Select>
             </InputContainer>
             <InputContainerTwo>
-              <InputTitle>13. 비고</InputTitle>
+              <InputTitle>12. 비고</InputTitle>
               <TextArea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
