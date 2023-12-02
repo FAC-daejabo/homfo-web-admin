@@ -7,8 +7,27 @@ import { getRealtors } from "../../api/realtor/api";
 
 const RealtorSearchArea = () => {
   const [realtors, setRealtors] = useState<IRealtor[]>([]);
+  const [agencyName, setAgencyName] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const [areaName, setAreaName] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
+  const [roadAddress, setRoadAddress] = useState<string | null>(null);
+  const [lotAddress, setLotAddress] = useState<string | null>(null);
+  const [agencyId, setAgencyId] = useState<string | null>(null);
+  const [chairmanName, setChairmanName] = useState<string | null>(null);
+
   useEffect(() => {
-    getRealtors(setRealtors);
+    getRealtors(setRealtors, {
+      firstView: true,
+      name: name,
+      agencyId: agencyId,
+      agencyName: agencyName,
+      roadAddress: roadAddress,
+      lotAddress: lotAddress,
+      chairmanName: chairmanName,
+      phoneNumber: phoneNumber,
+      areaName: areaName,
+    });
   }, []);
   return (
     <SearchContainer>
@@ -20,12 +39,12 @@ const RealtorSearchArea = () => {
               "공인중개사 이름",
               "해당 구역",
               "연락처",
-              "개업/소속 구분",
+              // "개업/소속 구분",
               "도로명 주소",
               "지번 주소",
               "등록번호",
               "대표자명",
-              "공제 가입 유무",
+              // "공제 가입 유무",
             ]}
           />
         </FilterArea>

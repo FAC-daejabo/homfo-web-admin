@@ -82,9 +82,9 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
                 setAgencyId(dummy.agency.id);
                 setAgencyNumber(dummy.agency.officePhoneNumber);
                 setRealtorName(dummy.name);
-                setRealtorNumber(dummy.agency.phoneNumber);
-                setPhoneNumber(dummy.phoneNumber);
-                setArea(dummy.agency.areas.data[0]?.name);
+                setRealtorNumber(dummy.phoneNumber);
+                // setPhoneNumber(dummy.phoneNumber);
+                setArea(dummy.agency.areas.data[0]);
                 setIsOpen(true);
                 setRoadAddress(dummy.agency.roadAddress);
                 setLotAddress(dummy.agency.lotAddress);
