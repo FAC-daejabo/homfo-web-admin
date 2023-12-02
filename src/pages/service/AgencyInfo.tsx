@@ -12,14 +12,12 @@ import {
   agencyIdAtom,
   agencyNameAtom,
   agencyNumberAtom,
-  areaAtom,
   areaIdInputAtom,
   chairmanNameAtom,
   deductionAtom,
   isOpenAtom,
   lotAddressAtom,
   noteAtom,
-  phoneNumberAtom,
   realtorNameAtom,
   realtorNumberAtom,
   roadAddressAtom,
@@ -37,8 +35,6 @@ const AgencyInfo = () => {
   const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
   const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
   const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
-  // const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberAtom);
-  const [area, setArea] = useRecoilState(areaAtom);
   const [areaId, setAreaId] = useRecoilState(areaIdInputAtom);
   const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
   const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
@@ -48,21 +44,21 @@ const AgencyInfo = () => {
   const [note, setNote] = useRecoilState(noteAtom);
   const [areas, setAreas] = useState<IArea[]>([]);
 
-  console.log(agencyName);
-  console.log(agencyId);
-  console.log(agencyNumber);
-  console.log(realtorName);
-  console.log(realtorNumber);
-  // console.log(phoneNumber);
-  console.log(areaId);
-  console.log(isOpen);
-  console.log(roadAddress);
-  console.log(lotAddress);
-  console.log(chairmanName);
-  console.log(deduction);
-  console.log(note);
+  // console.log(agencyName);
+  // console.log(agencyId);
+  // console.log(agencyNumber);
+  // console.log(realtorName);
+  // console.log(realtorNumber);
+  // // console.log(phoneNumber);
+  // console.log(areaId);
+  // console.log(isOpen);
+  // console.log(roadAddress);
+  // console.log(lotAddress);
+  // console.log(chairmanName);
+  // console.log(deduction);
+  // console.log(note);
 
-  console.log(areas);
+  // console.log(areas);
 
   useEffect(() => {
     getAreas(setAreas);
@@ -133,7 +129,9 @@ const AgencyInfo = () => {
               onChange={(e) => setAreaId(e.target.value as any)}
             >
               {areas.map((area) => (
-                <option value={area.areaId}>{area.name}</option>
+                <option key={area.areaId} value={area.areaId}>
+                  {area.name}
+                </option>
               ))}
             </Select>
           </InputContainer>
