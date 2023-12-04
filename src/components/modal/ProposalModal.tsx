@@ -8,35 +8,8 @@ import { IArea, IRequestDetail } from "../../interfaces/RequestInterface";
 import { offerImagesAtom } from "../../stores/offerAtom";
 import { AiFillCamera, AiFillCloseCircle } from "react-icons/ai";
 import { RegisterButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
-import { FlexEndRow } from "../../styles/util";
+import { FlexEndRow, FlexRowSpaceBetween } from "../../styles/util";
 import Swal from "sweetalert2";
-
-const customModalStyles: ReactModal.Styles = {
-  overlay: {
-    backgroundColor: " rgba(0, 0, 0, 0.4)",
-    width: "100%",
-    height: "100vh",
-    zIndex: "10",
-    position: "fixed",
-    top: "0",
-    left: "0",
-  },
-  content: {
-    width: "80%",
-    height: "90%",
-    zIndex: "150",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-    backgroundColor: "white",
-    justifyContent: "space-between",
-    overflow: "auto",
-    display: "flex",
-  },
-};
 
 const ProposalModal = ({
   modalOpen,
@@ -51,9 +24,44 @@ const ProposalModal = ({
   const [areaDetail, setAreaDetail] = useState<IArea>();
   const [offerImages, setOfferImages] = useRecoilState(offerImagesAtom);
   const [offerPreviewImages, setOfferPreviewImages] = useState<string[]>([]);
+  const [roadAddress, setRoadAddress] = useState<string>("");
+  const [lotAddress, setLotAddress] = useState<string>("");
+  const [floor, setFloor] = useState<number>();
+  const [roomType, setRoomType] = useState<"원룸" | "투룸" | "쓰리룸">("원룸");
+  const [exclusiveArea, setExclusiveArea] = useState<number>();
+  const [supplyArea, setSupplyArea] = useState<number>();
+  const [contractType, setContractType] = useState<"전세" | "월세">("전세");
+  const [monthlyDeposit, setMonthlyDeposit] = useState<number>();
+  const [monthlyFee, setMonthlyFee] = useState<number>();
+  const [jeonseDeposit, setJeonseDeposit] = useState<number>();
+  const [maintenanceCost, setMaintenanceCost] = useState<number>();
+  const [moveInPeriod, setMoveInPeriod] = useState<string>("");
+  const [note, setNote] = useState<string>("");
+  const [included, setIncluded] = useState<string>("");
+  const [notIncluded, setNotIncluded] = useState<string>("");
+  const [options, setOptions] = useState<string[]>([]);
+  const [option, setOption] = useState<string>("");
 
-  console.log(requestDetail);
-  console.log(areaDetail);
+  // console.log(requestDetail);
+  // console.log(areaDetail);
+
+  console.log(offerImages);
+  console.log(roadAddress);
+  console.log(lotAddress);
+  console.log(floor);
+  console.log(roomType);
+  console.log(exclusiveArea);
+  console.log(supplyArea);
+  console.log(contractType);
+  console.log(jeonseDeposit);
+  console.log(monthlyDeposit);
+  console.log(monthlyFee);
+  console.log(maintenanceCost);
+  console.log(included);
+  console.log(notIncluded);
+  console.log(moveInPeriod);
+  console.log(options);
+  console.log(note);
 
   useEffect(() => {
     if (requestId) {
@@ -181,6 +189,11 @@ const ProposalModal = ({
       </RequestArea>
       <ProposalArea>
         <Title>제안서</Title>
+        <InputContainer style={{ paddingTop: "15px" }}>
+          <InputTitle>중개사 선택</InputTitle>
+          <Input />
+        </InputContainer>
+        <InputTitle>방 사진 선택</InputTitle>
         <ImageInputArea>
           <ImageInputLabel htmlFor="image">
             <CameraIcon />
@@ -208,6 +221,120 @@ const ProposalModal = ({
           ))}
         </ImageInputArea>
         <InputContainer>
+          <InputTitle>도로명 주소</InputTitle>
+          <Input onChange={(e) => setRoadAddress(e.target.value)} />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>지번 주소</InputTitle>
+          <Input onChange={(e) => setLotAddress(e.target.value)} />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>방 층수</InputTitle>
+          <Input
+            type="number"
+            onChange={(e) => setFloor(Number(e.target.value))}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>방 형태</InputTitle>
+          <div>
+            <Button
+              active={roomType === "원룸"}
+              onClick={() => setRoomType("원룸")}
+            >
+              원룸
+            </Button>
+            <Button
+              active={roomType === "투룸"}
+              onClick={() => setRoomType("투룸")}
+            >
+              투룸
+            </Button>
+            <Button
+              active={roomType === "쓰리룸"}
+              onClick={() => setRoomType("쓰리룸")}
+            >
+              쓰리룸
+            </Button>
+          </div>
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>전용 면적(m²)</InputTitle>
+          <Input
+            type="number"
+            onChange={(e) => setExclusiveArea(Number(e.target.value))}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>공급 면적(m²)</InputTitle>
+          <Input
+            type="number"
+            onChange={(e) => setSupplyArea(Number(e.target.value))}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>계약형태</InputTitle>
+          <Select
+            onChange={(e) => {
+              setContractType(e.target.value as any);
+              if (e.target.value === "전세") {
+                setMonthlyDeposit(undefined);
+                setMonthlyFee(undefined);
+              } else if (e.target.value === "월세") {
+                setJeonseDeposit(undefined);
+              }
+            }}
+          >
+            <option value="전세">전세</option>
+            <option value="월세">월세</option>
+          </Select>
+        </InputContainer>
+        {contractType === "전세" ? (
+          <InputContainer>
+            <InputTitle>전세 보증금</InputTitle>
+            <Input
+              type="number"
+              onChange={(e) => setJeonseDeposit(Number(e.target.value))}
+            />
+          </InputContainer>
+        ) : (
+          <>
+            <InputContainer>
+              <InputTitle>월세 보증금</InputTitle>
+              <Input
+                type="number"
+                onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
+              />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>월세</InputTitle>
+              <Input
+                type="number"
+                onChange={(e) => setMonthlyFee(Number(e.target.value))}
+              />
+            </InputContainer>
+          </>
+        )}
+        <InputContainer>
+          <InputTitle>관리비</InputTitle>
+          <Input
+            type="number"
+            onChange={(e) => setMaintenanceCost(Number(e.target.value))}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>포함항목</InputTitle>
+          <Input onChange={(e) => setIncluded(e.target.value)} />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>미포함항목</InputTitle>
+          <Input onChange={(e) => setNotIncluded(e.target.value)} />
+        </InputContainer>
+        <InputContainer>
+          <InputTitle>입주 가능 시기</InputTitle>
+          <Input onChange={(e) => setMoveInPeriod(e.target.value)} />
+        </InputContainer>
+        {/* <InputContainer>
           <InputTitle>구역 선택</InputTitle>
           <Select>
             <option value="계룡리슈빌">계룡리슈빌</option>
@@ -228,44 +355,58 @@ const ProposalModal = ({
               동보아파트, 수지파크푸르지오
             </option>
           </Select>
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>계약형태</InputTitle>
-          <Select>
-            <option value="전세">전세</option>
-            <option value="월세">월세</option>
-          </Select>
-        </InputContainer>
-        <InputContainer>
+        </InputContainer> */}
+
+        {/* <InputContainer>
           <InputTitle>임대료</InputTitle>
           <Input />
         </InputContainer>
         <InputContainer>
           <InputTitle>보증금</InputTitle>
           <Input />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>대출유무</InputTitle>
-          <Select>
-            <option value="예">예</option>
-            <option value="아니오">아니오</option>
-          </Select>
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>형태</InputTitle>
-          <Input />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>입주 가능 시기</InputTitle>
-          <Input />
-        </InputContainer>
+        </InputContainer> */}
+
         <InputContainer>
           <InputTitle>옵션</InputTitle>
-          <Input />
+          <FlexRowSpaceBetween>
+            <Input
+              style={{ width: "85%" }}
+              onChange={(e) => setOption(e.target.value)}
+              value={option}
+            />
+            <AddButton
+              style={{ width: "15%" }}
+              onClick={() => {
+                if (option !== "") {
+                  setOptions([...options, option]);
+                  setOption("");
+                }
+              }}
+            >
+              옵션 추가
+            </AddButton>
+          </FlexRowSpaceBetween>
         </InputContainer>
+        <OptionArea>
+          {options.map((option) => (
+            <Option key={option}>
+              {option}
+              <OptionDeleteButton
+                onClick={() => {
+                  setOptions((current) => {
+                    return [...current].filter((item) => item !== option);
+                  });
+                }}
+              >
+                X
+              </OptionDeleteButton>
+            </Option>
+          ))}
+        </OptionArea>
+
         <InputContainer>
           <InputTitle>기타 전달 사항</InputTitle>
-          <Input />
+          <TextArea onChange={(e) => setNote(e.target.value)} />
         </InputContainer>
         <FlexEndRow>
           <RegisterButton
@@ -292,6 +433,33 @@ const ProposalModal = ({
 };
 
 export default ProposalModal;
+
+const customModalStyles: ReactModal.Styles = {
+  overlay: {
+    backgroundColor: " rgba(0, 0, 0, 0.4)",
+    width: "100%",
+    height: "100vh",
+    zIndex: "10",
+    position: "fixed",
+    top: "0",
+    left: "0",
+  },
+  content: {
+    width: "80%",
+    height: "90%",
+    zIndex: "150",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    overflow: "auto",
+    display: "flex",
+  },
+};
 
 const RequestArea = styled.div`
   height: 100%;
@@ -326,7 +494,7 @@ const DepositRow = styled.div`
 `;
 
 const ImageInputArea = styled.div`
-  padding-top: 15px;
+  padding-top: 10px;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: repeat(4, 1fr);
@@ -418,4 +586,62 @@ const Input = styled.input`
   border-radius: 4px;
   padding: 5px;
   height: 30px;
+`;
+
+const TextArea = styled.textarea`
+  border: 1px solid #212121;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 5px;
+  height: 100px;
+`;
+
+const AddButton = styled.button`
+  border: 1px solid #212121;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 5px;
+  height: 30px;
+  background-color: #ffffff;
+  cursor: pointer;
+`;
+
+const Button = styled.button<{ active: boolean }>`
+  width: 68px;
+  height: 38px;
+  border-radius: 15px;
+  color: ${(props) => (props.active ? "#ffffff" : "212121")};
+  background-color: ${(props) => (props.active ? "#212121" : "ffffff")};
+  margin-right: 7px;
+  border: ${(props) => (props.active ? null : "1px solid #E9EBED")};
+`;
+
+const Option = styled.div`
+  width: 80px;
+  height: 40px;
+  border-radius: 15px;
+  color: #ffffff;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  position: relative;
+  font-size: 14px;
+`;
+
+const OptionArea = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const OptionDeleteButton = styled.button`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #212121;
+  color: #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
 `;
