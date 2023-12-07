@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
 import { getAreaDetail, getRequestDetail } from "../../api/auth/api";
@@ -12,7 +12,6 @@ import {
 import { AiFillCamera, AiFillCloseCircle } from "react-icons/ai";
 import { RegisterButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
 import { FlexEndRow, FlexRowSpaceBetween } from "../../styles/util";
-import Swal from "sweetalert2";
 import RealtorSearchArea from "../area/RealtorSearchArea";
 import {
   agencyIdAtom,
@@ -62,6 +61,7 @@ const ProposalModal = ({
 
   // console.log(requestDetail);
   // console.log(areaDetail);
+  console.log(setAgencyId);
   console.log(requestId);
   console.log(agencyId);
   console.log(realtorName);
