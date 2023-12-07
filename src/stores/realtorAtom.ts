@@ -27,6 +27,11 @@ export const realtorNumberAtom = atom<string>({
   default: "",
 });
 
+export const realtorIdAtom = atom<number | null>({
+  key: "realtorIdAtom",
+  default: null,
+});
+
 // 해당 구역
 export const areaAtom = atom<IArea | null>({
   key: "areaAtom",

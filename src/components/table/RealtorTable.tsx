@@ -19,19 +19,25 @@ import {
   deductionAtom,
   isOpenAtom,
   lotAddressAtom,
+  realtorIdAtom,
   realtorNameAtom,
   realtorNumberAtom,
   roadAddressAtom,
 } from "../../stores/realtorAtom";
+import { offerRealtorSearchAtom } from "../../stores/offerAtom";
 
 const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   const [realtorModalOpen, setRealtorModalOpen] =
     useRecoilState(realtorModalAtom);
+  const [offerRealtorSearch, setOfferRealtorSearch] = useRecoilState(
+    offerRealtorSearchAtom
+  );
   const [agencyName, setAgencyName] = useRecoilState(agencyNameAtom);
   const [agencyId, setAgencyId] = useRecoilState(agencyIdAtom);
   const [agencyNumber, setAgencyNumber] = useRecoilState(agencyNumberAtom);
   const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
   const [realtorNumber, setRealtorNumber] = useRecoilState(realtorNumberAtom);
+  const [realtorId, setRealtorId] = useRecoilState(realtorIdAtom);
   const [area, setArea] = useRecoilState(areaAtom);
   const [isOpen, setIsOpen] = useRecoilState(isOpenAtom);
   const [roadAddress, setRoadAddress] = useRecoilState(roadAddressAtom);
@@ -46,6 +52,7 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
   console.log(agencyNumber);
   console.log(realtorName);
   console.log(realtorNumber);
+  console.log(realtorId);
   console.log(area);
   console.log(isOpen);
   console.log(roadAddress);
@@ -73,20 +80,28 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
           {realtors.map((dummy) => (
             <Row
               key={dummy.id}
-              select={realtorModalOpen}
+              select={realtorModalOpen || offerRealtorSearch}
               onClick={() => {
-                setAgencyName(dummy.agency.name);
-                setAgencyId(dummy.agency.id);
-                setAgencyNumber(dummy.agency.officePhoneNumber);
-                setRealtorName(dummy.name);
-                setRealtorNumber(dummy.phoneNumber);
-                setArea(dummy.agency.areas.data[0]);
-                setIsOpen(true);
-                setRoadAddress(dummy.agency.roadAddress);
-                setLotAddress(dummy.agency.lotAddress);
-                setChairmanName(dummy.agency.chairmanName);
-                setDeduction(dummy.agency.deduction ? true : false);
-                setRealtorModalOpen(false);
+                if (realtorModalOpen) {
+                  setAgencyName(dummy.agency.name);
+                  setAgencyId(dummy.agency.id);
+                  setAgencyNumber(dummy.agency.officePhoneNumber);
+                  setRealtorName(dummy.name);
+                  setRealtorNumber(dummy.phoneNumber);
+                  setRealtorId(dummy.id);
+                  setArea(dummy.agency.areas.data[0]);
+                  setIsOpen(true);
+                  setRoadAddress(dummy.agency.roadAddress);
+                  setLotAddress(dummy.agency.lotAddress);
+                  setChairmanName(dummy.agency.chairmanName);
+                  setDeduction(dummy.agency.deduction ? true : false);
+                  setRealtorModalOpen(false);
+                } else if (offerRealtorSearch) {
+                  setRealtorName(dummy.name);
+                  setRealtorId(dummy.id);
+                  setOfferRealtorSearch(false);
+                  setAgencyId(dummy.agency.id);
+                }
               }}
             >
               <Data>{dummy.agency?.name}</Data>
