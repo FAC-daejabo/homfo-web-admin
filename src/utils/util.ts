@@ -48,6 +48,22 @@ export const createSenseFormdata = (
   return formData;
 };
 
+export const createOfferImageFormData = (images: File[], offer: any) => {
+  const formData = new FormData();
+
+  for (let i = 0; i < images.length; i++) {
+    formData.append("itemImages", images[i]);
+  }
+
+  const blob = new Blob([JSON.stringify(offer)], {
+    type: "application/json",
+  });
+
+  formData.append("offer", blob);
+
+  return formData;
+};
+
 export const calculateAge = (birthdate: string) => {
   // 입력된 생년월일을 Date 객체로 변환
   const birthDate = new Date(birthdate);

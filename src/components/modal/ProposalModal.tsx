@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
 import { getAreaDetail, getRequestDetail } from "../../api/auth/api";
 import { IArea, IRequestDetail } from "../../interfaces/RequestInterface";
-import { offerImagesAtom } from "../../stores/offerAtom";
+import {
+  offerImagesAtom,
+  offerRealtorSearchAtom,
+} from "../../stores/offerAtom";
 import { AiFillCamera, AiFillCloseCircle } from "react-icons/ai";
 import { RegisterButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
 import { FlexEndRow, FlexRowSpaceBetween } from "../../styles/util";
 import Swal from "sweetalert2";
+import RealtorSearchArea from "../area/RealtorSearchArea";
+import {
+  agencyIdAtom,
+  realtorIdAtom,
+  realtorNameAtom,
+} from "../../stores/realtorAtom";
+import instance from "../../api/util/instance";
+import { createOfferImageFormData } from "../../utils/util";
 
 const ProposalModal = ({
   modalOpen,
@@ -20,10 +31,14 @@ const ProposalModal = ({
 }) => {
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
   const [requestDetail, setRequestDetail] = useState<IRequestDetail>();
+  const [agencyId, setAgencyId] = useRecoilState(agencyIdAtom);
   const [areaId, setAreaId] = useRecoilState(areaIdAtom);
   const [areaDetail, setAreaDetail] = useState<IArea>();
   const [offerImages, setOfferImages] = useRecoilState(offerImagesAtom);
   const [offerPreviewImages, setOfferPreviewImages] = useState<string[]>([]);
+  const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
+  const [realtorId, setRealtorId] = useRecoilState(realtorIdAtom);
+  const [offerTitle, setOfferTitle] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
   const [lotAddress, setLotAddress] = useState<string>("");
   const [floor, setFloor] = useState<number>();
@@ -41,11 +56,18 @@ const ProposalModal = ({
   const [notIncluded, setNotIncluded] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [option, setOption] = useState<string>("");
+  const [realtorSearch, setRealtorSearch] = useRecoilState(
+    offerRealtorSearchAtom
+  );
 
   // console.log(requestDetail);
   // console.log(areaDetail);
-
+  console.log(requestId);
+  console.log(agencyId);
+  console.log(realtorName);
+  console.log(realtorId);
   console.log(offerImages);
+  console.log(offerTitle);
   console.log(roadAddress);
   console.log(lotAddress);
   console.log(floor);
@@ -104,6 +126,86 @@ const ProposalModal = ({
     setOfferImages(offerImages.filter((_, index) => index !== id));
   };
 
+  const createOffer = async () => {
+    const res = instance.post(
+      "/admins/offers",
+      createOfferImageFormData(offerImages, {
+        name: offerTitle,
+        note: note,
+        homfoRequestId: requestId,
+        realtorId: realtorId,
+        agencyItem: {
+          id: agencyId,
+          agencyId: agencyId,
+          item: {
+            id: agencyId,
+            name: null,
+            roadAddress: roadAddress,
+            lotAddress: lotAddress,
+            floor: floor,
+            roomNumber: null,
+            exclusiveArea: exclusiveArea,
+            supplyArea: supplyArea,
+          },
+          itemType: roomType,
+          itemOptions: options,
+          contractTypes: [contractType],
+          loanType: null,
+          monthlyDeposit: monthlyDeposit,
+          monthlyFee: monthlyFee,
+          jeonseDeposit: jeonseDeposit,
+          maintenanceCost: maintenanceCost,
+          includeMaintenance: included,
+          excludeMaintenance: notIncluded,
+          moveInPeriod: moveInPeriod,
+          note: null,
+        },
+      }),
+      // {
+      //   itemImages: createOfferImageFormData(offerImages),
+      //   offer: {
+      //     name: offerTitle,
+      //     note: note,
+      //     homfoRequestId: requestId,
+      //     realtorId: realtorId,
+      //     agencyItem: {
+      //       id: agencyId,
+      //       agencyId: agencyId,
+      //       item: {
+      //         id: agencyId,
+      //         name: null,
+      //         roadAddress: roadAddress,
+      //         lotAddress: lotAddress,
+      //         floor: floor,
+      //         roomNumber: null,
+      //         exclusiveArea: exclusiveArea,
+      //         supplyArea: supplyArea,
+      //       },
+      //       itemType: roomType,
+      //       itemOptions: options,
+      //       contractTypes: [contractType],
+      //       loanType: null,
+      //       monthlyDeposit: monthlyDeposit,
+      //       monthlyFee: monthlyFee,
+      //       jeonseDeposit: jeonseDeposit,
+      //       maintenanceCost: maintenanceCost,
+      //       includeMaintenance: included,
+      //       excludeMaintenance: notIncluded,
+      //       moveInPeriod: moveInPeriod,
+      //       note: null,
+      //     },
+      //   },
+      // },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(res);
+  };
+
   return (
     <ReactModal
       isOpen={modalOpen}
@@ -115,226 +217,264 @@ const ProposalModal = ({
         setOfferPreviewImages([]);
         setAreaId(undefined);
         setAreaDetail(undefined);
+        setRealtorName("");
+        setRealtorId(null);
+        setOfferTitle("");
+        setRoadAddress("");
+        setLotAddress("");
+        setFloor(undefined);
+        setRoomType("원룸");
+        setExclusiveArea(undefined);
+        setSupplyArea(undefined);
+        setContractType("전세");
+        setMonthlyDeposit(undefined);
+        setMonthlyFee(undefined);
+        setJeonseDeposit(undefined);
+        setMaintenanceCost(undefined);
+        setMoveInPeriod("");
+        setNote("");
+        setIncluded("");
+        setNotIncluded("");
+        setOptions([]);
       }}
       style={customModalStyles}
       ariaHideApp={false}
       contentLabel="Pop up Message"
       shouldCloseOnOverlayClick={true}
     >
-      <RequestArea>
-        <Title>요청서</Title>
+      {realtorSearch ? (
+        <RealtorSearchArea></RealtorSearchArea>
+      ) : (
+        <>
+          <RequestArea>
+            <Title>요청서</Title>
 
-        <ProposalInfoRow>
-          <span>1. 구역 위치 : </span>
-          <span>{areaDetail?.name}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>2. 매물 유형 : </span>
-          {requestDetail?.realEstateType.map((type) => (
-            <span>{type}</span>
-          ))}
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>3. 계약 유형 : </span>
-          <span>{requestDetail?.contractType}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>4. 희망 거주기간 : </span>
-          <span>{requestDetail?.residencePeriod}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>5. 금액대 : </span>
-          {requestDetail?.deposit.deposit.length === 2 ? (
-            <DepositRow>
-              월세 보증금 : {requestDetail?.deposit.deposit[0]} ~{" "}
-              {requestDetail?.deposit.deposit[1]}
-            </DepositRow>
-          ) : null}
-          {requestDetail?.deposit.monthlyRent.length === 2 ? (
-            <DepositRow>
-              월 임대료 : {requestDetail?.deposit.monthlyRent[0]} ~{" "}
-              {requestDetail?.deposit.monthlyRent[1]}
-            </DepositRow>
-          ) : null}
-          {requestDetail?.deposit.jeonseDeposit.length === 2 ? (
-            <DepositRow>
-              전세 보증금 : {requestDetail?.deposit.jeonseDeposit[0]} ~{" "}
-              {requestDetail?.deposit.jeonseDeposit[1]}
-            </DepositRow>
-          ) : null}
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>6. 대출 가능 유무 : </span>
-          <span>{requestDetail?.loanAvailability}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>7. 대출 유형 : </span>
-          <span>{requestDetail?.loanType}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>8. 예상 입주시기 : </span>
-          <span>{requestDetail?.moveInPeriod}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>9. 옵션 : </span>
-          {requestDetail?.roomOption.map((option) => (
-            <span>{option} </span>
-          ))}
-          <span>{requestDetail?.otherRoomOption}</span>
-        </ProposalInfoRow>
-        <ProposalInfoRow>
-          <span>10. 추가 요청사항 : </span>
-          <span>{requestDetail?.additionalRequests}</span>
-        </ProposalInfoRow>
-      </RequestArea>
-      <ProposalArea>
-        <Title>제안서</Title>
-        <InputContainer style={{ paddingTop: "15px" }}>
-          <InputTitle>중개사 선택</InputTitle>
-          <Input />
-        </InputContainer>
-        <InputTitle>방 사진 선택</InputTitle>
-        <ImageInputArea>
-          <ImageInputLabel htmlFor="image">
-            <CameraIcon />
-          </ImageInputLabel>
-          <ImageInput
-            id="image"
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => {
-              setOfferImages((current) => {
-                let tempList = [...current];
-                if (e.currentTarget?.files) {
-                  tempList.push(e.currentTarget?.files[0]);
-                }
-                return tempList;
-              });
-            }}
-          />
-          {offerPreviewImages.map((image, id) => (
-            <ImageInputLabel as="div" key={id}>
-              <PreviewImage src={image} alt={`${image}-${id}`} />
-              <DeleteIcon onClick={() => handleDeleteImage(id)} />
-            </ImageInputLabel>
-          ))}
-        </ImageInputArea>
-        <InputContainer>
-          <InputTitle>도로명 주소</InputTitle>
-          <Input onChange={(e) => setRoadAddress(e.target.value)} />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>지번 주소</InputTitle>
-          <Input onChange={(e) => setLotAddress(e.target.value)} />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>방 층수</InputTitle>
-          <Input
-            type="number"
-            onChange={(e) => setFloor(Number(e.target.value))}
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>방 형태</InputTitle>
-          <div>
-            <Button
-              active={roomType === "원룸"}
-              onClick={() => setRoomType("원룸")}
-            >
-              원룸
-            </Button>
-            <Button
-              active={roomType === "투룸"}
-              onClick={() => setRoomType("투룸")}
-            >
-              투룸
-            </Button>
-            <Button
-              active={roomType === "쓰리룸"}
-              onClick={() => setRoomType("쓰리룸")}
-            >
-              쓰리룸
-            </Button>
-          </div>
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>전용 면적(m²)</InputTitle>
-          <Input
-            type="number"
-            onChange={(e) => setExclusiveArea(Number(e.target.value))}
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>공급 면적(m²)</InputTitle>
-          <Input
-            type="number"
-            onChange={(e) => setSupplyArea(Number(e.target.value))}
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>계약형태</InputTitle>
-          <Select
-            onChange={(e) => {
-              setContractType(e.target.value as any);
-              if (e.target.value === "전세") {
-                setMonthlyDeposit(undefined);
-                setMonthlyFee(undefined);
-              } else if (e.target.value === "월세") {
-                setJeonseDeposit(undefined);
-              }
-            }}
-          >
-            <option value="전세">전세</option>
-            <option value="월세">월세</option>
-          </Select>
-        </InputContainer>
-        {contractType === "전세" ? (
-          <InputContainer>
-            <InputTitle>전세 보증금</InputTitle>
-            <Input
-              type="number"
-              onChange={(e) => setJeonseDeposit(Number(e.target.value))}
-            />
-          </InputContainer>
-        ) : (
-          <>
-            <InputContainer>
-              <InputTitle>월세 보증금</InputTitle>
+            <ProposalInfoRow>
+              <span>1. 구역 위치 : </span>
+              <span>{areaDetail?.name}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>2. 매물 유형 : </span>
+              {requestDetail?.realEstateType.map((type) => (
+                <span>{type}</span>
+              ))}
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>3. 계약 유형 : </span>
+              <span>{requestDetail?.contractType}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>4. 희망 거주기간 : </span>
+              <span>{requestDetail?.residencePeriod}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>5. 금액대 : </span>
+              {requestDetail?.deposit.deposit.length === 2 ? (
+                <DepositRow>
+                  월세 보증금 : {requestDetail?.deposit.deposit[0]} ~{" "}
+                  {requestDetail?.deposit.deposit[1]}
+                </DepositRow>
+              ) : null}
+              {requestDetail?.deposit.monthlyRent.length === 2 ? (
+                <DepositRow>
+                  월 임대료 : {requestDetail?.deposit.monthlyRent[0]} ~{" "}
+                  {requestDetail?.deposit.monthlyRent[1]}
+                </DepositRow>
+              ) : null}
+              {requestDetail?.deposit.jeonseDeposit.length === 2 ? (
+                <DepositRow>
+                  전세 보증금 : {requestDetail?.deposit.jeonseDeposit[0]} ~{" "}
+                  {requestDetail?.deposit.jeonseDeposit[1]}
+                </DepositRow>
+              ) : null}
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>6. 대출 가능 유무 : </span>
+              <span>{requestDetail?.loanAvailability}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>7. 대출 유형 : </span>
+              <span>{requestDetail?.loanType}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>8. 예상 입주시기 : </span>
+              <span>{requestDetail?.moveInPeriod}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>9. 옵션 : </span>
+              {requestDetail?.roomOption.map((option) => (
+                <span>{option} </span>
+              ))}
+              <span>{requestDetail?.otherRoomOption}</span>
+            </ProposalInfoRow>
+            <ProposalInfoRow>
+              <span>10. 추가 요청사항 : </span>
+              <span>{requestDetail?.additionalRequests}</span>
+            </ProposalInfoRow>
+          </RequestArea>
+          <ProposalArea>
+            <FlexRowSpaceBetween>
+              <Title>제안서</Title>
+              <span
+                style={{ fontSize: "14px", color: "gray", cursor: "pointer" }}
+              >
+                제안서 불러오기 {">"}
+              </span>
+            </FlexRowSpaceBetween>
+
+            <InputContainer style={{ paddingTop: "15px" }}>
+              <InputTitle>중개사 선택</InputTitle>
               <Input
-                type="number"
-                onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
+                value={realtorName}
+                onClick={() => setRealtorSearch((current) => !current)}
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>월세</InputTitle>
+              <InputTitle>제안서 제목</InputTitle>
+              <Input onChange={(e) => setOfferTitle(e.target.value)} />
+            </InputContainer>
+            <InputTitle>방 사진 선택</InputTitle>
+            <ImageInputArea>
+              <ImageInputLabel htmlFor="image">
+                <CameraIcon />
+              </ImageInputLabel>
+              <ImageInput
+                id="image"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  setOfferImages((current) => {
+                    let tempList = [...current];
+                    if (e.currentTarget?.files) {
+                      tempList.push(e.currentTarget?.files[0]);
+                    }
+                    return tempList;
+                  });
+                }}
+              />
+              {offerPreviewImages.map((image, id) => (
+                <ImageInputLabel as="div" key={id}>
+                  <PreviewImage src={image} alt={`${image}-${id}`} />
+                  <DeleteIcon onClick={() => handleDeleteImage(id)} />
+                </ImageInputLabel>
+              ))}
+            </ImageInputArea>
+            <InputContainer>
+              <InputTitle>도로명 주소</InputTitle>
+              <Input onChange={(e) => setRoadAddress(e.target.value)} />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>지번 주소</InputTitle>
+              <Input onChange={(e) => setLotAddress(e.target.value)} />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>방 층수</InputTitle>
               <Input
                 type="number"
-                onChange={(e) => setMonthlyFee(Number(e.target.value))}
+                onChange={(e) => setFloor(Number(e.target.value))}
               />
             </InputContainer>
-          </>
-        )}
-        <InputContainer>
-          <InputTitle>관리비</InputTitle>
-          <Input
-            type="number"
-            onChange={(e) => setMaintenanceCost(Number(e.target.value))}
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>포함항목</InputTitle>
-          <Input onChange={(e) => setIncluded(e.target.value)} />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>미포함항목</InputTitle>
-          <Input onChange={(e) => setNotIncluded(e.target.value)} />
-        </InputContainer>
-        <InputContainer>
-          <InputTitle>입주 가능 시기</InputTitle>
-          <Input onChange={(e) => setMoveInPeriod(e.target.value)} />
-        </InputContainer>
-        {/* <InputContainer>
+            <InputContainer>
+              <InputTitle>방 형태</InputTitle>
+              <div>
+                <Button
+                  active={roomType === "원룸"}
+                  onClick={() => setRoomType("원룸")}
+                >
+                  원룸
+                </Button>
+                <Button
+                  active={roomType === "투룸"}
+                  onClick={() => setRoomType("투룸")}
+                >
+                  투룸
+                </Button>
+                <Button
+                  active={roomType === "쓰리룸"}
+                  onClick={() => setRoomType("쓰리룸")}
+                >
+                  쓰리룸
+                </Button>
+              </div>
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>전용 면적(m²)</InputTitle>
+              <Input
+                type="number"
+                onChange={(e) => setExclusiveArea(Number(e.target.value))}
+              />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>공급 면적(m²)</InputTitle>
+              <Input
+                type="number"
+                onChange={(e) => setSupplyArea(Number(e.target.value))}
+              />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>계약형태</InputTitle>
+              <Select
+                onChange={(e) => {
+                  setContractType(e.target.value as any);
+                  if (e.target.value === "전세") {
+                    setMonthlyDeposit(undefined);
+                    setMonthlyFee(undefined);
+                  } else if (e.target.value === "월세") {
+                    setJeonseDeposit(undefined);
+                  }
+                }}
+              >
+                <option value="전세">전세</option>
+                <option value="월세">월세</option>
+              </Select>
+            </InputContainer>
+            {contractType === "전세" ? (
+              <InputContainer>
+                <InputTitle>전세 보증금</InputTitle>
+                <Input
+                  type="number"
+                  onChange={(e) => setJeonseDeposit(Number(e.target.value))}
+                />
+              </InputContainer>
+            ) : (
+              <>
+                <InputContainer>
+                  <InputTitle>월세 보증금</InputTitle>
+                  <Input
+                    type="number"
+                    onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <InputTitle>월세</InputTitle>
+                  <Input
+                    type="number"
+                    onChange={(e) => setMonthlyFee(Number(e.target.value))}
+                  />
+                </InputContainer>
+              </>
+            )}
+            <InputContainer>
+              <InputTitle>관리비</InputTitle>
+              <Input
+                type="number"
+                onChange={(e) => setMaintenanceCost(Number(e.target.value))}
+              />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>포함항목</InputTitle>
+              <Input onChange={(e) => setIncluded(e.target.value)} />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>미포함항목</InputTitle>
+              <Input onChange={(e) => setNotIncluded(e.target.value)} />
+            </InputContainer>
+            <InputContainer>
+              <InputTitle>입주 가능 시기</InputTitle>
+              <Input onChange={(e) => setMoveInPeriod(e.target.value)} />
+            </InputContainer>
+            {/* <InputContainer>
           <InputTitle>구역 선택</InputTitle>
           <Select>
             <option value="계룡리슈빌">계룡리슈빌</option>
@@ -357,7 +497,7 @@ const ProposalModal = ({
           </Select>
         </InputContainer> */}
 
-        {/* <InputContainer>
+            {/* <InputContainer>
           <InputTitle>임대료</InputTitle>
           <Input />
         </InputContainer>
@@ -366,68 +506,90 @@ const ProposalModal = ({
           <Input />
         </InputContainer> */}
 
-        <InputContainer>
-          <InputTitle>옵션</InputTitle>
-          <FlexRowSpaceBetween>
-            <Input
-              style={{ width: "85%" }}
-              onChange={(e) => setOption(e.target.value)}
-              value={option}
-            />
-            <AddButton
-              style={{ width: "15%" }}
-              onClick={() => {
-                if (option !== "") {
-                  setOptions([...options, option]);
-                  setOption("");
-                }
-              }}
-            >
-              옵션 추가
-            </AddButton>
-          </FlexRowSpaceBetween>
-        </InputContainer>
-        <OptionArea>
-          {options.map((option) => (
-            <Option key={option}>
-              {option}
-              <OptionDeleteButton
+            <InputContainer>
+              <InputTitle>옵션</InputTitle>
+              <FlexRowSpaceBetween>
+                <Input
+                  style={{ width: "85%" }}
+                  onChange={(e) => setOption(e.target.value)}
+                  value={option}
+                />
+                <AddButton
+                  style={{ width: "15%" }}
+                  onClick={() => {
+                    if (option !== "") {
+                      setOptions([...options, option]);
+                      setOption("");
+                    }
+                  }}
+                >
+                  옵션 추가
+                </AddButton>
+              </FlexRowSpaceBetween>
+            </InputContainer>
+            <OptionArea>
+              {options.map((option) => (
+                <Option key={option}>
+                  {option}
+                  <OptionDeleteButton
+                    onClick={() => {
+                      setOptions((current) => {
+                        return [...current].filter((item) => item !== option);
+                      });
+                    }}
+                  >
+                    X
+                  </OptionDeleteButton>
+                </Option>
+              ))}
+            </OptionArea>
+
+            <InputContainer>
+              <InputTitle>기타 전달 사항</InputTitle>
+              <TextArea onChange={(e) => setNote(e.target.value)} />
+            </InputContainer>
+            <FlexEndRow>
+              <RegisterButton
                 onClick={() => {
-                  setOptions((current) => {
-                    return [...current].filter((item) => item !== option);
-                  });
+                  createOffer();
+                  // Swal.fire({
+                  //   text: "제안서가 작성되었습니다.",
+                  // }).then(() => {
+                  //   setModalOpen(false);
+                  //   setRequestId(undefined);
+                  //   setRequestDetail(undefined);
+                  //   setOfferImages([]);
+                  //   setOfferPreviewImages([]);
+                  //   setAreaId(undefined);
+                  //   setAreaDetail(undefined);
+                  //   setRealtorName("");
+                  //   setRealtorId(null);
+                  //   setOfferTitle("");
+                  //   setRoadAddress("");
+                  //   setLotAddress("");
+                  //   setFloor(undefined);
+                  //   setRoomType("원룸");
+                  //   setExclusiveArea(undefined);
+                  //   setSupplyArea(undefined);
+                  //   setContractType("전세");
+                  //   setMonthlyDeposit(undefined);
+                  //   setMonthlyFee(undefined);
+                  //   setJeonseDeposit(undefined);
+                  //   setMaintenanceCost(undefined);
+                  //   setMoveInPeriod("");
+                  //   setNote("");
+                  //   setIncluded("");
+                  //   setNotIncluded("");
+                  //   setOptions([]);
+                  // });
                 }}
               >
-                X
-              </OptionDeleteButton>
-            </Option>
-          ))}
-        </OptionArea>
-
-        <InputContainer>
-          <InputTitle>기타 전달 사항</InputTitle>
-          <TextArea onChange={(e) => setNote(e.target.value)} />
-        </InputContainer>
-        <FlexEndRow>
-          <RegisterButton
-            onClick={() => {
-              Swal.fire({
-                text: "제안서가 작성되었습니다.",
-              }).then(() => {
-                setModalOpen(false);
-                setRequestId(undefined);
-                setRequestDetail(undefined);
-                setOfferImages([]);
-                setOfferPreviewImages([]);
-                setAreaId(undefined);
-                setAreaDetail(undefined);
-              });
-            }}
-          >
-            작성
-          </RegisterButton>
-        </FlexEndRow>
-      </ProposalArea>
+                최종 등록
+              </RegisterButton>
+            </FlexEndRow>
+          </ProposalArea>
+        </>
+      )}
     </ReactModal>
   );
 };
@@ -446,7 +608,7 @@ const customModalStyles: ReactModal.Styles = {
   },
   content: {
     width: "80%",
-    height: "90%",
+    height: "80%",
     zIndex: "150",
     position: "absolute",
     top: "50%",

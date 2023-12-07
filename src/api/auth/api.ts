@@ -314,7 +314,7 @@ export const getOffers = async (
     const response = await instance.get("/admins/offers/search", {
       params: {
         page: 0,
-        size: 10,
+        size: 100,
         firstView: true,
       },
     });

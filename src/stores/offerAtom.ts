@@ -10,3 +10,8 @@ export const offersAtom = atom<IOffer[]>({
   key: "offersAtom",
   default: [],
 });
+
+export const offerRealtorSearchAtom = atom<boolean>({
+  key: "offerRealtorSearchAtom",
+  default: false,
+});
