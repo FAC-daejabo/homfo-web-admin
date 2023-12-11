@@ -13,7 +13,7 @@ instance.interceptors.request.use(
   (config) => {
     const accessToken = getToken();
 
-    config.headers["Content-Type"] = "application/json";
+    // config.headers["Content-Type"] = "application/json";
     config.headers["Authorization"] = accessToken;
 
     return config;

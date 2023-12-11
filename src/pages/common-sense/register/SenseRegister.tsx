@@ -106,7 +106,7 @@ const SenseRegister = () => {
     }
   ) => {
     try {
-      const response = await instance.patch(
+      const response = await instance.post(
         `admins/senses/${senseId}`,
         createSenseFormdata(bannerImage, images, commonSense),
         {

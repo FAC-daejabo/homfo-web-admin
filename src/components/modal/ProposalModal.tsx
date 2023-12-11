@@ -37,6 +37,8 @@ const ProposalModal = ({
   const [offerPreviewImages, setOfferPreviewImages] = useState<string[]>([]);
   const [realtorName, setRealtorName] = useRecoilState(realtorNameAtom);
   const [realtorId, setRealtorId] = useRecoilState(realtorIdAtom);
+  const [agencyItemId, setAgencyItemId] = useState<number>();
+  const [itemId, setItemId] = useState<number>();
   const [offerTitle, setOfferTitle] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
   const [lotAddress, setLotAddress] = useState<string>("");
@@ -61,7 +63,7 @@ const ProposalModal = ({
 
   // console.log(requestDetail);
   // console.log(areaDetail);
-  console.log(setAgencyId);
+  console.log("this");  
   console.log(requestId);
   console.log(agencyId);
   console.log(realtorName);
@@ -127,7 +129,7 @@ const ProposalModal = ({
   };
 
   const createOffer = async () => {
-    const res = instance.post(
+    const res = await instance.post(
       "/admins/offers",
       createOfferImageFormData(offerImages, {
         name: offerTitle,
@@ -135,10 +137,10 @@ const ProposalModal = ({
         homfoRequestId: requestId,
         realtorId: realtorId,
         agencyItem: {
-          id: agencyId,
+          id: agencyItemId,
           agencyId: agencyId,
           item: {
-            id: agencyId,
+            id: itemId,
             name: null,
             roadAddress: roadAddress,
             lotAddress: lotAddress,
@@ -161,41 +163,6 @@ const ProposalModal = ({
           note: null,
         },
       }),
-      // {
-      //   itemImages: createOfferImageFormData(offerImages),
-      //   offer: {
-      //     name: offerTitle,
-      //     note: note,
-      //     homfoRequestId: requestId,
-      //     realtorId: realtorId,
-      //     agencyItem: {
-      //       id: agencyId,
-      //       agencyId: agencyId,
-      //       item: {
-      //         id: agencyId,
-      //         name: null,
-      //         roadAddress: roadAddress,
-      //         lotAddress: lotAddress,
-      //         floor: floor,
-      //         roomNumber: null,
-      //         exclusiveArea: exclusiveArea,
-      //         supplyArea: supplyArea,
-      //       },
-      //       itemType: roomType,
-      //       itemOptions: options,
-      //       contractTypes: [contractType],
-      //       loanType: null,
-      //       monthlyDeposit: monthlyDeposit,
-      //       monthlyFee: monthlyFee,
-      //       jeonseDeposit: jeonseDeposit,
-      //       maintenanceCost: maintenanceCost,
-      //       includeMaintenance: included,
-      //       excludeMaintenance: notIncluded,
-      //       moveInPeriod: moveInPeriod,
-      //       note: null,
-      //     },
-      //   },
-      // },
       {
         headers: {
           "Content-Type": "multipart/form-data",

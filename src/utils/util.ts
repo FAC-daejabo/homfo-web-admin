@@ -59,6 +59,8 @@ export const createOfferImageFormData = (images: File[], offer: any) => {
     type: "application/json",
   });
 
+  console.log(offer);
+
   formData.append("offer", blob);
 
   return formData;
