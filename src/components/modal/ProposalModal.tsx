@@ -20,6 +20,7 @@ import {
 } from "../../stores/realtorAtom";
 import instance from "../../api/util/instance";
 import { createOfferImageFormData } from "../../utils/util";
+import Swal from "sweetalert2";
 
 const ProposalModal = ({
   modalOpen,
@@ -61,31 +62,34 @@ const ProposalModal = ({
     offerRealtorSearchAtom
   );
 
-  // console.log(requestDetail);
-  // console.log(areaDetail);
-  console.log("this");  
-  console.log(requestId);
-  console.log(agencyId);
-  console.log(realtorName);
-  console.log(realtorId);
-  console.log(offerImages);
-  console.log(offerTitle);
-  console.log(roadAddress);
-  console.log(lotAddress);
-  console.log(floor);
-  console.log(roomType);
-  console.log(exclusiveArea);
-  console.log(supplyArea);
-  console.log(contractType);
-  console.log(jeonseDeposit);
-  console.log(monthlyDeposit);
-  console.log(monthlyFee);
-  console.log(maintenanceCost);
-  console.log(included);
-  console.log(notIncluded);
-  console.log(moveInPeriod);
-  console.log(options);
-  console.log(note);
+  console.log(requestDetail);
+  console.log(areaDetail);
+  console.log(setAgencyId);
+  console.log(setAgencyItemId);
+  console.log(setItemId);
+  // console.log("this");
+  // console.log(requestId);
+  // console.log(agencyId);
+  // console.log(realtorName);
+  // console.log(realtorId);
+  // console.log(offerImages);
+  // console.log(offerTitle);
+  // console.log(roadAddress);
+  // console.log(lotAddress);
+  // console.log(floor);
+  // console.log(roomType);
+  // console.log(exclusiveArea);
+  // console.log(supplyArea);
+  // console.log(contractType);
+  // console.log(jeonseDeposit);
+  // console.log(monthlyDeposit);
+  // console.log(monthlyFee);
+  // console.log(maintenanceCost);
+  // console.log(included);
+  // console.log(notIncluded);
+  // console.log(moveInPeriod);
+  // console.log(options);
+  // console.log(note);
 
   useEffect(() => {
     if (requestId) {
@@ -518,37 +522,38 @@ const ProposalModal = ({
             <FlexEndRow>
               <RegisterButton
                 onClick={() => {
-                  createOffer();
-                  // Swal.fire({
-                  //   text: "제안서가 작성되었습니다.",
-                  // }).then(() => {
-                  //   setModalOpen(false);
-                  //   setRequestId(undefined);
-                  //   setRequestDetail(undefined);
-                  //   setOfferImages([]);
-                  //   setOfferPreviewImages([]);
-                  //   setAreaId(undefined);
-                  //   setAreaDetail(undefined);
-                  //   setRealtorName("");
-                  //   setRealtorId(null);
-                  //   setOfferTitle("");
-                  //   setRoadAddress("");
-                  //   setLotAddress("");
-                  //   setFloor(undefined);
-                  //   setRoomType("원룸");
-                  //   setExclusiveArea(undefined);
-                  //   setSupplyArea(undefined);
-                  //   setContractType("전세");
-                  //   setMonthlyDeposit(undefined);
-                  //   setMonthlyFee(undefined);
-                  //   setJeonseDeposit(undefined);
-                  //   setMaintenanceCost(undefined);
-                  //   setMoveInPeriod("");
-                  //   setNote("");
-                  //   setIncluded("");
-                  //   setNotIncluded("");
-                  //   setOptions([]);
-                  // });
+                  createOffer().then(() => {
+                    Swal.fire({
+                      text: "제안서가 작성되었습니다.",
+                    }).then(() => {
+                      setModalOpen(false);
+                      setRequestId(undefined);
+                      setRequestDetail(undefined);
+                      setOfferImages([]);
+                      setOfferPreviewImages([]);
+                      setAreaId(undefined);
+                      setAreaDetail(undefined);
+                      setRealtorName("");
+                      setRealtorId(null);
+                      setOfferTitle("");
+                      setRoadAddress("");
+                      setLotAddress("");
+                      setFloor(undefined);
+                      setRoomType("원룸");
+                      setExclusiveArea(undefined);
+                      setSupplyArea(undefined);
+                      setContractType("전세");
+                      setMonthlyDeposit(undefined);
+                      setMonthlyFee(undefined);
+                      setJeonseDeposit(undefined);
+                      setMaintenanceCost(undefined);
+                      setMoveInPeriod("");
+                      setNote("");
+                      setIncluded("");
+                      setNotIncluded("");
+                      setOptions([]);
+                    });
+                  });
                 }}
               >
                 최종 등록
