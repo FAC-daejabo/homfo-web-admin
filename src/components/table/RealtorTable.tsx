@@ -77,7 +77,7 @@ const RealtorTable = ({ realtors }: { realtors: IRealtor[] }) => {
           </Row>
         </thead>
         <TBody>
-          {realtors.map((dummy) => (
+          {realtors?.map((dummy) => (
             <Row
               key={dummy.id}
               select={realtorModalOpen || offerRealtorSearch}

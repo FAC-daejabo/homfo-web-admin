@@ -258,7 +258,7 @@ export const getRequests = async (
     const response = await instance.get("/admin/requests/search", {
       params: {
         page: 0,
-        size: 10,
+        size: 1000,
         firstView: true,
         matchStatus: matchStatus,
       },
