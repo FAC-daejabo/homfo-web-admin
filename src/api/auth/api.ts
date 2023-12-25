@@ -10,6 +10,7 @@ import {
 } from "../../interfaces/RequestInterface";
 import React from "react";
 import { IOffer } from "../../interfaces/OfferInterface";
+import { SetterOrUpdater } from "recoil";
 
 export const getApplyList = async (
   setUserList: React.Dispatch<React.SetStateAction<IUser[]>>
@@ -308,7 +309,7 @@ export const getAreaDetail = async (
 };
 
 export const getOffers = async (
-  setOffers: React.Dispatch<React.SetStateAction<IOffer[]>>
+  setOffers: SetterOrUpdater<IOffer[]>
 ) => {
   try {
     const response = await instance.get("/admins/offers/search", {
@@ -318,7 +319,6 @@ export const getOffers = async (
         firstView: true,
       },
     });
-    console.log(response);
     setOffers(response.data.data);
   } catch (e: any) {
     Swal.fire({

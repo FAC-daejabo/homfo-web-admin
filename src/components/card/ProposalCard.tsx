@@ -14,6 +14,7 @@ const ProposalCard = ({
 }) => {
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
   console.log(requestId);
+  console.log(offer)
   return (
     <ProposalCardContainer
       onClick={() => {
@@ -21,32 +22,36 @@ const ProposalCard = ({
         setRequestId(offer.homfoRequestThumbnail.id);
       }}
     >
-      <Status>{offer.homfoRequestThumbnail.matchStatus}</Status>
-      <InfoArea>
-        <InfoTitle>닉네임</InfoTitle>
-        <Info>{offer.homfoRequestThumbnail.writer.nickName}</Info>
-      </InfoArea>
-      <InfoArea>
-        <InfoTitle>성별</InfoTitle>
-        <Info>
-          {offer.homfoRequestThumbnail.writer.gender === "M" ? "남성" : "여성"}
-        </Info>
-      </InfoArea>
-      <InfoArea>
-        <InfoTitle>나이</InfoTitle>
-        <Info>
-          {calculateAge(offer.homfoRequestThumbnail.writer.dateOfBirth)}
-        </Info>
-      </InfoArea>
-      <InfoArea>
-        <InfoTitle>구역</InfoTitle>
-        <Info>{offer.homfoRequestThumbnail.area.name}</Info>
-      </InfoArea>
+      {offer.homfoRequestThumbnail!==null&&
+      <>
+        <Status>{offer.homfoRequestThumbnail.matchStatus}</Status>
+        <InfoArea>
+          <InfoTitle>닉네임</InfoTitle>
+          <Info>{offer.homfoRequestThumbnail.writer.nickName}</Info>
+        </InfoArea>
+        <InfoArea>
+          <InfoTitle>성별</InfoTitle>
+          <Info>
+            {offer.homfoRequestThumbnail.writer.gender === "M" ? "남성" : "여성"}
+          </Info>
+        </InfoArea>
+        <InfoArea>
+          <InfoTitle>나이</InfoTitle>
+          <Info>
+            {calculateAge(offer.homfoRequestThumbnail.writer.dateOfBirth)}
+          </Info>
+        </InfoArea>
+        <InfoArea>
+          <InfoTitle>구역</InfoTitle>
+          <Info>{offer.homfoRequestThumbnail.area.name}</Info>
+        </InfoArea>
+      </>
+        }
       <InfoArea>
         <InfoTitle>중개사무소명</InfoTitle>
         <Info>{offer.agencyThumbnail.name}</Info>
       </InfoArea>
-    </ProposalCardContainer>
+    </ProposalCardContainer> 
   );
 };
 

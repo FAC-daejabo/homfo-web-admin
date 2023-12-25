@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PageHeaderWrapper,
   PageTitle,
@@ -24,13 +24,14 @@ const Proposals = () => {
         <PageTitle>작성된 제안서</PageTitle>
       </PageHeaderWrapper>
       <ProposalArea>
-        {offers.map((offer) => (
+        {offers.length>0?offers.map((offer) => 
+          offer.homfoRequestThumbnail!==null&&
           <ProposalCard
             key={offer.id}
             offer={offer}
             setModalOpen={setModalOpen}
           />
-        ))}
+        ):null}
       </ProposalArea>
       <ProposalModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
