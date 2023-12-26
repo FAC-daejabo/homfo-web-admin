@@ -10,7 +10,10 @@ import {
   offerRealtorSearchAtom,
 } from "../../stores/offerAtom";
 import { AiFillCamera, AiFillCloseCircle } from "react-icons/ai";
-import { RegisterButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
+import {
+  CancelButton,
+  RegisterButton,
+} from "../../styles/pages/common-sense/register/SenseRegister.style";
 import { FlexEndRow, FlexRowSpaceBetween } from "../../styles/util";
 import RealtorSearchArea from "../area/RealtorSearchArea";
 import {
@@ -520,6 +523,38 @@ const ProposalModal = ({
               <TextArea onChange={(e) => setNote(e.target.value)} />
             </InputContainer>
             <FlexEndRow>
+              <CancelButton
+                onClick={() => {
+                  setModalOpen(false);
+                  setRequestId(undefined);
+                  setRequestDetail(undefined);
+                  setOfferImages([]);
+                  setOfferPreviewImages([]);
+                  setAreaId(undefined);
+                  setAreaDetail(undefined);
+                  setRealtorName("");
+                  setRealtorId(null);
+                  setOfferTitle("");
+                  setRoadAddress("");
+                  setLotAddress("");
+                  setFloor(undefined);
+                  setRoomType("원룸");
+                  setExclusiveArea(undefined);
+                  setSupplyArea(undefined);
+                  setContractType("전세");
+                  setMonthlyDeposit(undefined);
+                  setMonthlyFee(undefined);
+                  setJeonseDeposit(undefined);
+                  setMaintenanceCost(undefined);
+                  setMoveInPeriod("");
+                  setNote("");
+                  setIncluded("");
+                  setNotIncluded("");
+                  setOptions([]);
+                }}
+              >
+                취소
+              </CancelButton>
               <RegisterButton
                 onClick={() => {
                   createOffer().then(() => {
