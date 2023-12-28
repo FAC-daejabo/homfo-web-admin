@@ -8,16 +8,21 @@ const RequestCard: any = ({
   request,
   setModalOpen,
   setRequestId,
+  setOfferId,
 }: {
   request: IRequest;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setRequestId: React.Dispatch<React.SetStateAction<number>>;
+  setOfferId: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   return (
     <RequestCardContainer
       onClick={() => {
         setModalOpen((current) => !current);
         setRequestId(request.id);
+        if (request.offerId !== null) {
+          setOfferId(request.offerId);
+        }
       }}
     >
       <FlexRowSpaceBetween style={{ marginBottom: "15px" }}>

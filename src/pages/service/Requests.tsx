@@ -10,6 +10,7 @@ import { modalAtom } from "../../stores/modalAtom";
 import ProposalModal from "../../components/modal/ProposalModal";
 import { requestAtom, requestIdAtom } from "../../stores/requestAtom";
 import { getRequests } from "../../api/auth/api";
+import { offerIdAtom } from "../../stores/offerAtom";
 
 const Requests = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
@@ -18,6 +19,7 @@ const Requests = () => {
     "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
   >("매물 파악 완료");
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+  const [offerId, setOfferId] = useRecoilState(offerIdAtom);
 
   console.log(requestId);
 
@@ -56,6 +58,7 @@ const Requests = () => {
             request={request}
             setModalOpen={setModalOpen}
             setRequestId={setRequestId}
+            setOfferId={setOfferId}
           />
         ))}
       </RequestArea>

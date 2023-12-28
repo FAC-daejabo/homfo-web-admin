@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
-import { getAreaDetail, getRequestDetail } from "../../api/auth/api";
+import {
+  convertImagesUrlToFile,
+  getAreaDetail,
+  getRequestDetail,
+} from "../../api/auth/api";
 import { IArea, IRequestDetail } from "../../interfaces/RequestInterface";
 import {
+  offerIdAtom,
   offerImagesAtom,
   offerRealtorSearchAtom,
 } from "../../stores/offerAtom";
@@ -64,12 +69,13 @@ const ProposalModal = ({
   const [realtorSearch, setRealtorSearch] = useRecoilState(
     offerRealtorSearchAtom
   );
+  const offerId = useRecoilValue(offerIdAtom);
 
   console.log(requestDetail);
   console.log(areaDetail);
-  console.log(setAgencyId);
-  console.log(setAgencyItemId);
-  console.log(setItemId);
+  // console.log(setAgencyId);
+  // console.log(setAgencyItemId);
+  // console.log(setItemId);
   // console.log("this");
   // console.log(requestId);
   // console.log(agencyId);
@@ -93,6 +99,12 @@ const ProposalModal = ({
   // console.log(moveInPeriod);
   // console.log(options);
   // console.log(note);
+
+  useEffect(() => {
+    if (offerId) {
+      getOfferDetail(offerId);
+    }
+  }, [offerId]);
 
   useEffect(() => {
     if (requestId) {
@@ -178,6 +190,45 @@ const ProposalModal = ({
     );
 
     console.log(res);
+  };
+
+  const getOfferDetail = async (offerId: number) => {
+    const response = await instance.get(`/admins/offers/${offerId}/info`);
+    console.log(response);
+
+    setOfferTitle(response.data.name);
+    setNote(response.data.note);
+    setRealtorId(response.data.realtor.id);
+    setRealtorName(response.data.realtor.name);
+    setAgencyItemId(response.data.agencyItem.id);
+    setAgencyId(response.data.agencyItem.agency.id);
+    setItemId(response.data.agencyItem.item.id);
+    setRoadAddress(response.data.agencyItem.item.roadAddress);
+    setLotAddress(response.data.agencyItem.item.lotAddress);
+    setFloor(response.data.agencyItem.item.floor);
+    setExclusiveArea(response.data.agencyItem.item.exclusiveArea);
+    setSupplyArea(response.data.agencyItem.item.supplyArea);
+    setRoomType(response.data.agencyItem.itemType);
+    setOptions(
+      response.data.agencyItem.itemOptions.data.map(
+        (item: { id: number; name: string }) => item.name
+      )
+    );
+    setContractType(response.data.agencyItem.contractTypes.data);
+    setMonthlyDeposit(response.data.agencyItem.monthlyDeposit);
+    setMonthlyFee(response.data.agencyItem.monthlyFee);
+    setJeonseDeposit(response.data.agencyItem.jeonseDeposit);
+    setMaintenanceCost(response.data.agencyItem.maintenanceCost);
+    setIncluded(response.data.agencyItem.includeMaintenance);
+    setNotIncluded(response.data.agencyItem.excludeMaintenance);
+    setMoveInPeriod(response.data.agencyItem.moveInPeriod);
+
+    convertImagesUrlToFile(
+      response.data.agencyItem.item.images.data.map(
+        (item: { attachment: string; url: string }) => item.url
+      ),
+      setOfferImages
+    );
   };
 
   return (
@@ -305,7 +356,10 @@ const ProposalModal = ({
             </InputContainer>
             <InputContainer>
               <InputTitle>제안서 제목</InputTitle>
-              <Input onChange={(e) => setOfferTitle(e.target.value)} />
+              <Input
+                value={offerTitle}
+                onChange={(e) => setOfferTitle(e.target.value)}
+              />
             </InputContainer>
             <InputTitle>방 사진 선택</InputTitle>
             <ImageInputArea>
@@ -336,16 +390,23 @@ const ProposalModal = ({
             </ImageInputArea>
             <InputContainer>
               <InputTitle>도로명 주소</InputTitle>
-              <Input onChange={(e) => setRoadAddress(e.target.value)} />
+              <Input
+                value={roadAddress}
+                onChange={(e) => setRoadAddress(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>지번 주소</InputTitle>
-              <Input onChange={(e) => setLotAddress(e.target.value)} />
+              <Input
+                value={lotAddress}
+                onChange={(e) => setLotAddress(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>방 층수</InputTitle>
               <Input
                 type="number"
+                value={floor}
                 onChange={(e) => setFloor(Number(e.target.value))}
               />
             </InputContainer>
@@ -376,6 +437,7 @@ const ProposalModal = ({
               <InputTitle>전용 면적(m²)</InputTitle>
               <Input
                 type="number"
+                value={exclusiveArea}
                 onChange={(e) => setExclusiveArea(Number(e.target.value))}
               />
             </InputContainer>
@@ -383,6 +445,7 @@ const ProposalModal = ({
               <InputTitle>공급 면적(m²)</InputTitle>
               <Input
                 type="number"
+                value={supplyArea}
                 onChange={(e) => setSupplyArea(Number(e.target.value))}
               />
             </InputContainer>
@@ -408,6 +471,7 @@ const ProposalModal = ({
                 <InputTitle>전세 보증금</InputTitle>
                 <Input
                   type="number"
+                  value={jeonseDeposit}
                   onChange={(e) => setJeonseDeposit(Number(e.target.value))}
                 />
               </InputContainer>
@@ -417,6 +481,7 @@ const ProposalModal = ({
                   <InputTitle>월세 보증금</InputTitle>
                   <Input
                     type="number"
+                    value={monthlyDeposit}
                     onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
                   />
                 </InputContainer>
@@ -424,6 +489,7 @@ const ProposalModal = ({
                   <InputTitle>월세</InputTitle>
                   <Input
                     type="number"
+                    value={monthlyFee}
                     onChange={(e) => setMonthlyFee(Number(e.target.value))}
                   />
                 </InputContainer>
@@ -433,20 +499,30 @@ const ProposalModal = ({
               <InputTitle>관리비</InputTitle>
               <Input
                 type="number"
+                value={maintenanceCost}
                 onChange={(e) => setMaintenanceCost(Number(e.target.value))}
               />
             </InputContainer>
             <InputContainer>
               <InputTitle>포함항목</InputTitle>
-              <Input onChange={(e) => setIncluded(e.target.value)} />
+              <Input
+                value={included}
+                onChange={(e) => setIncluded(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>미포함항목</InputTitle>
-              <Input onChange={(e) => setNotIncluded(e.target.value)} />
+              <Input
+                value={notIncluded}
+                onChange={(e) => setNotIncluded(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>입주 가능 시기</InputTitle>
-              <Input onChange={(e) => setMoveInPeriod(e.target.value)} />
+              <Input
+                value={moveInPeriod}
+                onChange={(e) => setMoveInPeriod(e.target.value)}
+              />
             </InputContainer>
             {/* <InputContainer>
           <InputTitle>구역 선택</InputTitle>
@@ -520,7 +596,10 @@ const ProposalModal = ({
 
             <InputContainer>
               <InputTitle>기타 전달 사항</InputTitle>
-              <TextArea onChange={(e) => setNote(e.target.value)} />
+              <TextArea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
             </InputContainer>
             <FlexEndRow>
               <CancelButton
