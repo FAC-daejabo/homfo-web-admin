@@ -17,9 +17,9 @@ const SideBar = () => {
           {/* <NavItem>
             <Link to="/service/registration">- 매물 등록</Link>
           </NavItem> */}
-          <NavItem>
+          {/* <NavItem>
             <Link to="/service/proposals">- 작성한 제안서 조회</Link>
-          </NavItem>
+          </NavItem> */}
         </NavList>
       </NavArea>
 

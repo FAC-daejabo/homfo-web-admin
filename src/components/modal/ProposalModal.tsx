@@ -73,7 +73,7 @@ const ProposalModal = ({
   const [realtorSearch, setRealtorSearch] = useRecoilState(
     offerRealtorSearchAtom
   );
-  const offerId = useRecoilValue(offerIdAtom);
+  const [offerId, setOfferId] = useRecoilState(offerIdAtom);
   const matchStatus = useRecoilValue(matchStatusAtom);
 
   console.log(requestDetail);
@@ -109,6 +109,7 @@ const ProposalModal = ({
     if (offerId) {
       getOfferDetail(offerId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offerId]);
 
   useEffect(() => {
@@ -316,6 +317,7 @@ const ProposalModal = ({
         setIncluded("");
         setNotIncluded("");
         setOptions([]);
+        setOfferId(undefined);
       }}
       style={customModalStyles}
       ariaHideApp={false}
@@ -469,7 +471,7 @@ const ProposalModal = ({
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>방 층수</InputTitle>
+              <InputTitle>방 층수(숫자만 입력)</InputTitle>
               <Input
                 disabled={matchStatus === "매물 파악 완료"}
                 type="number"
@@ -531,7 +533,7 @@ const ProposalModal = ({
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>계약형태</InputTitle>
+              <InputTitle>계약형태(전세/월세)</InputTitle>
               <Select
                 disabled={matchStatus === "매물 파악 완료"}
                 onChange={(e) => {
@@ -559,7 +561,7 @@ const ProposalModal = ({
             </InputContainer>
             {contractType === "전세" ? (
               <InputContainer>
-                <InputTitle>전세 보증금</InputTitle>
+                <InputTitle>전세 보증금(만원)</InputTitle>
                 <Input
                   disabled={matchStatus === "매물 파악 완료"}
                   type="number"
@@ -570,7 +572,7 @@ const ProposalModal = ({
             ) : (
               <>
                 <InputContainer>
-                  <InputTitle>월세 보증금</InputTitle>
+                  <InputTitle>월세 보증금(만원)</InputTitle>
                   <Input
                     disabled={matchStatus === "매물 파악 완료"}
                     type="number"
@@ -579,7 +581,7 @@ const ProposalModal = ({
                   />
                 </InputContainer>
                 <InputContainer>
-                  <InputTitle>월세</InputTitle>
+                  <InputTitle>월세(만원)</InputTitle>
                   <Input
                     disabled={matchStatus === "매물 파악 완료"}
                     type="number"
@@ -590,7 +592,7 @@ const ProposalModal = ({
               </>
             )}
             <InputContainer>
-              <InputTitle>관리비</InputTitle>
+              <InputTitle>관리비(만원)</InputTitle>
               <Input
                 disabled={matchStatus === "매물 파악 완료"}
                 type="number"
@@ -599,7 +601,7 @@ const ProposalModal = ({
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>포함항목</InputTitle>
+              <InputTitle>포함 항목</InputTitle>
               <Input
                 disabled={matchStatus === "매물 파악 완료"}
                 value={included}
@@ -607,7 +609,7 @@ const ProposalModal = ({
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>미포함항목</InputTitle>
+              <InputTitle>미포함 항목</InputTitle>
               <Input
                 disabled={matchStatus === "매물 파악 완료"}
                 value={notIncluded}
@@ -617,6 +619,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>입주 가능 시기</InputTitle>
               <Input
+                placeholder="ex. 2023.12.29"
                 disabled={matchStatus === "매물 파악 완료"}
                 value={moveInPeriod}
                 onChange={(e) => setMoveInPeriod(e.target.value)}
@@ -731,6 +734,7 @@ const ProposalModal = ({
                   setIncluded("");
                   setNotIncluded("");
                   setOptions([]);
+                  setOfferId(undefined);
                 }}
               >
                 취소
@@ -769,6 +773,7 @@ const ProposalModal = ({
                         setIncluded("");
                         setNotIncluded("");
                         setOptions([]);
+                        setOfferId(undefined);
                       });
                     });
                   }}
@@ -782,7 +787,7 @@ const ProposalModal = ({
                     if (matchStatus === "신청 완료") {
                       createOffer().then(() => {
                         Swal.fire({
-                          text: "제안서가 저장되었습니다.",
+                          text: "제안서가 임시저장 되었습니다.",
                         }).then(() => {
                           setModalOpen(false);
                           setRequestId(undefined);
@@ -810,6 +815,7 @@ const ProposalModal = ({
                           setIncluded("");
                           setNotIncluded("");
                           setOptions([]);
+                          setOfferId(undefined);
                         });
                       });
                     } else if (matchStatus === "매물 파악 중") {
@@ -847,12 +853,13 @@ const ProposalModal = ({
                             setIncluded("");
                             setNotIncluded("");
                             setOptions([]);
+                            setOfferId(undefined);
                           });
                         });
                     }
                   }}
                 >
-                  {matchStatus === "매물 파악 중" ? "최종 등록" : "저장"}
+                  {matchStatus === "매물 파악 중" ? "최종 등록" : "임시저장"}
                 </RegisterButton>
               ) : null}
             </FlexEndRow>

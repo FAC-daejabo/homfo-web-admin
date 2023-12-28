@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   PageHeaderWrapper,
   PageTitle,
@@ -24,6 +24,7 @@ const Requests = () => {
   const [offerId, setOfferId] = useRecoilState(offerIdAtom);
 
   console.log(requestId);
+  console.log(offerId);
 
   useEffect(() => {
     getRequests(matchStatus, setRequests);
