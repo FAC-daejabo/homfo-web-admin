@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
+import {
+  areaIdAtom,
+  matchStatusAtom,
+  requestIdAtom,
+} from "../../stores/requestAtom";
 import {
   convertImagesUrlToFile,
   getAreaDetail,
@@ -70,6 +74,7 @@ const ProposalModal = ({
     offerRealtorSearchAtom
   );
   const offerId = useRecoilValue(offerIdAtom);
+  const matchStatus = useRecoilValue(matchStatusAtom);
 
   console.log(requestDetail);
   console.log(areaDetail);
@@ -89,10 +94,10 @@ const ProposalModal = ({
   // console.log(roomType);
   // console.log(exclusiveArea);
   // console.log(supplyArea);
-  // console.log(contractType);
-  // console.log(jeonseDeposit);
-  // console.log(monthlyDeposit);
-  // console.log(monthlyFee);
+  console.log(contractType);
+  console.log(jeonseDeposit);
+  console.log(monthlyDeposit);
+  console.log(monthlyFee);
   // console.log(maintenanceCost);
   // console.log(included);
   // console.log(notIncluded);
@@ -145,6 +150,56 @@ const ProposalModal = ({
       offerPreviewImages.filter((_, index) => index !== id)
     );
     setOfferImages(offerImages.filter((_, index) => index !== id));
+  };
+
+  const modifyOffer = async () => {
+    const res = await instance.patch(
+      `/admins/offers/${offerId}/modify`,
+      createOfferImageFormData(offerImages, {
+        name: offerTitle,
+        note: note,
+        homfoRequestId: requestId,
+        realtorId: realtorId,
+        agencyItem: {
+          id: agencyItemId,
+          agencyId: agencyId,
+          item: {
+            id: itemId,
+            name: null,
+            roadAddress: roadAddress,
+            lotAddress: lotAddress,
+            floor: floor,
+            roomNumber: null,
+            exclusiveArea: exclusiveArea,
+            supplyArea: supplyArea,
+          },
+          itemType: roomType,
+          itemOptions: options,
+          contractTypes: [contractType],
+          loanType: null,
+          monthlyDeposit: monthlyDeposit,
+          monthlyFee: monthlyFee,
+          jeonseDeposit: jeonseDeposit,
+          maintenanceCost: maintenanceCost,
+          includeMaintenance: included,
+          excludeMaintenance: notIncluded,
+          moveInPeriod: moveInPeriod,
+          note: null,
+        },
+      }),
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(res);
+  };
+
+  const submitOffer = async () => {
+    const res = await instance.patch(`/admins/offers/${offerId}/submit`);
+    console.log(res);
   };
 
   const createOffer = async () => {
@@ -214,7 +269,7 @@ const ProposalModal = ({
         (item: { id: number; name: string }) => item.name
       )
     );
-    setContractType(response.data.agencyItem.contractTypes.data);
+    setContractType(response.data.agencyItem.contractTypes.data[0]);
     setMonthlyDeposit(response.data.agencyItem.monthlyDeposit);
     setMonthlyFee(response.data.agencyItem.monthlyFee);
     setJeonseDeposit(response.data.agencyItem.jeonseDeposit);
@@ -462,8 +517,17 @@ const ProposalModal = ({
                   }
                 }}
               >
-                <option value="전세">전세</option>
-                <option value="월세">월세</option>
+                {contractType === "전세" ? (
+                  <>
+                    <option value="전세">전세</option>
+                    <option value="월세">월세</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="월세">월세</option>
+                    <option value="전세">전세</option>
+                  </>
+                )}
               </Select>
             </InputContainer>
             {contractType === "전세" ? (
@@ -634,44 +698,126 @@ const ProposalModal = ({
               >
                 취소
               </CancelButton>
-              <RegisterButton
-                onClick={() => {
-                  createOffer().then(() => {
-                    Swal.fire({
-                      text: "제안서가 작성되었습니다.",
-                    }).then(() => {
-                      setModalOpen(false);
-                      setRequestId(undefined);
-                      setRequestDetail(undefined);
-                      setOfferImages([]);
-                      setOfferPreviewImages([]);
-                      setAreaId(undefined);
-                      setAreaDetail(undefined);
-                      setRealtorName("");
-                      setRealtorId(null);
-                      setOfferTitle("");
-                      setRoadAddress("");
-                      setLotAddress("");
-                      setFloor(undefined);
-                      setRoomType("원룸");
-                      setExclusiveArea(undefined);
-                      setSupplyArea(undefined);
-                      setContractType("전세");
-                      setMonthlyDeposit(undefined);
-                      setMonthlyFee(undefined);
-                      setJeonseDeposit(undefined);
-                      setMaintenanceCost(undefined);
-                      setMoveInPeriod("");
-                      setNote("");
-                      setIncluded("");
-                      setNotIncluded("");
-                      setOptions([]);
+              {matchStatus === "매물 파악 중" ? (
+                <RegisterButton
+                  style={{ backgroundColor: "#ffc107" }}
+                  onClick={() => {
+                    modifyOffer().then(() => {
+                      Swal.fire({
+                        text: "제안서가 수정되었습니다.",
+                      }).then(() => {
+                        setModalOpen(false);
+                        setRequestId(undefined);
+                        setRequestDetail(undefined);
+                        setOfferImages([]);
+                        setOfferPreviewImages([]);
+                        setAreaId(undefined);
+                        setAreaDetail(undefined);
+                        setRealtorName("");
+                        setRealtorId(null);
+                        setOfferTitle("");
+                        setRoadAddress("");
+                        setLotAddress("");
+                        setFloor(undefined);
+                        setRoomType("원룸");
+                        setExclusiveArea(undefined);
+                        setSupplyArea(undefined);
+                        setContractType("전세");
+                        setMonthlyDeposit(undefined);
+                        setMonthlyFee(undefined);
+                        setJeonseDeposit(undefined);
+                        setMaintenanceCost(undefined);
+                        setMoveInPeriod("");
+                        setNote("");
+                        setIncluded("");
+                        setNotIncluded("");
+                        setOptions([]);
+                      });
                     });
-                  });
-                }}
-              >
-                최종 등록
-              </RegisterButton>
+                  }}
+                >
+                  수정
+                </RegisterButton>
+              ) : null}
+              {matchStatus !== "매물 파악 완료" ? (
+                <RegisterButton
+                  onClick={() => {
+                    if (matchStatus === "신청 완료") {
+                      createOffer().then(() => {
+                        Swal.fire({
+                          text: "제안서가 저장되었습니다.",
+                        }).then(() => {
+                          setModalOpen(false);
+                          setRequestId(undefined);
+                          setRequestDetail(undefined);
+                          setOfferImages([]);
+                          setOfferPreviewImages([]);
+                          setAreaId(undefined);
+                          setAreaDetail(undefined);
+                          setRealtorName("");
+                          setRealtorId(null);
+                          setOfferTitle("");
+                          setRoadAddress("");
+                          setLotAddress("");
+                          setFloor(undefined);
+                          setRoomType("원룸");
+                          setExclusiveArea(undefined);
+                          setSupplyArea(undefined);
+                          setContractType("전세");
+                          setMonthlyDeposit(undefined);
+                          setMonthlyFee(undefined);
+                          setJeonseDeposit(undefined);
+                          setMaintenanceCost(undefined);
+                          setMoveInPeriod("");
+                          setNote("");
+                          setIncluded("");
+                          setNotIncluded("");
+                          setOptions([]);
+                        });
+                      });
+                    } else if (matchStatus === "매물 파악 중") {
+                      modifyOffer()
+                        .then(() => {
+                          return submitOffer();
+                        })
+                        .then(() => {
+                          Swal.fire({
+                            text: "제안서가 최종 제출되었습니다.",
+                          }).then(() => {
+                            setModalOpen(false);
+                            setRequestId(undefined);
+                            setRequestDetail(undefined);
+                            setOfferImages([]);
+                            setOfferPreviewImages([]);
+                            setAreaId(undefined);
+                            setAreaDetail(undefined);
+                            setRealtorName("");
+                            setRealtorId(null);
+                            setOfferTitle("");
+                            setRoadAddress("");
+                            setLotAddress("");
+                            setFloor(undefined);
+                            setRoomType("원룸");
+                            setExclusiveArea(undefined);
+                            setSupplyArea(undefined);
+                            setContractType("전세");
+                            setMonthlyDeposit(undefined);
+                            setMonthlyFee(undefined);
+                            setJeonseDeposit(undefined);
+                            setMaintenanceCost(undefined);
+                            setMoveInPeriod("");
+                            setNote("");
+                            setIncluded("");
+                            setNotIncluded("");
+                            setOptions([]);
+                          });
+                        });
+                    }
+                  }}
+                >
+                  {matchStatus === "매물 파악 중" ? "최종 등록" : "저장"}
+                </RegisterButton>
+              ) : null}
             </FlexEndRow>
           </ProposalArea>
         </>
