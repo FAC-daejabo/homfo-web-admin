@@ -127,6 +127,9 @@ export const RegisterButton = styled.button`
   cursor: pointer;
 `;
 
+export const CancelButton = styled(RegisterButton)`
+  background-color: #637381;
+`;
 export const ModifyButton = styled(RegisterButton)`
   background-color: #ffc107;
 `;

@@ -60,3 +60,10 @@ export const requestOtherOptionAtom = atom<string>({
   key: "requestOtherOptionAtom",
   default: "",
 });
+
+export const matchStatusAtom = atom<
+  "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
+>({
+  key: "matchStatusAtom",
+  default: "매물 파악 완료",
+});

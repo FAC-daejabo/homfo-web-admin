@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   PageHeaderWrapper,
   PageTitle,
@@ -8,18 +8,23 @@ import RequestCard from "../../components/card/RequestCard";
 import { useRecoilState } from "recoil";
 import { modalAtom } from "../../stores/modalAtom";
 import ProposalModal from "../../components/modal/ProposalModal";
-import { requestAtom, requestIdAtom } from "../../stores/requestAtom";
+import {
+  matchStatusAtom,
+  requestAtom,
+  requestIdAtom,
+} from "../../stores/requestAtom";
 import { getRequests } from "../../api/auth/api";
+import { offerIdAtom } from "../../stores/offerAtom";
 
 const Requests = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const [requests, setRequests] = useRecoilState(requestAtom);
-  const [matchStatus, setMatchStatus] = useState<
-    "매물 파악 완료" | "매물 파악 중" | "신청 완료" | undefined
-  >("매물 파악 완료");
+  const [matchStatus, setMatchStatus] = useRecoilState(matchStatusAtom);
   const [requestId, setRequestId] = useRecoilState(requestIdAtom);
+  const [offerId, setOfferId] = useRecoilState(offerIdAtom);
 
   console.log(requestId);
+  console.log(offerId);
 
   useEffect(() => {
     getRequests(matchStatus, setRequests);
@@ -56,6 +61,7 @@ const Requests = () => {
             request={request}
             setModalOpen={setModalOpen}
             setRequestId={setRequestId}
+            setOfferId={setOfferId}
           />
         ))}
       </RequestArea>

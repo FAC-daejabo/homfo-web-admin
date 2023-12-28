@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { areaIdAtom, requestIdAtom } from "../../stores/requestAtom";
-import { getAreaDetail, getRequestDetail } from "../../api/auth/api";
+import {
+  areaIdAtom,
+  matchStatusAtom,
+  requestIdAtom,
+} from "../../stores/requestAtom";
+import {
+  convertImagesUrlToFile,
+  getAreaDetail,
+  getRequestDetail,
+} from "../../api/auth/api";
 import { IArea, IRequestDetail } from "../../interfaces/RequestInterface";
 import {
+  offerIdAtom,
   offerImagesAtom,
   offerRealtorSearchAtom,
 } from "../../stores/offerAtom";
 import { AiFillCamera, AiFillCloseCircle } from "react-icons/ai";
-import { RegisterButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
+import {
+  CancelButton,
+  RegisterButton,
+} from "../../styles/pages/common-sense/register/SenseRegister.style";
 import { FlexEndRow, FlexRowSpaceBetween } from "../../styles/util";
 import RealtorSearchArea from "../area/RealtorSearchArea";
 import {
@@ -61,12 +73,14 @@ const ProposalModal = ({
   const [realtorSearch, setRealtorSearch] = useRecoilState(
     offerRealtorSearchAtom
   );
+  const [offerId, setOfferId] = useRecoilState(offerIdAtom);
+  const matchStatus = useRecoilValue(matchStatusAtom);
 
   console.log(requestDetail);
   console.log(areaDetail);
-  console.log(setAgencyId);
-  console.log(setAgencyItemId);
-  console.log(setItemId);
+  // console.log(setAgencyId);
+  // console.log(setAgencyItemId);
+  // console.log(setItemId);
   // console.log("this");
   // console.log(requestId);
   // console.log(agencyId);
@@ -80,16 +94,23 @@ const ProposalModal = ({
   // console.log(roomType);
   // console.log(exclusiveArea);
   // console.log(supplyArea);
-  // console.log(contractType);
-  // console.log(jeonseDeposit);
-  // console.log(monthlyDeposit);
-  // console.log(monthlyFee);
+  console.log(contractType);
+  console.log(jeonseDeposit);
+  console.log(monthlyDeposit);
+  console.log(monthlyFee);
   // console.log(maintenanceCost);
   // console.log(included);
   // console.log(notIncluded);
   // console.log(moveInPeriod);
   // console.log(options);
   // console.log(note);
+
+  useEffect(() => {
+    if (offerId) {
+      getOfferDetail(offerId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offerId]);
 
   useEffect(() => {
     if (requestId) {
@@ -130,6 +151,56 @@ const ProposalModal = ({
       offerPreviewImages.filter((_, index) => index !== id)
     );
     setOfferImages(offerImages.filter((_, index) => index !== id));
+  };
+
+  const modifyOffer = async () => {
+    const res = await instance.patch(
+      `/admins/offers/${offerId}/modify`,
+      createOfferImageFormData(offerImages, {
+        name: offerTitle,
+        note: note,
+        homfoRequestId: requestId,
+        realtorId: realtorId,
+        agencyItem: {
+          id: agencyItemId,
+          agencyId: agencyId,
+          item: {
+            id: itemId,
+            name: null,
+            roadAddress: roadAddress,
+            lotAddress: lotAddress,
+            floor: floor,
+            roomNumber: null,
+            exclusiveArea: exclusiveArea,
+            supplyArea: supplyArea,
+          },
+          itemType: roomType,
+          itemOptions: options,
+          contractTypes: [contractType],
+          loanType: null,
+          monthlyDeposit: monthlyDeposit,
+          monthlyFee: monthlyFee,
+          jeonseDeposit: jeonseDeposit,
+          maintenanceCost: maintenanceCost,
+          includeMaintenance: included,
+          excludeMaintenance: notIncluded,
+          moveInPeriod: moveInPeriod,
+          note: null,
+        },
+      }),
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(res);
+  };
+
+  const submitOffer = async () => {
+    const res = await instance.patch(`/admins/offers/${offerId}/submit`);
+    console.log(res);
   };
 
   const createOffer = async () => {
@@ -177,6 +248,45 @@ const ProposalModal = ({
     console.log(res);
   };
 
+  const getOfferDetail = async (offerId: number) => {
+    const response = await instance.get(`/admins/offers/${offerId}/info`);
+    console.log(response);
+
+    setOfferTitle(response.data.name);
+    setNote(response.data.note);
+    setRealtorId(response.data.realtor.id);
+    setRealtorName(response.data.realtor.name);
+    setAgencyItemId(response.data.agencyItem.id);
+    setAgencyId(response.data.agencyItem.agency.id);
+    setItemId(response.data.agencyItem.item.id);
+    setRoadAddress(response.data.agencyItem.item.roadAddress);
+    setLotAddress(response.data.agencyItem.item.lotAddress);
+    setFloor(response.data.agencyItem.item.floor);
+    setExclusiveArea(response.data.agencyItem.item.exclusiveArea);
+    setSupplyArea(response.data.agencyItem.item.supplyArea);
+    setRoomType(response.data.agencyItem.itemType);
+    setOptions(
+      response.data.agencyItem.itemOptions.data.map(
+        (item: { id: number; name: string }) => item.name
+      )
+    );
+    setContractType(response.data.agencyItem.contractTypes.data[0]);
+    setMonthlyDeposit(response.data.agencyItem.monthlyDeposit);
+    setMonthlyFee(response.data.agencyItem.monthlyFee);
+    setJeonseDeposit(response.data.agencyItem.jeonseDeposit);
+    setMaintenanceCost(response.data.agencyItem.maintenanceCost);
+    setIncluded(response.data.agencyItem.includeMaintenance);
+    setNotIncluded(response.data.agencyItem.excludeMaintenance);
+    setMoveInPeriod(response.data.agencyItem.moveInPeriod);
+
+    convertImagesUrlToFile(
+      response.data.agencyItem.item.images.data.map(
+        (item: { attachment: string; url: string }) => item.url
+      ),
+      setOfferImages
+    );
+  };
+
   return (
     <ReactModal
       isOpen={modalOpen}
@@ -207,6 +317,7 @@ const ProposalModal = ({
         setIncluded("");
         setNotIncluded("");
         setOptions([]);
+        setOfferId(undefined);
       }}
       style={customModalStyles}
       ariaHideApp={false}
@@ -296,13 +407,18 @@ const ProposalModal = ({
             <InputContainer style={{ paddingTop: "15px" }}>
               <InputTitle>중개사 선택</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={realtorName}
                 onClick={() => setRealtorSearch((current) => !current)}
               />
             </InputContainer>
             <InputContainer>
               <InputTitle>제안서 제목</InputTitle>
-              <Input onChange={(e) => setOfferTitle(e.target.value)} />
+              <Input
+                disabled={matchStatus === "매물 파악 완료"}
+                value={offerTitle}
+                onChange={(e) => setOfferTitle(e.target.value)}
+              />
             </InputContainer>
             <InputTitle>방 사진 선택</InputTitle>
             <ImageInputArea>
@@ -314,6 +430,7 @@ const ProposalModal = ({
                 type="file"
                 accept="image/*"
                 multiple
+                disabled={matchStatus === "매물 파악 완료"}
                 onChange={(e) => {
                   setOfferImages((current) => {
                     let tempList = [...current];
@@ -327,22 +444,38 @@ const ProposalModal = ({
               {offerPreviewImages.map((image, id) => (
                 <ImageInputLabel as="div" key={id}>
                   <PreviewImage src={image} alt={`${image}-${id}`} />
-                  <DeleteIcon onClick={() => handleDeleteImage(id)} />
+                  <DeleteIcon
+                    onClick={() => {
+                      if (matchStatus !== "매물 파악 완료") {
+                        handleDeleteImage(id);
+                      }
+                    }}
+                  />
                 </ImageInputLabel>
               ))}
             </ImageInputArea>
             <InputContainer>
               <InputTitle>도로명 주소</InputTitle>
-              <Input onChange={(e) => setRoadAddress(e.target.value)} />
+              <Input
+                disabled={matchStatus === "매물 파악 완료"}
+                value={roadAddress}
+                onChange={(e) => setRoadAddress(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>지번 주소</InputTitle>
-              <Input onChange={(e) => setLotAddress(e.target.value)} />
+              <Input
+                disabled={matchStatus === "매물 파악 완료"}
+                value={lotAddress}
+                onChange={(e) => setLotAddress(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
-              <InputTitle>방 층수</InputTitle>
+              <InputTitle>방 층수(숫자만 입력)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
+                value={floor}
                 onChange={(e) => setFloor(Number(e.target.value))}
               />
             </InputContainer>
@@ -351,19 +484,31 @@ const ProposalModal = ({
               <div>
                 <Button
                   active={roomType === "원룸"}
-                  onClick={() => setRoomType("원룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("원룸");
+                    }
+                  }}
                 >
                   원룸
                 </Button>
                 <Button
                   active={roomType === "투룸"}
-                  onClick={() => setRoomType("투룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("투룸");
+                    }
+                  }}
                 >
                   투룸
                 </Button>
                 <Button
                   active={roomType === "쓰리룸"}
-                  onClick={() => setRoomType("쓰리룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("쓰리룸");
+                    }
+                  }}
                 >
                   쓰리룸
                 </Button>
@@ -372,20 +517,25 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>전용 면적(m²)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
+                value={exclusiveArea}
                 onChange={(e) => setExclusiveArea(Number(e.target.value))}
               />
             </InputContainer>
             <InputContainer>
               <InputTitle>공급 면적(m²)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
+                value={supplyArea}
                 onChange={(e) => setSupplyArea(Number(e.target.value))}
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>계약형태</InputTitle>
+              <InputTitle>계약형태(전세/월세)</InputTitle>
               <Select
+                disabled={matchStatus === "매물 파악 완료"}
                 onChange={(e) => {
                   setContractType(e.target.value as any);
                   if (e.target.value === "전세") {
@@ -396,54 +546,84 @@ const ProposalModal = ({
                   }
                 }}
               >
-                <option value="전세">전세</option>
-                <option value="월세">월세</option>
+                {contractType === "전세" ? (
+                  <>
+                    <option value="전세">전세</option>
+                    <option value="월세">월세</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="월세">월세</option>
+                    <option value="전세">전세</option>
+                  </>
+                )}
               </Select>
             </InputContainer>
             {contractType === "전세" ? (
               <InputContainer>
-                <InputTitle>전세 보증금</InputTitle>
+                <InputTitle>전세 보증금(만원)</InputTitle>
                 <Input
+                  disabled={matchStatus === "매물 파악 완료"}
                   type="number"
+                  value={jeonseDeposit}
                   onChange={(e) => setJeonseDeposit(Number(e.target.value))}
                 />
               </InputContainer>
             ) : (
               <>
                 <InputContainer>
-                  <InputTitle>월세 보증금</InputTitle>
+                  <InputTitle>월세 보증금(만원)</InputTitle>
                   <Input
+                    disabled={matchStatus === "매물 파악 완료"}
                     type="number"
+                    value={monthlyDeposit}
                     onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
                   />
                 </InputContainer>
                 <InputContainer>
-                  <InputTitle>월세</InputTitle>
+                  <InputTitle>월세(만원)</InputTitle>
                   <Input
+                    disabled={matchStatus === "매물 파악 완료"}
                     type="number"
+                    value={monthlyFee}
                     onChange={(e) => setMonthlyFee(Number(e.target.value))}
                   />
                 </InputContainer>
               </>
             )}
             <InputContainer>
-              <InputTitle>관리비</InputTitle>
+              <InputTitle>관리비(만원)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
+                value={maintenanceCost}
                 onChange={(e) => setMaintenanceCost(Number(e.target.value))}
               />
             </InputContainer>
             <InputContainer>
-              <InputTitle>포함항목</InputTitle>
-              <Input onChange={(e) => setIncluded(e.target.value)} />
+              <InputTitle>포함 항목</InputTitle>
+              <Input
+                disabled={matchStatus === "매물 파악 완료"}
+                value={included}
+                onChange={(e) => setIncluded(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
-              <InputTitle>미포함항목</InputTitle>
-              <Input onChange={(e) => setNotIncluded(e.target.value)} />
+              <InputTitle>미포함 항목</InputTitle>
+              <Input
+                disabled={matchStatus === "매물 파악 완료"}
+                value={notIncluded}
+                onChange={(e) => setNotIncluded(e.target.value)}
+              />
             </InputContainer>
             <InputContainer>
               <InputTitle>입주 가능 시기</InputTitle>
-              <Input onChange={(e) => setMoveInPeriod(e.target.value)} />
+              <Input
+                placeholder="ex. 2023.12.29"
+                disabled={matchStatus === "매물 파악 완료"}
+                value={moveInPeriod}
+                onChange={(e) => setMoveInPeriod(e.target.value)}
+              />
             </InputContainer>
             {/* <InputContainer>
           <InputTitle>구역 선택</InputTitle>
@@ -488,7 +668,7 @@ const ProposalModal = ({
                 <AddButton
                   style={{ width: "15%" }}
                   onClick={() => {
-                    if (option !== "") {
+                    if (option !== "" && matchStatus !== "매물 파악 완료") {
                       setOptions([...options, option]);
                       setOption("");
                     }
@@ -504,9 +684,11 @@ const ProposalModal = ({
                   {option}
                   <OptionDeleteButton
                     onClick={() => {
-                      setOptions((current) => {
-                        return [...current].filter((item) => item !== option);
-                      });
+                      if (matchStatus !== "매물 파악 완료") {
+                        setOptions((current) => {
+                          return [...current].filter((item) => item !== option);
+                        });
+                      }
                     }}
                   >
                     X
@@ -517,47 +699,169 @@ const ProposalModal = ({
 
             <InputContainer>
               <InputTitle>기타 전달 사항</InputTitle>
-              <TextArea onChange={(e) => setNote(e.target.value)} />
+              <TextArea
+                disabled={matchStatus === "매물 파악 완료"}
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
             </InputContainer>
             <FlexEndRow>
-              <RegisterButton
+              <CancelButton
                 onClick={() => {
-                  createOffer().then(() => {
-                    Swal.fire({
-                      text: "제안서가 작성되었습니다.",
-                    }).then(() => {
-                      setModalOpen(false);
-                      setRequestId(undefined);
-                      setRequestDetail(undefined);
-                      setOfferImages([]);
-                      setOfferPreviewImages([]);
-                      setAreaId(undefined);
-                      setAreaDetail(undefined);
-                      setRealtorName("");
-                      setRealtorId(null);
-                      setOfferTitle("");
-                      setRoadAddress("");
-                      setLotAddress("");
-                      setFloor(undefined);
-                      setRoomType("원룸");
-                      setExclusiveArea(undefined);
-                      setSupplyArea(undefined);
-                      setContractType("전세");
-                      setMonthlyDeposit(undefined);
-                      setMonthlyFee(undefined);
-                      setJeonseDeposit(undefined);
-                      setMaintenanceCost(undefined);
-                      setMoveInPeriod("");
-                      setNote("");
-                      setIncluded("");
-                      setNotIncluded("");
-                      setOptions([]);
-                    });
-                  });
+                  setModalOpen(false);
+                  setRequestId(undefined);
+                  setRequestDetail(undefined);
+                  setOfferImages([]);
+                  setOfferPreviewImages([]);
+                  setAreaId(undefined);
+                  setAreaDetail(undefined);
+                  setRealtorName("");
+                  setRealtorId(null);
+                  setOfferTitle("");
+                  setRoadAddress("");
+                  setLotAddress("");
+                  setFloor(undefined);
+                  setRoomType("원룸");
+                  setExclusiveArea(undefined);
+                  setSupplyArea(undefined);
+                  setContractType("전세");
+                  setMonthlyDeposit(undefined);
+                  setMonthlyFee(undefined);
+                  setJeonseDeposit(undefined);
+                  setMaintenanceCost(undefined);
+                  setMoveInPeriod("");
+                  setNote("");
+                  setIncluded("");
+                  setNotIncluded("");
+                  setOptions([]);
+                  setOfferId(undefined);
                 }}
               >
-                최종 등록
-              </RegisterButton>
+                취소
+              </CancelButton>
+              {matchStatus === "매물 파악 중" ? (
+                <RegisterButton
+                  style={{ backgroundColor: "#ffc107" }}
+                  onClick={() => {
+                    modifyOffer().then(() => {
+                      Swal.fire({
+                        text: "제안서가 수정되었습니다.",
+                      }).then(() => {
+                        setModalOpen(false);
+                        setRequestId(undefined);
+                        setRequestDetail(undefined);
+                        setOfferImages([]);
+                        setOfferPreviewImages([]);
+                        setAreaId(undefined);
+                        setAreaDetail(undefined);
+                        setRealtorName("");
+                        setRealtorId(null);
+                        setOfferTitle("");
+                        setRoadAddress("");
+                        setLotAddress("");
+                        setFloor(undefined);
+                        setRoomType("원룸");
+                        setExclusiveArea(undefined);
+                        setSupplyArea(undefined);
+                        setContractType("전세");
+                        setMonthlyDeposit(undefined);
+                        setMonthlyFee(undefined);
+                        setJeonseDeposit(undefined);
+                        setMaintenanceCost(undefined);
+                        setMoveInPeriod("");
+                        setNote("");
+                        setIncluded("");
+                        setNotIncluded("");
+                        setOptions([]);
+                        setOfferId(undefined);
+                      });
+                    });
+                  }}
+                >
+                  수정
+                </RegisterButton>
+              ) : null}
+              {matchStatus !== "매물 파악 완료" ? (
+                <RegisterButton
+                  onClick={() => {
+                    if (matchStatus === "신청 완료") {
+                      createOffer().then(() => {
+                        Swal.fire({
+                          text: "제안서가 임시저장 되었습니다.",
+                        }).then(() => {
+                          setModalOpen(false);
+                          setRequestId(undefined);
+                          setRequestDetail(undefined);
+                          setOfferImages([]);
+                          setOfferPreviewImages([]);
+                          setAreaId(undefined);
+                          setAreaDetail(undefined);
+                          setRealtorName("");
+                          setRealtorId(null);
+                          setOfferTitle("");
+                          setRoadAddress("");
+                          setLotAddress("");
+                          setFloor(undefined);
+                          setRoomType("원룸");
+                          setExclusiveArea(undefined);
+                          setSupplyArea(undefined);
+                          setContractType("전세");
+                          setMonthlyDeposit(undefined);
+                          setMonthlyFee(undefined);
+                          setJeonseDeposit(undefined);
+                          setMaintenanceCost(undefined);
+                          setMoveInPeriod("");
+                          setNote("");
+                          setIncluded("");
+                          setNotIncluded("");
+                          setOptions([]);
+                          setOfferId(undefined);
+                        });
+                      });
+                    } else if (matchStatus === "매물 파악 중") {
+                      modifyOffer()
+                        .then(() => {
+                          return submitOffer();
+                        })
+                        .then(() => {
+                          Swal.fire({
+                            text: "제안서가 최종 제출되었습니다.",
+                          }).then(() => {
+                            setModalOpen(false);
+                            setRequestId(undefined);
+                            setRequestDetail(undefined);
+                            setOfferImages([]);
+                            setOfferPreviewImages([]);
+                            setAreaId(undefined);
+                            setAreaDetail(undefined);
+                            setRealtorName("");
+                            setRealtorId(null);
+                            setOfferTitle("");
+                            setRoadAddress("");
+                            setLotAddress("");
+                            setFloor(undefined);
+                            setRoomType("원룸");
+                            setExclusiveArea(undefined);
+                            setSupplyArea(undefined);
+                            setContractType("전세");
+                            setMonthlyDeposit(undefined);
+                            setMonthlyFee(undefined);
+                            setJeonseDeposit(undefined);
+                            setMaintenanceCost(undefined);
+                            setMoveInPeriod("");
+                            setNote("");
+                            setIncluded("");
+                            setNotIncluded("");
+                            setOptions([]);
+                            setOfferId(undefined);
+                          });
+                        });
+                    }
+                  }}
+                >
+                  {matchStatus === "매물 파악 중" ? "최종 등록" : "임시저장"}
+                </RegisterButton>
+              ) : null}
             </FlexEndRow>
           </ProposalArea>
         </>

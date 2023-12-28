@@ -94,7 +94,7 @@ export const getUserList = async (
     const response = await instance.get(`admins/users/${adminId}/search`, {
       params: {
         page: 0,
-        size: 10,
+        size: 1000,
         firstView: true,
         role: "회원",
       },
@@ -308,9 +308,7 @@ export const getAreaDetail = async (
   }
 };
 
-export const getOffers = async (
-  setOffers: SetterOrUpdater<IOffer[]>
-) => {
+export const getOffers = async (setOffers: SetterOrUpdater<IOffer[]>) => {
   try {
     const response = await instance.get("/admins/offers/search", {
       params: {

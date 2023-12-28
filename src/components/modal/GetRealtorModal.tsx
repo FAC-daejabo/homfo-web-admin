@@ -1,6 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
 import RealtorSearchArea from "../area/RealtorSearchArea";
+import { FlexRowCenter } from "../../styles/util";
+import { CancelButton } from "../../styles/pages/common-sense/register/SenseRegister.style";
 
 const GetRealtorModal = ({
   realtorModalOpen,
@@ -20,6 +22,14 @@ const GetRealtorModal = ({
       ariaHideApp={false}
     >
       <RealtorSearchArea />
+      <FlexRowCenter>
+        <CancelButton
+          style={{ marginTop: "10px" }}
+          onClick={() => setRealtorModalOpen(false)}
+        >
+          닫기
+        </CancelButton>
+      </FlexRowCenter>
     </ReactModal>
   );
 };
@@ -38,7 +48,7 @@ const customModalStyles: ReactModal.Styles = {
   },
   content: {
     width: "80%",
-    height: "80%",
+    height: "87%",
     zIndex: "150",
     position: "absolute",
     top: "50%",

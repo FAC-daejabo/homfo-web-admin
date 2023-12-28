@@ -15,3 +15,8 @@ export const offerRealtorSearchAtom = atom<boolean>({
   key: "offerRealtorSearchAtom",
   default: false,
 });
+
+export const offerIdAtom = atom<number | undefined>({
+  key: "offerIdAtom",
+  default: undefined,
+});
