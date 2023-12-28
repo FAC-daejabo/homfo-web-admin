@@ -405,6 +405,7 @@ const ProposalModal = ({
             <InputContainer style={{ paddingTop: "15px" }}>
               <InputTitle>중개사 선택</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={realtorName}
                 onClick={() => setRealtorSearch((current) => !current)}
               />
@@ -412,6 +413,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>제안서 제목</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={offerTitle}
                 onChange={(e) => setOfferTitle(e.target.value)}
               />
@@ -426,6 +428,7 @@ const ProposalModal = ({
                 type="file"
                 accept="image/*"
                 multiple
+                disabled={matchStatus === "매물 파악 완료"}
                 onChange={(e) => {
                   setOfferImages((current) => {
                     let tempList = [...current];
@@ -439,13 +442,20 @@ const ProposalModal = ({
               {offerPreviewImages.map((image, id) => (
                 <ImageInputLabel as="div" key={id}>
                   <PreviewImage src={image} alt={`${image}-${id}`} />
-                  <DeleteIcon onClick={() => handleDeleteImage(id)} />
+                  <DeleteIcon
+                    onClick={() => {
+                      if (matchStatus !== "매물 파악 완료") {
+                        handleDeleteImage(id);
+                      }
+                    }}
+                  />
                 </ImageInputLabel>
               ))}
             </ImageInputArea>
             <InputContainer>
               <InputTitle>도로명 주소</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={roadAddress}
                 onChange={(e) => setRoadAddress(e.target.value)}
               />
@@ -453,6 +463,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>지번 주소</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={lotAddress}
                 onChange={(e) => setLotAddress(e.target.value)}
               />
@@ -460,6 +471,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>방 층수</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
                 value={floor}
                 onChange={(e) => setFloor(Number(e.target.value))}
@@ -470,19 +482,31 @@ const ProposalModal = ({
               <div>
                 <Button
                   active={roomType === "원룸"}
-                  onClick={() => setRoomType("원룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("원룸");
+                    }
+                  }}
                 >
                   원룸
                 </Button>
                 <Button
                   active={roomType === "투룸"}
-                  onClick={() => setRoomType("투룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("투룸");
+                    }
+                  }}
                 >
                   투룸
                 </Button>
                 <Button
                   active={roomType === "쓰리룸"}
-                  onClick={() => setRoomType("쓰리룸")}
+                  onClick={() => {
+                    if (matchStatus !== "매물 파악 완료") {
+                      setRoomType("쓰리룸");
+                    }
+                  }}
                 >
                   쓰리룸
                 </Button>
@@ -491,6 +515,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>전용 면적(m²)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
                 value={exclusiveArea}
                 onChange={(e) => setExclusiveArea(Number(e.target.value))}
@@ -499,6 +524,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>공급 면적(m²)</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
                 value={supplyArea}
                 onChange={(e) => setSupplyArea(Number(e.target.value))}
@@ -507,6 +533,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>계약형태</InputTitle>
               <Select
+                disabled={matchStatus === "매물 파악 완료"}
                 onChange={(e) => {
                   setContractType(e.target.value as any);
                   if (e.target.value === "전세") {
@@ -534,6 +561,7 @@ const ProposalModal = ({
               <InputContainer>
                 <InputTitle>전세 보증금</InputTitle>
                 <Input
+                  disabled={matchStatus === "매물 파악 완료"}
                   type="number"
                   value={jeonseDeposit}
                   onChange={(e) => setJeonseDeposit(Number(e.target.value))}
@@ -544,6 +572,7 @@ const ProposalModal = ({
                 <InputContainer>
                   <InputTitle>월세 보증금</InputTitle>
                   <Input
+                    disabled={matchStatus === "매물 파악 완료"}
                     type="number"
                     value={monthlyDeposit}
                     onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
@@ -552,6 +581,7 @@ const ProposalModal = ({
                 <InputContainer>
                   <InputTitle>월세</InputTitle>
                   <Input
+                    disabled={matchStatus === "매물 파악 완료"}
                     type="number"
                     value={monthlyFee}
                     onChange={(e) => setMonthlyFee(Number(e.target.value))}
@@ -562,6 +592,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>관리비</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 type="number"
                 value={maintenanceCost}
                 onChange={(e) => setMaintenanceCost(Number(e.target.value))}
@@ -570,6 +601,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>포함항목</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={included}
                 onChange={(e) => setIncluded(e.target.value)}
               />
@@ -577,6 +609,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>미포함항목</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={notIncluded}
                 onChange={(e) => setNotIncluded(e.target.value)}
               />
@@ -584,6 +617,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>입주 가능 시기</InputTitle>
               <Input
+                disabled={matchStatus === "매물 파악 완료"}
                 value={moveInPeriod}
                 onChange={(e) => setMoveInPeriod(e.target.value)}
               />
@@ -631,7 +665,7 @@ const ProposalModal = ({
                 <AddButton
                   style={{ width: "15%" }}
                   onClick={() => {
-                    if (option !== "") {
+                    if (option !== "" && matchStatus !== "매물 파악 완료") {
                       setOptions([...options, option]);
                       setOption("");
                     }
@@ -647,9 +681,11 @@ const ProposalModal = ({
                   {option}
                   <OptionDeleteButton
                     onClick={() => {
-                      setOptions((current) => {
-                        return [...current].filter((item) => item !== option);
-                      });
+                      if (matchStatus !== "매물 파악 완료") {
+                        setOptions((current) => {
+                          return [...current].filter((item) => item !== option);
+                        });
+                      }
                     }}
                   >
                     X
@@ -661,6 +697,7 @@ const ProposalModal = ({
             <InputContainer>
               <InputTitle>기타 전달 사항</InputTitle>
               <TextArea
+                disabled={matchStatus === "매물 파악 완료"}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
